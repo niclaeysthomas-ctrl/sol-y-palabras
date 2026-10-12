@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Apprendre l'espagnol en douceur : séance du jour, flashcards, grammaire, dialogues et test de niveau.">
+<meta name="description" content="Apprendre l'espagnol en douceur : séance du jour, flashcards, exercices, grammaire, dialogues et test de niveau.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='24' fill='%23F2A81D'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#1F4FA8">
 <title>Sol y Palabras</title>
@@ -216,6 +216,55 @@ textarea:focus{border-color:var(--cobalt);outline:none}
 .listen-big{width:110px;height:110px;border-radius:50%;border:0;background:var(--saffron);color:#1B2440;font-size:2.6rem;margin:6px auto 12px;display:grid;place-items:center;box-shadow:0 10px 26px -14px rgba(242,168,29,.9)}
 .listen-big:hover{filter:brightness(1.05)}
 .shown-word{font-family:var(--f-display);font-size:1.6rem;color:var(--cobalt);min-height:1.6em}
+.note.warn{background:var(--saffron-soft);margin:0 0 18px}
+.linkish{background:none;border:0;padding:0;color:var(--cobalt);font-weight:700;text-decoration:underline;font-size:inherit}
+.example{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.ex-es{font-size:1.15rem;font-style:italic}
+.ex-fr{color:var(--muted);font-size:.95rem;margin-top:2px}
+.ex-line{margin-top:8px;font-style:italic}
+.q.cloze{font-size:1.45rem;line-height:1.5}
+.gap{display:inline-block;min-width:4.5em;border-bottom:3px solid var(--saffron);color:var(--muted);text-align:center;padding:0 4px}
+.gap.filled{color:var(--cobalt);font-weight:700;border-color:var(--cobalt)}
+.order-ans{min-height:64px;border:2px dashed var(--line);border-radius:12px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 12px}
+.order-bank{display:flex;flex-wrap:wrap;gap:8px}
+.tok{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:1.1rem;font-weight:600}
+.tok:hover:not(:disabled){border-color:var(--cobalt)}
+.tok.on{background:var(--cobalt-soft);border-color:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.conj-q{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:6px 0 14px}
+.conj-q .pron{font-family:var(--f-display);font-size:2rem;color:var(--cobalt)}
+.conj-q .verb{font-family:var(--f-display);font-size:2rem}
+table.conj{min-width:240px;margin-top:4px}
+table.conj th{text-transform:none;letter-spacing:0;font-size:.95rem;color:var(--ink)}
+table.conj tr.hl td{background:var(--saffron-soft)}
+.conj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 24px;margin-top:16px}
+.sel{font:inherit;font-size:1rem;padding:10px 12px;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%;margin-top:4px}
+.voice-row{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap;margin-top:10px}
+.voice-row>div{display:flex;flex-direction:column;min-width:0}
+.voice-row input[type=range]{width:200px;max-width:100%;accent-color:var(--cobalt);margin-top:10px}
+details{margin-top:14px}
+summary{cursor:pointer;font-weight:700;color:var(--cobalt)}
+.help{margin:10px 0 0;padding-left:20px;display:grid;gap:8px;max-width:75ch}
+.wordlist{display:grid;border-top:1px solid var(--line)}
+.wl-row{display:grid;grid-template-columns:minmax(150px,1fr) 2fr auto;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);align-items:start}
+.wl-row>div{min-width:0}
+.wl-ex{font-style:italic}
+.wl-ex .hint{font-style:normal}
+@media (max-width:640px){.wl-row{grid-template-columns:1fr auto}.wl-ex{grid-column:1/-1;grid-row:2}}
+.deck{display:flex;flex-direction:column}
+.deck .due{margin:0;padding:1px 8px}
+.deck-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.btn.small{padding:8px 16px;font-size:.92rem}
+.chip.seen{background:var(--cobalt-soft);color:var(--cobalt)}
+.train-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.panel.train{display:flex;flex-direction:column;gap:6px}
+.panel.train h3{font-family:var(--f-display);font-weight:400;font-size:1.35rem;margin:0}
+.panel.train p{margin:0 0 10px;flex:1}
+.panel.train .btn{align-self:flex-start}
+.panel.train.wide{grid-column:1/-1}
+.err-panel{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;background:var(--saffron-soft);border-color:transparent}
+.err-panel h3{display:flex;align-items:center;gap:10px}
+.filter button[aria-pressed="true"] .hint{color:inherit;opacity:.8}
 </style>
 </head>
 <body>
@@ -223,15 +272,13 @@ textarea:focus{border-color:var(--cobalt);outline:none}
   <div class="tiles" aria-hidden="true"></div>
   <div class="band-in">
     <svg class="sun" viewBox="0 0 100 100" aria-hidden="true"><g><circle cx="50" cy="50" r="20"/><path d="M50 8v14M50 78v14M8 50h14M78 50h14M20 20l10 10M70 70l10 10M80 20L70 30M30 70L20 80" stroke-width="6" stroke-linecap="round"/></g></svg>
-    <div class="brand">
-      <h1>Sol y Palabras</h1>
-      <p id="greet">¡Buenos días! Un poco d'espagnol chaque jour.</p>
-    </div>
+    <div class="brand"><h1>Sol y Palabras</h1><p id="greet">¡Buenos días! Un poco d'espagnol chaque jour.</p></div>
     <div class="streak"><b id="streakN">0</b>jours de suite</div>
   </div>
   <nav role="tablist">
     <button role="tab" data-tab="today" aria-selected="true">Aujourd'hui</button>
     <button role="tab" data-tab="vocab" aria-selected="false">Vocabulaire</button>
+    <button role="tab" data-tab="train" aria-selected="false">S'entraîner</button>
     <button role="tab" data-tab="gram" aria-selected="false">Grammaire</button>
     <button role="tab" data-tab="trad" aria-selected="false">Traduction</button>
     <button role="tab" data-tab="dial" aria-selected="false">Dialogues</button>
@@ -241,75 +288,507 @@ textarea:focus{border-color:var(--cobalt);outline:none}
 <main id="app"></main>
 <footer>Ta progression est gardée dans ce navigateur. Pense à la sauvegarder de temps en temps depuis « Mon niveau ».</footer>
 <script>
-/* ================= CONTENU — Sol y Palabras ================= */
-/* Niveaux : 1 = A1 (bases), 2 = A2 (intermédiaire), 3 = B1 (avancé) */
-
+/* ================= VOCABULAIRE — [espagnol, français, exemple, traduction de l'exemple] =================
+   Important : dans chaque paquet, on ajoute les nouveaux mots À LA FIN (la progression est liée à la position). */
 const DECKS = {
   saludos:{t:"Saluer et se présenter",lvl:1,w:[
-    ["hola","bonjour / salut","¡Hola! ¿Qué tal?"],["buenos días","bonjour (le matin)",""],["buenas tardes","bonjour (l'après-midi)",""],["buenas noches","bonsoir / bonne nuit",""],
-    ["adiós","au revoir",""],["hasta luego","à plus tard",""],["por favor","s'il vous plaît",""],["gracias","merci","Muchas gracias."],
-    ["de nada","de rien",""],["perdón","pardon",""],["me llamo…","je m'appelle…","Me llamo Snoop."],["encantada","enchantée","Encantada de conocerte."],
-    ["¿Cómo estás?","Comment vas-tu ?",""],["muy bien","très bien",""],["¿Hablas francés?","Tu parles français ?",""],["no entiendo","je ne comprends pas","Perdón, no entiendo."]]},
+    ["hola","bonjour / salut","¡Hola! ¿Qué tal?","Salut ! Ça va ?"],
+    ["buenos días","bonjour (le matin)","Buenos días, señora.","Bonjour, madame."],
+    ["buenas tardes","bonjour (l'après-midi)","Buenas tardes, ¿cómo está usted?","Bonjour, comment allez-vous ?"],
+    ["buenas noches","bonsoir / bonne nuit","Buenas noches, hasta mañana.","Bonne nuit, à demain."],
+    ["adiós","au revoir","Adiós, ¡buen viaje!","Au revoir, bon voyage !"],
+    ["hasta luego","à plus tard","Hasta luego, Carmen.","À plus tard, Carmen."],
+    ["por favor","s'il vous plaît","Un café, por favor.","Un café, s'il vous plaît."],
+    ["gracias","merci","Muchas gracias por todo.","Merci beaucoup pour tout."],
+    ["de nada","de rien","Gracias. De nada, señora.","Merci. De rien, madame."],
+    ["perdón","pardon","Perdón, ¿dónde está el baño?","Pardon, où sont les toilettes ?"],
+    ["me llamo…","je m'appelle…","Me llamo Snoop, ¿y tú?","Je m'appelle Snoop, et toi ?"],
+    ["encantada","enchantée","Encantada de conocerte.","Enchantée de te connaître."],
+    ["¿Cómo estás?","Comment vas-tu ?","Hola, Pepe, ¿cómo estás?","Salut Pepe, comment vas-tu ?"],
+    ["muy bien","très bien","Estoy muy bien, gracias.","Je vais très bien, merci."],
+    ["¿Hablas francés?","Tu parles français ?","Perdón, ¿hablas francés?","Pardon, tu parles français ?"],
+    ["no entiendo","je ne comprends pas","Perdón, no entiendo.","Pardon, je ne comprends pas."],
+    ["sí","oui","Sí, claro.","Oui, bien sûr."],
+    ["no","non","No, gracias.","Non, merci."],
+    ["claro","bien sûr","¡Claro que sí!","Mais bien sûr !"],
+    ["lo siento","je suis désolée","Lo siento mucho.","Je suis vraiment désolée."],
+    ["¿y tú?","et toi ?","Estoy bien, ¿y tú?","Je vais bien, et toi ?"],
+    ["un poco","un peu","Hablo un poco de español.","Je parle un peu espagnol."],
+    ["más despacio","plus lentement","Más despacio, por favor.","Plus lentement, s'il vous plaît."],
+    ["bienvenido","bienvenue","¡Bienvenido a Sevilla!","Bienvenue à Séville !"],
+    ["señora","madame","Buenos días, señora García.","Bonjour, madame García."]]},
+
   numeros:{t:"Les nombres",lvl:1,w:[
-    ["uno","un",""],["dos","deux",""],["tres","trois",""],["cuatro","quatre",""],["cinco","cinq",""],["seis","six",""],
-    ["siete","sept",""],["ocho","huit",""],["nueve","neuf",""],["diez","dix",""],["quince","quinze",""],["veinte","vingt",""],
-    ["cincuenta","cinquante",""],["cien","cent","Cien euros."],["mil","mille",""],["la mitad","la moitié",""]]},
+    ["uno","un","Solo uno, por favor.","Un seul, s'il vous plaît."],
+    ["dos","deux","Una mesa para dos.","Une table pour deux."],
+    ["tres","trois","Tengo tres nietos.","J'ai trois petits-enfants."],
+    ["cuatro","quatre","Somos cuatro.","Nous sommes quatre."],
+    ["cinco","cinq","Son las cinco.","Il est cinq heures."],
+    ["seis","six","Seis huevos, por favor.","Six œufs, s'il vous plaît."],
+    ["siete","sept","La semana tiene siete días.","La semaine a sept jours."],
+    ["ocho","huit","Me levanto a las ocho.","Je me lève à huit heures."],
+    ["nueve","neuf","El museo abre a las nueve.","Le musée ouvre à neuf heures."],
+    ["diez","dix","Son diez euros.","Ça fait dix euros."],
+    ["quince","quinze","Llego en quince minutos.","J'arrive dans quinze minutes."],
+    ["veinte","vingt","Tengo veinte euros.","J'ai vingt euros."],
+    ["cincuenta","cinquante","Mi marido tiene cincuenta años.","Mon mari a cinquante ans."],
+    ["cien","cent","Cuesta cien euros.","Ça coûte cent euros."],
+    ["mil","mille","¡Mil gracias!","Mille mercis !"],
+    ["la mitad","la moitié","La mitad del pastel es para ti.","La moitié du gâteau est pour toi."],
+    ["once","onze","Cojo el autobús número once.","Je prends le bus numéro onze."],
+    ["doce","douze","Comemos a las doce.","Nous mangeons à midi."],
+    ["treinta","trente","El mes tiene treinta días.","Le mois a trente jours."],
+    ["cuarenta","quarante","Son cuarenta euros por noche.","C'est quarante euros la nuit."],
+    ["sesenta","soixante","Tengo sesenta y cinco años.","J'ai soixante-cinq ans."],
+    ["setenta","soixante-dix","Mi vecino tiene setenta años.","Mon voisin a soixante-dix ans."],
+    ["ochenta","quatre-vingts","Sevilla está a ochenta kilómetros.","Séville est à quatre-vingts kilomètres."],
+    ["noventa","quatre-vingt-dix","Son noventa céntimos.","Ça fait quatre-vingt-dix centimes."],
+    ["primero","premier","El primero a la derecha.","Le premier à droite."],
+    ["segundo","deuxième","Vivo en el segundo piso.","J'habite au deuxième étage."],
+    ["el número","le numéro","Este es el número de mi hija.","Voici le numéro de ma fille."]]},
+
   tiempo:{t:"Le temps et les jours",lvl:1,w:[
-    ["hoy","aujourd'hui",""],["mañana","demain (et aussi : le matin)","Hasta mañana."],["ayer","hier",""],["la semana","la semaine",""],
-    ["lunes","lundi",""],["martes","mardi",""],["miércoles","mercredi",""],["jueves","jeudi",""],["viernes","vendredi",""],
-    ["sábado","samedi",""],["domingo","dimanche",""],["el fin de semana","le week-end",""],["hace sol","il fait soleil",""],
-    ["hace calor","il fait chaud",""],["hace frío","il fait froid",""],["llueve","il pleut",""],["¿Qué hora es?","Quelle heure est-il ?","Son las tres."]]},
+    ["hoy","aujourd'hui","Hoy hace sol.","Aujourd'hui il fait soleil."],
+    ["mañana","demain (et aussi : le matin)","Hasta mañana.","À demain."],
+    ["ayer","hier","Ayer fui al mercado.","Hier je suis allée au marché."],
+    ["la semana","la semaine","La semana que viene voy a Madrid.","La semaine prochaine je vais à Madrid."],
+    ["lunes","lundi","El lunes voy al médico.","Lundi je vais chez le médecin."],
+    ["martes","mardi","El martes hay mercado.","Le mardi il y a marché."],
+    ["miércoles","mercredi","Nos vemos el miércoles.","On se voit mercredi."],
+    ["jueves","jeudi","El jueves llega mi hija.","Jeudi ma fille arrive."],
+    ["viernes","vendredi","El viernes vamos al cine.","Vendredi nous allons au cinéma."],
+    ["sábado","samedi","El sábado comemos en familia.","Samedi nous mangeons en famille."],
+    ["domingo","dimanche","El domingo está cerrado.","Le dimanche c'est fermé."],
+    ["el fin de semana","le week-end","¿Qué haces el fin de semana?","Que fais-tu le week-end ?"],
+    ["hace sol","il fait soleil","¡Qué bien, hace sol!","Super, il fait soleil !"],
+    ["hace calor","il fait chaud","En agosto hace calor.","En août il fait chaud."],
+    ["hace frío","il fait froid","En enero hace frío.","En janvier il fait froid."],
+    ["llueve","il pleut","Hoy llueve mucho.","Aujourd'hui il pleut beaucoup."],
+    ["¿Qué hora es?","Quelle heure est-il ?","Perdón, ¿qué hora es?","Pardon, quelle heure est-il ?"],
+    ["el mes","le mois","El mes que viene viajo a Madrid.","Le mois prochain je pars à Madrid."],
+    ["el año","l'année","El año pasado fui a Valencia.","L'année dernière je suis allée à Valence."],
+    ["la hora","l'heure","Es la hora de comer.","C'est l'heure de manger."],
+    ["temprano","tôt","Me levanto temprano.","Je me lève tôt."],
+    ["tarde","tard","Es tarde, me voy.","Il est tard, je m'en vais."],
+    ["siempre","toujours","Siempre desayuno café.","Je prends toujours un café au petit-déjeuner."],
+    ["nunca","jamais","Nunca bebo cerveza.","Je ne bois jamais de bière."],
+    ["a veces","parfois","A veces voy a la playa.","Parfois je vais à la plage."],
+    ["el verano","l'été","Me encanta el verano.","J'adore l'été."],
+    ["el invierno","l'hiver","El invierno es suave en Málaga.","L'hiver est doux à Malaga."],
+    ["la primavera","le printemps","La primavera es mi estación favorita.","Le printemps est ma saison préférée."],
+    ["el otoño","l'automne","Me gusta el otoño.","J'aime l'automne."],
+    ["hace viento","il y a du vent","Hoy hace viento en la playa.","Aujourd'hui il y a du vent à la plage."],
+    ["por la mañana","le matin","Por la mañana tomo un café.","Le matin je prends un café."],
+    ["por la tarde","l'après-midi","Por la tarde doy un paseo.","L'après-midi je fais une balade."],
+    ["por la noche","le soir","Por la noche veo la tele.","Le soir je regarde la télé."]]},
+
   familia:{t:"Famille et gens",lvl:1,w:[
-    ["la madre","la mère",""],["el padre","le père",""],["el hijo","le fils",""],["la hija","la fille",""],
-    ["el hermano","le frère",""],["la hermana","la sœur",""],["los nietos","les petits-enfants","Tengo tres nietos."],["la nieta","la petite-fille",""],
-    ["el marido","le mari",""],["la mujer","la femme / l'épouse",""],["el amigo","l'ami",""],["la vecina","la voisine",""],
-    ["simpático","sympathique","Es muy simpático."],["mayor","plus âgé / aîné","Mi hermano mayor."],["joven","jeune",""]]},
+    ["la madre","la mère","Mi madre vive en Lille.","Ma mère habite à Lille."],
+    ["el padre","le père","Mi padre era profesor.","Mon père était professeur."],
+    ["el hijo","le fils","Mi hijo trabaja en Madrid.","Mon fils travaille à Madrid."],
+    ["la hija","la fille","Mi hija tiene dos niños.","Ma fille a deux enfants."],
+    ["el hermano","le frère","Mi hermano vive en Lyon.","Mon frère habite à Lyon."],
+    ["la hermana","la sœur","Tengo una hermana mayor.","J'ai une sœur aînée."],
+    ["los nietos","les petits-enfants","Tengo tres nietos.","J'ai trois petits-enfants."],
+    ["la nieta","la petite-fille","Mi nieta se llama Lucía.","Ma petite-fille s'appelle Lucía."],
+    ["el marido","le mari","Mi marido cocina muy bien.","Mon mari cuisine très bien."],
+    ["la mujer","la femme / l'épouse","Es la mujer de mi hermano.","C'est la femme de mon frère."],
+    ["el amigo","l'ami","Es un amigo de la familia.","C'est un ami de la famille."],
+    ["la vecina","la voisine","Mi vecina es española.","Ma voisine est espagnole."],
+    ["simpático","sympathique","Tu hijo es muy simpático.","Ton fils est très sympathique."],
+    ["mayor","plus âgé / aîné","Mi hermano mayor tiene setenta años.","Mon frère aîné a soixante-dix ans."],
+    ["joven","jeune","Tu madre es muy joven.","Ta mère est très jeune."],
+    ["el nieto","le petit-fils","Mi nieto tiene seis años.","Mon petit-fils a six ans."],
+    ["los abuelos","les grands-parents","Los abuelos llegan el sábado.","Les grands-parents arrivent samedi."],
+    ["la tía","la tante","Mi tía vive en Toledo.","Ma tante habite à Tolède."],
+    ["el primo","le cousin","Mi primo es muy divertido.","Mon cousin est très drôle."],
+    ["el yerno","le gendre","Mi yerno es español.","Mon gendre est espagnol."],
+    ["la nuera","la belle-fille","Mi nuera es muy cariñosa.","Ma belle-fille est très affectueuse."],
+    ["los niños","les enfants","Los niños juegan en la playa.","Les enfants jouent sur la plage."],
+    ["el bebé","le bébé","¡Qué bebé tan bonito!","Quel joli bébé !"],
+    ["casada","mariée","Estoy casada desde 1985.","Je suis mariée depuis 1985."],
+    ["jubilada","retraitée","Estoy jubilada desde hace dos años.","Je suis retraitée depuis deux ans."],
+    ["la familia","la famille","Me encanta comer con la familia.","J'adore manger en famille."],
+    ["el perro","le chien","Mi perro se llama Toby.","Mon chien s'appelle Toby."],
+    ["el gato","le chat","El gato duerme en el sofá.","Le chat dort sur le canapé."]]},
+
+  colores:{t:"Couleurs et descriptions",lvl:1,w:[
+    ["rojo","rouge","Un tomate muy rojo.","Une tomate bien rouge."],
+    ["azul","bleu","El mar es azul.","La mer est bleue."],
+    ["verde","vert","Me gusta el color verde.","J'aime la couleur verte."],
+    ["amarillo","jaune","Un limón amarillo.","Un citron jaune."],
+    ["blanco","blanc","El vino blanco está muy frío.","Le vin blanc est très frais."],
+    ["negro","noir","Mi gato es negro.","Mon chat est noir."],
+    ["rosa","rose","Una flor rosa.","Une fleur rose."],
+    ["grande","grand","Una casa grande.","Une grande maison."],
+    ["pequeño","petit","Vivo en un pueblo pequeño.","J'habite dans un petit village."],
+    ["bonito","joli","¡Qué pueblo tan bonito!","Quel joli village !"],
+    ["nuevo","nouveau / neuf","Tengo un coche nuevo.","J'ai une voiture neuve."],
+    ["viejo","vieux","Es un libro muy viejo.","C'est un très vieux livre."],
+    ["alto","grand (de taille)","Mi nieto es muy alto.","Mon petit-fils est très grand."],
+    ["bajo","bas / petit (de taille)","Este edificio es bajo.","Ce bâtiment est bas."],
+    ["bueno","bon","Este vino es muy bueno.","Ce vin est très bon."],
+    ["malo","mauvais","Este café es malo.","Ce café est mauvais."],
+    ["caliente","chaud (objet)","La sopa está caliente.","La soupe est chaude."],
+    ["frío","froid","Me encanta el gazpacho frío.","J'adore le gazpacho froid."],
+    ["fácil","facile","El español es fácil.","L'espagnol est facile."],
+    ["difícil","difficile","La gramática es difícil.","La grammaire est difficile."]]},
+
   restaurante:{t:"Au restaurant",lvl:1,w:[
-    ["la carta","la carte / le menu","¿Me trae la carta, por favor?"],["la cuenta","l'addition","La cuenta, por favor."],["el camarero","le serveur",""],["la mesa","la table","Una mesa para dos."],
-    ["el agua","l'eau","Agua sin gas."],["el vino tinto","le vin rouge",""],["la cerveza","la bière",""],["el pan","le pain",""],
-    ["el pescado","le poisson",""],["la carne","la viande",""],["el pollo","le poulet",""],["las verduras","les légumes",""],
-    ["el postre","le dessert",""],["delicioso","délicieux","¡Está delicioso!"],["quisiera…","je voudrais…","Quisiera un café con leche."],["la propina","le pourboire",""]]},
+    ["la carta","la carte / le menu","¿Me trae la carta, por favor?","Vous m'apportez la carte, s'il vous plaît ?"],
+    ["la cuenta","l'addition","La cuenta, por favor.","L'addition, s'il vous plaît."],
+    ["el camarero","le serveur","El camarero es muy amable.","Le serveur est très aimable."],
+    ["la mesa","la table","Una mesa para dos, por favor.","Une table pour deux, s'il vous plaît."],
+    ["el agua","l'eau","Agua sin gas, por favor.","De l'eau plate, s'il vous plaît."],
+    ["el vino tinto","le vin rouge","Una copa de vino tinto.","Un verre de vin rouge."],
+    ["la cerveza","la bière","Una cerveza bien fría.","Une bière bien fraîche."],
+    ["el pan","le pain","¿Nos trae más pan?","Vous nous apportez plus de pain ?"],
+    ["el pescado","le poisson","El pescado está muy fresco.","Le poisson est très frais."],
+    ["la carne","la viande","No como carne.","Je ne mange pas de viande."],
+    ["el pollo","le poulet","Pollo con patatas, por favor.","Poulet-frites, s'il vous plaît."],
+    ["las verduras","les légumes","Me gustan las verduras.","J'aime les légumes."],
+    ["el postre","le dessert","¿Qué hay de postre?","Qu'est-ce qu'il y a comme dessert ?"],
+    ["delicioso","délicieux","¡Está delicioso!","C'est délicieux !"],
+    ["quisiera…","je voudrais…","Quisiera un café con leche.","Je voudrais un café au lait."],
+    ["la propina","le pourboire","Dejamos una propina.","Nous laissons un pourboire."],
+    ["el desayuno","le petit-déjeuner","El desayuno es a las nueve.","Le petit-déjeuner est à neuf heures."],
+    ["la comida","le déjeuner / la cuisine","La comida española es deliciosa.","La cuisine espagnole est délicieuse."],
+    ["la cena","le dîner","La cena es a las nueve y media.","Le dîner est à neuf heures et demie."],
+    ["el aceite de oliva","l'huile d'olive","Pan con aceite de oliva.","Du pain à l'huile d'olive."],
+    ["la sal","le sel","¿Me pasas la sal?","Tu me passes le sel ?"],
+    ["el vaso","le verre","Un vaso de agua, por favor.","Un verre d'eau, s'il vous plaît."],
+    ["el plato","l'assiette / le plat","¿Cuál es el plato del día?","Quel est le plat du jour ?"],
+    ["el tenedor","la fourchette","Me falta un tenedor.","Il me manque une fourchette."],
+    ["el cuchillo","le couteau","Este cuchillo no corta.","Ce couteau ne coupe pas."],
+    ["la cuchara","la cuillère","Una cuchara para la sopa.","Une cuillère pour la soupe."],
+    ["la tortilla","l'omelette (aux pommes de terre)","La tortilla de patatas está riquísima.","L'omelette aux pommes de terre est délicieuse."],
+    ["el helado","la glace","Un helado de chocolate.","Une glace au chocolat."],
+    ["la reserva","la réservation","Tenemos una reserva para las nueve.","Nous avons une réservation pour neuf heures."],
+    ["sin gluten","sans gluten","¿Tiene platos sin gluten?","Vous avez des plats sans gluten ?"],
+    ["para llevar","à emporter","Dos cafés para llevar.","Deux cafés à emporter."],
+    ["el café solo","le café noir (expresso)","Un café solo, por favor.","Un café noir, s'il vous plaît."]]},
+
   viaje:{t:"Voyage et hôtel",lvl:2,w:[
-    ["el hotel","l'hôtel",""],["la habitación","la chambre","Una habitación doble."],["la llave","la clé",""],["la maleta","la valise",""],
-    ["el billete","le billet","Un billete de ida y vuelta."],["la estación","la gare",""],["el aeropuerto","l'aéroport",""],["la playa","la plage","Vamos a la playa."],
-    ["la calle","la rue",""],["a la derecha","à droite",""],["a la izquierda","à gauche",""],["todo recto","tout droit","Siga todo recto."],
-    ["cerca","près",""],["lejos","loin","¿Está lejos?"],["¿Dónde está…?","Où est… ?","¿Dónde está el baño?"],["¿Cuánto cuesta?","Combien ça coûte ?",""]]},
+    ["el hotel","l'hôtel","El hotel está cerca de la playa.","L'hôtel est près de la plage."],
+    ["la habitación","la chambre","Una habitación doble, por favor.","Une chambre double, s'il vous plaît."],
+    ["la llave","la clé","He perdido la llave.","J'ai perdu la clé."],
+    ["la maleta","la valise","Mi maleta es azul.","Ma valise est bleue."],
+    ["el billete","le billet","Un billete de ida y vuelta.","Un billet aller-retour."],
+    ["la estación","la gare","¿Dónde está la estación?","Où est la gare ?"],
+    ["el aeropuerto","l'aéroport","Vamos al aeropuerto en taxi.","Nous allons à l'aéroport en taxi."],
+    ["la playa","la plage","Vamos a la playa.","Allons à la plage."],
+    ["la calle","la rue","Vivo en la calle Mayor.","J'habite rue Mayor."],
+    ["a la derecha","à droite","El baño está a la derecha.","Les toilettes sont à droite."],
+    ["a la izquierda","à gauche","Gire a la izquierda.","Tournez à gauche."],
+    ["todo recto","tout droit","Siga todo recto.","Continuez tout droit."],
+    ["cerca","près","El museo está cerca.","Le musée est tout près."],
+    ["lejos","loin","¿Está lejos la playa?","La plage est loin ?"],
+    ["¿Dónde está…?","Où est… ?","¿Dónde está el baño?","Où sont les toilettes ?"],
+    ["¿Cuánto cuesta?","Combien ça coûte ?","¿Cuánto cuesta el billete?","Combien coûte le billet ?"],
+    ["el tren","le train","El tren sale a las diez.","Le train part à dix heures."],
+    ["el autobús","le bus","El autobús para aquí.","Le bus s'arrête ici."],
+    ["el coche","la voiture","Alquilamos un coche.","Nous louons une voiture."],
+    ["el pasaporte","le passeport","¿Me enseña el pasaporte?","Vous me montrez votre passeport ?"],
+    ["el mapa","le plan / la carte","¿Tiene un mapa de la ciudad?","Vous avez un plan de la ville ?"],
+    ["el museo","le musée","El museo abre a las diez.","Le musée ouvre à dix heures."],
+    ["la iglesia","l'église","La iglesia es muy antigua.","L'église est très ancienne."],
+    ["la plaza","la place","Nos vemos en la plaza.","On se retrouve sur la place."],
+    ["el centro","le centre-ville","¿Cómo voy al centro?","Comment je vais au centre-ville ?"],
+    ["el andén","le quai","El tren sale del andén tres.","Le train part du quai trois."],
+    ["el retraso","le retard","El tren tiene una hora de retraso.","Le train a une heure de retard."],
+    ["el vuelo","le vol","Mi vuelo sale a las seis.","Mon vol part à six heures."],
+    ["la salida","la sortie / le départ","¿Dónde está la salida?","Où est la sortie ?"],
+    ["la entrada","l'entrée","La entrada es gratis.","L'entrée est gratuite."],
+    ["de vacaciones","en vacances","Estamos de vacaciones.","Nous sommes en vacances."],
+    ["la oficina de turismo","l'office de tourisme","La oficina de turismo está en la plaza.","L'office de tourisme est sur la place."]]},
+
+  ciudad:{t:"En ville et dans la nature",lvl:2,w:[
+    ["el ayuntamiento","la mairie","El ayuntamiento está en la plaza.","La mairie est sur la place."],
+    ["el banco","la banque","El banco cierra a las dos.","La banque ferme à deux heures."],
+    ["correos","la poste","Voy a correos a enviar una carta.","Je vais à la poste envoyer une lettre."],
+    ["el puerto","le port","Paseamos por el puerto.","Nous nous promenons au port."],
+    ["el parque","le parc","Hay un parque muy bonito cerca.","Il y a un très joli parc tout près."],
+    ["el puente","le pont","Cruzamos el puente a pie.","Nous traversons le pont à pied."],
+    ["el castillo","le château","El castillo es del siglo XII.","Le château date du XIIe siècle."],
+    ["la catedral","la cathédrale","La catedral de Sevilla es enorme.","La cathédrale de Séville est immense."],
+    ["el barrio","le quartier","Mi barrio es muy tranquilo.","Mon quartier est très calme."],
+    ["la esquina","le coin de la rue","La farmacia está en la esquina.","La pharmacie est au coin de la rue."],
+    ["el semáforo","le feu (de circulation)","Gire a la derecha en el semáforo.","Tournez à droite au feu."],
+    ["la parada","l'arrêt","La parada del autobús está aquí.","L'arrêt de bus est ici."],
+    ["el pueblo","le village","Mi pueblo es muy pequeño.","Mon village est très petit."],
+    ["el mar","la mer","Me encanta el mar.","J'adore la mer."],
+    ["la montaña","la montagne","En verano vamos a la montaña.","En été nous allons à la montagne."],
+    ["el río","la rivière / le fleuve","El río pasa por el centro.","La rivière traverse le centre."],
+    ["al lado de","à côté de","El hotel está al lado de la estación.","L'hôtel est à côté de la gare."],
+    ["enfrente de","en face de","El bar está enfrente de la iglesia.","Le bar est en face de l'église."],
+    ["la gasolinera","la station-service","Busco una gasolinera.","Je cherche une station-service."],
+    ["el árbol","l'arbre","Comemos a la sombra de un árbol.","Nous mangeons à l'ombre d'un arbre."],
+    ["la flor","la fleur","Esta flor huele muy bien.","Cette fleur sent très bon."],
+    ["el campo","la campagne","Vivo en el campo.","J'habite à la campagne."]]},
+
   compras:{t:"Courses et marché",lvl:2,w:[
-    ["el mercado","le marché",""],["la tienda","le magasin",""],["la panadería","la boulangerie",""],["un kilo de…","un kilo de…","Un kilo de tomates."],
-    ["las naranjas","les oranges",""],["las fresas","les fraises",""],["el queso","le fromage",""],["el jamón","le jambon","Jamón ibérico."],
-    ["barato","pas cher",""],["caro","cher","Es un poco caro."],["pagar","payer",""],["la tarjeta","la carte bancaire","¿Puedo pagar con tarjeta?"],
-    ["el efectivo","les espèces",""],["la talla","la taille (vêtement)","¿Tiene una talla más?"],["¿Algo más?","Autre chose ?","No, nada más, gracias."]]},
+    ["el mercado","le marché","Voy al mercado los sábados.","Je vais au marché le samedi."],
+    ["la tienda","le magasin","La tienda cierra a las ocho.","Le magasin ferme à huit heures."],
+    ["la panadería","la boulangerie","Compro pan en la panadería.","J'achète du pain à la boulangerie."],
+    ["un kilo de…","un kilo de…","Un kilo de tomates, por favor.","Un kilo de tomates, s'il vous plaît."],
+    ["las naranjas","les oranges","Las naranjas de Valencia son muy dulces.","Les oranges de Valence sont très sucrées."],
+    ["las fresas","les fraises","Medio kilo de fresas.","Un demi-kilo de fraises."],
+    ["el queso","le fromage","Un trozo de queso manchego.","Un morceau de fromage manchego."],
+    ["el jamón","le jambon","El jamón ibérico es caro.","Le jambon ibérique est cher."],
+    ["barato","pas cher","Este mercado es barato.","Ce marché n'est pas cher."],
+    ["caro","cher","Es un poco caro.","C'est un peu cher."],
+    ["pagar","payer","¿Dónde puedo pagar?","Où est-ce que je peux payer ?"],
+    ["la tarjeta","la carte bancaire","¿Puedo pagar con tarjeta?","Je peux payer par carte ?"],
+    ["el efectivo","les espèces","Solo aceptamos efectivo.","Nous acceptons seulement les espèces."],
+    ["la talla","la taille (vêtement)","¿Tiene una talla más grande?","Vous avez une taille plus grande ?"],
+    ["¿Algo más?","Autre chose ?","¿Algo más, señora?","Autre chose, madame ?"],
+    ["la bolsa","le sac","¿Quiere una bolsa?","Vous voulez un sac ?"],
+    ["el supermercado","le supermarché","El supermercado está al lado.","Le supermarché est à côté."],
+    ["la fruta","les fruits","Compro fruta en el mercado.","J'achète des fruits au marché."],
+    ["las manzanas","les pommes","Un kilo de manzanas, por favor.","Un kilo de pommes, s'il vous plaît."],
+    ["los tomates","les tomates","Los tomates están muy buenos.","Les tomates sont très bonnes."],
+    ["la leche","le lait","Un litro de leche.","Un litre de lait."],
+    ["los huevos","les œufs","Una docena de huevos.","Une douzaine d'œufs."],
+    ["la ropa","les vêtements","Me gusta esta ropa.","J'aime ces vêtements."],
+    ["los zapatos","les chaussures","Estos zapatos son cómodos.","Ces chaussures sont confortables."],
+    ["el vestido","la robe","Un vestido de verano.","Une robe d'été."],
+    ["las rebajas","les soldes","En julio hay rebajas.","En juillet il y a les soldes."],
+    ["el recuerdo","le souvenir","Compro un recuerdo para mi nieta.","J'achète un souvenir pour ma petite-fille."],
+    ["abierto","ouvert","¿Está abierto el mercado?","Le marché est ouvert ?"],
+    ["cerrado","fermé","El banco está cerrado.","La banque est fermée."]]},
+
   casa:{t:"La maison",lvl:2,w:[
-    ["la casa","la maison",""],["el piso","l'appartement / l'étage",""],["la cocina","la cuisine",""],["el dormitorio","la chambre",""],
-    ["el salón","le salon",""],["el baño","la salle de bains / les toilettes",""],["el jardín","le jardin",""],["la ventana","la fenêtre",""],
-    ["la puerta","la porte",""],["la cama","le lit",""],["la silla","la chaise",""],["la terraza","la terrasse","Desayunamos en la terraza."],
-    ["limpiar","nettoyer",""],["cocinar","cuisiner",""],["las plantas","les plantes",""]]},
+    ["la casa","la maison","Mi casa tiene un jardín.","Ma maison a un jardin."],
+    ["el piso","l'appartement / l'étage","Vivo en un piso pequeño.","J'habite dans un petit appartement."],
+    ["la cocina","la cuisine","Estoy en la cocina.","Je suis dans la cuisine."],
+    ["el dormitorio","la chambre","El dormitorio es muy grande.","La chambre est très grande."],
+    ["el salón","le salon","Vemos la tele en el salón.","Nous regardons la télé dans le salon."],
+    ["el baño","la salle de bains / les toilettes","El baño está arriba.","La salle de bains est en haut."],
+    ["el jardín","le jardin","Tengo flores en el jardín.","J'ai des fleurs dans le jardin."],
+    ["la ventana","la fenêtre","Abre la ventana, por favor.","Ouvre la fenêtre, s'il te plaît."],
+    ["la puerta","la porte","Cierra la puerta, por favor.","Ferme la porte, s'il te plaît."],
+    ["la cama","le lit","La cama es muy cómoda.","Le lit est très confortable."],
+    ["la silla","la chaise","Siéntate en la silla.","Assieds-toi sur la chaise."],
+    ["la terraza","la terrasse","Desayunamos en la terraza.","Nous prenons le petit-déjeuner sur la terrasse."],
+    ["limpiar","nettoyer","Hoy tengo que limpiar la casa.","Aujourd'hui je dois nettoyer la maison."],
+    ["cocinar","cuisiner","Me encanta cocinar.","J'adore cuisiner."],
+    ["las plantas","les plantes","Riego las plantas cada día.","J'arrose les plantes chaque jour."],
+    ["el sofá","le canapé","Me siento en el sofá.","Je m'assois sur le canapé."],
+    ["la nevera","le réfrigérateur","La leche está en la nevera.","Le lait est dans le frigo."],
+    ["el horno","le four","El pollo está en el horno.","Le poulet est au four."],
+    ["la lavadora","la machine à laver","La lavadora no funciona.","La machine à laver ne marche pas."],
+    ["la escalera","l'escalier","La escalera es estrecha.","L'escalier est étroit."],
+    ["el ascensor","l'ascenseur","El ascensor no funciona.","L'ascenseur ne marche pas."],
+    ["la luz","la lumière","Apaga la luz, por favor.","Éteins la lumière, s'il te plaît."],
+    ["el vecino","le voisin","El vecino es muy amable.","Le voisin est très aimable."],
+    ["arriba","en haut","Los dormitorios están arriba.","Les chambres sont en haut."],
+    ["abajo","en bas","La cocina está abajo.","La cuisine est en bas."],
+    ["la tele","la télé","La tele está en el salón.","La télé est dans le salon."],
+    ["la ducha","la douche","La ducha está en el baño.","La douche est dans la salle de bains."],
+    ["el espejo","le miroir","Hay un espejo en la entrada.","Il y a un miroir dans l'entrée."]]},
+
   verbos:{t:"Verbes utiles",lvl:2,w:[
-    ["hablar","parler",""],["comer","manger",""],["vivir","vivre / habiter","Vivo en Francia."],["ser","être (identité)","Soy francesa."],
-    ["estar","être (état, lieu)","Estoy cansada."],["tener","avoir","Tengo sed."],["ir","aller","Voy al mercado."],["querer","vouloir / aimer","Quiero un café."],
-    ["poder","pouvoir","¿Puedo pagar con tarjeta?"],["hacer","faire","Hace calor."],["gustar","plaire","Me gusta España."],["necesitar","avoir besoin de",""],
-    ["saber","savoir","No sé."],["ver","voir",""],["salir","sortir / partir",""],["volver","revenir",""],["llegar","arriver",""],["dormir","dormir",""]]},
+    ["hablar","parler","Me gusta hablar con mis vecinos.","J'aime parler avec mes voisins."],
+    ["comer","manger","Vamos a comer a las dos.","Nous allons manger à deux heures."],
+    ["vivir","vivre / habiter","Quiero vivir en España.","Je veux vivre en Espagne."],
+    ["ser","être (identité)","Quiero ser feliz.","Je veux être heureuse."],
+    ["estar","être (état, lieu)","Me gusta estar en casa.","J'aime être à la maison."],
+    ["tener","avoir","Vamos a tener buen tiempo.","Nous allons avoir beau temps."],
+    ["ir","aller","Me gusta ir a la playa.","J'aime aller à la plage."],
+    ["querer","vouloir / aimer","Quiero un café.","Je veux un café."],
+    ["poder","pouvoir","¿Puedo pagar con tarjeta?","Je peux payer par carte ?"],
+    ["hacer","faire","¿Qué vas a hacer hoy?","Qu'est-ce que tu vas faire aujourd'hui ?"],
+    ["gustar","plaire","Me gusta mucho España.","L'Espagne me plaît beaucoup."],
+    ["necesitar","avoir besoin de","Necesito ayuda.","J'ai besoin d'aide."],
+    ["saber","savoir","No sé dónde está.","Je ne sais pas où c'est."],
+    ["ver","voir","Quiero ver el mar.","Je veux voir la mer."],
+    ["salir","sortir / partir","Vamos a salir a las diez.","Nous allons sortir à dix heures."],
+    ["volver","revenir","Quiero volver a Granada.","Je veux revenir à Grenade."],
+    ["llegar","arriver","El tren va a llegar tarde.","Le train va arriver en retard."],
+    ["dormir","dormir","No puedo dormir.","Je n'arrive pas à dormir."],
+    ["beber","boire","¿Qué quieres beber?","Que veux-tu boire ?"],
+    ["comprar","acheter","Voy a comprar pan.","Je vais acheter du pain."],
+    ["buscar","chercher","Tengo que buscar la llave.","Je dois chercher la clé."],
+    ["esperar","attendre / espérer","Vamos a esperar aquí.","Nous allons attendre ici."],
+    ["llamar","appeler","Voy a llamar a mi hija.","Je vais appeler ma fille."],
+    ["trabajar","travailler","Mi hijo tiene que trabajar mañana.","Mon fils doit travailler demain."],
+    ["viajar","voyager","Me encanta viajar.","J'adore voyager."],
+    ["escribir","écrire","Voy a escribir una postal.","Je vais écrire une carte postale."],
+    ["leer","lire","Me gusta leer en la playa.","J'aime lire à la plage."],
+    ["conocer","connaître","Quiero conocer Sevilla.","Je veux connaître Séville."],
+    ["decir","dire","¿Qué quiere decir esta palabra?","Que veut dire ce mot ?"],
+    ["dar","donner","¿Me puede dar la cuenta?","Pouvez-vous me donner l'addition ?"],
+    ["venir","venir","¿Quieres venir con nosotros?","Tu veux venir avec nous ?"],
+    ["pedir","demander / commander","Vamos a pedir una paella.","Nous allons commander une paella."],
+    ["abrir","ouvrir","¿Puede abrir la ventana?","Pouvez-vous ouvrir la fenêtre ?"],
+    ["cerrar","fermer","Tengo que cerrar la puerta.","Je dois fermer la porte."],
+    ["entender","comprendre","Es difícil entender a los andaluces.","C'est difficile de comprendre les Andalous."],
+    ["aprender","apprendre","Quiero aprender español.","Je veux apprendre l'espagnol."],
+    ["ayudar","aider","¿Me puede ayudar?","Pouvez-vous m'aider ?"],
+    ["pasear","se promener","Me gusta pasear por la playa.","J'aime me promener sur la plage."],
+    ["bailar","danser","¿Vamos a bailar?","On va danser ?"]]},
+
+  ocio:{t:"Loisirs et sorties",lvl:2,w:[
+    ["el libro","le livre","Estoy leyendo un libro muy bueno.","Je lis un très bon livre."],
+    ["la música","la musique","Me gusta la música flamenca.","J'aime la musique flamenca."],
+    ["el cine","le cinéma","El cine está al lado del hotel.","Le cinéma est à côté de l'hôtel."],
+    ["la película","le film","La película es muy divertida.","Le film est très drôle."],
+    ["el teatro","le théâtre","Tenemos entradas para el teatro.","Nous avons des billets pour le théâtre."],
+    ["nadar","nager","Me encanta nadar en el mar.","J'adore nager dans la mer."],
+    ["caminar","marcher","Me gusta caminar por la mañana.","J'aime marcher le matin."],
+    ["la jardinería","le jardinage","Me encanta la jardinería.","J'adore le jardinage."],
+    ["la foto","la photo","¿Nos haces una foto?","Tu nous prends en photo ?"],
+    ["el concierto","le concert","El concierto empieza a las nueve.","Le concert commence à neuf heures."],
+    ["la exposición","l'exposition","Hay una exposición de Picasso.","Il y a une exposition de Picasso."],
+    ["cantar","chanter","A mi nieta le gusta cantar.","Ma petite-fille aime chanter."],
+    ["pintar","peindre","Me gusta pintar paisajes.","J'aime peindre des paysages."],
+    ["las cartas","les cartes (à jouer)","Jugamos a las cartas los domingos.","Nous jouons aux cartes le dimanche."],
+    ["la fiesta","la fête","La fiesta del pueblo es en agosto.","La fête du village est en août."],
+    ["el tiempo libre","le temps libre","En mi tiempo libre, leo mucho.","Pendant mon temps libre, je lis beaucoup."],
+    ["la siesta","la sieste","Después de comer, dormimos la siesta.","Après manger, nous faisons la sieste."],
+    ["el partido","le match","Esta noche hay partido de fútbol.","Ce soir il y a un match de foot."],
+    ["el baile","la danse","El flamenco es un baile andaluz.","Le flamenco est une danse andalouse."],
+    ["la piscina","la piscine","El hotel tiene piscina.","L'hôtel a une piscine."],
+    ["la excursión","l'excursion","Mañana hacemos una excursión a Ronda.","Demain nous faisons une excursion à Ronda."]]},
+
   salud:{t:"Santé et pharmacie",lvl:2,w:[
-    ["la farmacia","la pharmacie",""],["el médico","le médecin",""],["me duele…","j'ai mal à…","Me duele la cabeza."],["la cabeza","la tête",""],
-    ["el estómago","l'estomac",""],["la espalda","le dos",""],["la pierna","la jambe",""],["el brazo","le bras",""],
-    ["la garganta","la gorge","Me duele la garganta."],["la fiebre","la fièvre",""],["la pastilla","le comprimé",""],["la receta","l'ordonnance",""],
-    ["estoy resfriada","je suis enrhumée",""],["la crema solar","la crème solaire",""],["¡Socorro!","Au secours !",""]]},
+    ["la farmacia","la pharmacie","La farmacia está cerrada.","La pharmacie est fermée."],
+    ["el médico","le médecin","Tengo que ir al médico.","Je dois aller chez le médecin."],
+    ["me duele…","j'ai mal à…","Me duele aquí.","J'ai mal ici."],
+    ["la cabeza","la tête","Me duele la cabeza.","J'ai mal à la tête."],
+    ["el estómago","l'estomac","Me duele el estómago.","J'ai mal à l'estomac."],
+    ["la espalda","le dos","Tengo dolor de espalda.","J'ai mal au dos."],
+    ["la pierna","la jambe","Me he hecho daño en la pierna.","Je me suis fait mal à la jambe."],
+    ["el brazo","le bras","Me duele el brazo derecho.","J'ai mal au bras droit."],
+    ["la garganta","la gorge","Me duele la garganta.","J'ai mal à la gorge."],
+    ["la fiebre","la fièvre","Mi nieto tiene fiebre.","Mon petit-fils a de la fièvre."],
+    ["la pastilla","le comprimé","Tome una pastilla cada ocho horas.","Prenez un comprimé toutes les huit heures."],
+    ["la receta","l'ordonnance (et la recette !)","Necesito una receta para este medicamento.","J'ai besoin d'une ordonnance pour ce médicament."],
+    ["estoy resfriada","je suis enrhumée","Creo que estoy resfriada.","Je crois que je suis enrhumée."],
+    ["la crema solar","la crème solaire","No olvides la crema solar.","N'oublie pas la crème solaire."],
+    ["¡Socorro!","Au secours !","¡Socorro! ¡Ayuda!","Au secours ! À l'aide !"],
+    ["el dolor","la douleur","Tengo un dolor muy fuerte.","J'ai une très forte douleur."],
+    ["la tos","la toux","Tengo tos desde ayer.","Je tousse depuis hier."],
+    ["el hospital","l'hôpital","¿Dónde está el hospital?","Où est l'hôpital ?"],
+    ["la cita","le rendez-vous","Tengo una cita con el médico.","J'ai rendez-vous chez le médecin."],
+    ["el dentista","le dentiste","Mañana voy al dentista.","Demain je vais chez le dentiste."],
+    ["el ojo","l'œil","Me pica el ojo.","L'œil me gratte."],
+    ["los pies","les pieds","Me duelen los pies.","J'ai mal aux pieds."],
+    ["la mano","la main","Me he cortado la mano.","Je me suis coupé la main."],
+    ["la alergia","l'allergie","Tengo alergia al polen.","J'ai une allergie au pollen."],
+    ["mareada","qui a la tête qui tourne","Estoy un poco mareada.","J'ai un peu la tête qui tourne."],
+    ["la tensión","la tension","Tengo la tensión alta.","J'ai de la tension."],
+    ["el seguro","l'assurance","¿Acepta mi seguro?","Vous acceptez mon assurance ?"],
+    ["mejor","mieux","Hoy estoy mejor.","Aujourd'hui je vais mieux."],
+    ["descansar","se reposer","Tiene que descansar.","Vous devez vous reposer."]]},
+
   emociones:{t:"Émotions et caractère",lvl:3,w:[
-    ["contenta","contente","Estoy muy contenta."],["triste","triste",""],["preocupada","inquiète",""],["enfadada","fâchée",""],
-    ["nerviosa","nerveuse",""],["tranquila","calme / tranquille",""],["sorprendida","surprise",""],["aburrida","qui s'ennuie",""],
-    ["orgullosa","fière","Estoy orgullosa de mis nietos."],["echar de menos","manquer (quelqu'un)","Te echo de menos."],["tener ganas de","avoir envie de","Tengo ganas de viajar."],
-    ["alegrarse","se réjouir","Me alegro mucho."],["divertido","amusant / drôle",""],["cariñoso","affectueux",""],["terco","têtu",""]]},
+    ["contenta","contente","Estoy muy contenta.","Je suis très contente."],
+    ["triste","triste","Hoy estoy un poco triste.","Aujourd'hui je suis un peu triste."],
+    ["preocupada","inquiète","Estoy preocupada por mi hijo.","Je suis inquiète pour mon fils."],
+    ["enfadada","fâchée","¿Estás enfadada conmigo?","Tu es fâchée contre moi ?"],
+    ["nerviosa","nerveuse","Estoy nerviosa antes del viaje.","Je suis nerveuse avant le voyage."],
+    ["tranquila","calme / tranquille","Tranquila, no pasa nada.","Calme-toi, ce n'est pas grave."],
+    ["sorprendida","surprise","¡Estoy muy sorprendida!","Je suis très surprise !"],
+    ["aburrida","qui s'ennuie","Estoy aburrida en casa.","Je m'ennuie à la maison."],
+    ["orgullosa","fière","Estoy orgullosa de mis nietos.","Je suis fière de mes petits-enfants."],
+    ["echar de menos","manquer (quelqu'un)","Voy a echar de menos el sol.","Le soleil va me manquer."],
+    ["tener ganas de","avoir envie de","Voy a tener ganas de volver.","Je vais avoir envie de revenir."],
+    ["alegrarse","se réjouir","Me alegro mucho de verte.","Je suis très contente de te voir."],
+    ["divertido","amusant / drôle","Mi nieto es muy divertido.","Mon petit-fils est très drôle."],
+    ["cariñoso","affectueux","Mi perro es muy cariñoso.","Mon chien est très affectueux."],
+    ["terco","têtu","Mi marido es un poco terco.","Mon mari est un peu têtu."],
+    ["feliz","heureux / heureuse","Soy muy feliz aquí.","Je suis très heureuse ici."],
+    ["cansada","fatiguée","Estoy cansada después del viaje.","Je suis fatiguée après le voyage."],
+    ["asustada","effrayée","Estaba asustada en el avión.","J'avais peur dans l'avion."],
+    ["la alegría","la joie","¡Qué alegría verte!","Quelle joie de te voir !"],
+    ["amable","aimable","La recepcionista es muy amable.","La réceptionniste est très aimable."],
+    ["tímida","timide","Mi nieta es un poco tímida.","Ma petite-fille est un peu timide."],
+    ["generoso","généreux","Mi vecino es muy generoso.","Mon voisin est très généreux."],
+    ["paciente","patient(e)","Hay que ser paciente.","Il faut être patient."],
+    ["celosa","jalouse","Mi gata está celosa del perro.","Ma chatte est jalouse du chien."],
+    ["de buen humor","de bonne humeur","Hoy estoy de buen humor.","Aujourd'hui je suis de bonne humeur."],
+    ["de mal humor","de mauvaise humeur","Mi marido está de mal humor.","Mon mari est de mauvaise humeur."]]},
+
+  opinion:{t:"Donner son avis",lvl:3,w:[
+    ["creo que","je crois que","Creo que va a llover.","Je crois qu'il va pleuvoir."],
+    ["pienso que","je pense que","Pienso que tienes razón.","Je pense que tu as raison."],
+    ["tener razón","avoir raison","Mi hija suele tener razón.","Ma fille a souvent raison."],
+    ["estar de acuerdo","être d'accord","No puedo estar de acuerdo.","Je ne peux pas être d'accord."],
+    ["en mi opinión","à mon avis","En mi opinión, Sevilla es la ciudad más bonita.","À mon avis, Séville est la plus belle ville."],
+    ["me parece que","il me semble que","Me parece que está cerrado.","Il me semble que c'est fermé."],
+    ["a lo mejor","peut-être","A lo mejor vamos mañana.","Peut-être qu'on ira demain."],
+    ["quizás","peut-être","Quizás llueva esta tarde.","Il pleuvra peut-être cet après-midi."],
+    ["¿Qué te parece?","Qu'en penses-tu ?","¿Qué te parece este restaurante?","Que penses-tu de ce restaurant ?"],
+    ["depende","ça dépend","Depende del tiempo.","Ça dépend du temps."],
+    ["la verdad","franchement / la vérité","La verdad, no me gusta mucho.","Franchement, je n'aime pas trop."],
+    ["me encanta","j'adore","Me encanta la paella.","J'adore la paella."],
+    ["no me importa","ça ne me dérange pas","No me importa esperar.","Ça ne me dérange pas d'attendre."],
+    ["prefiero","je préfère","Prefiero el mar a la montaña.","Je préfère la mer à la montagne."],
+    ["odio","je déteste","Odio las colas largas.","Je déteste les longues files d'attente."],
+    ["¡Qué buena idea!","Quelle bonne idée !","¿La playa? ¡Qué buena idea!","La plage ? Quelle bonne idée !"],
+    ["es verdad","c'est vrai","Es verdad, tienes razón.","C'est vrai, tu as raison."],
+    ["seguro que","c'est sûr que","Seguro que te gusta.","C'est sûr que ça va te plaire."]]},
+
   conectores:{t:"Mots pour relier les idées",lvl:3,w:[
-    ["pero","mais",""],["porque","parce que",""],["aunque","bien que / même si","Aunque llueve, salgo."],["entonces","alors / donc",""],
-    ["además","en plus",""],["sin embargo","cependant",""],["por eso","c'est pour ça que",""],["mientras","pendant que",""],
-    ["después de","après",""],["antes de","avant de","Antes de comer."],["todavía","encore / toujours",""],["ya","déjà",""],
-    ["casi","presque",""],["de repente","tout à coup",""],["por fin","enfin",""]]},
+    ["pero","mais","Hace sol, pero hace frío.","Il fait soleil, mais il fait froid."],
+    ["porque","parce que","Estudio español porque me gusta.","J'étudie l'espagnol parce que ça me plaît."],
+    ["aunque","bien que / même si","Aunque llueve, salgo.","Même s'il pleut, je sors."],
+    ["entonces","alors / donc","Entonces, ¿vamos?","Alors, on y va ?"],
+    ["además","en plus","Es bonito y, además, es barato.","C'est joli et, en plus, ce n'est pas cher."],
+    ["sin embargo","cependant","Es caro; sin embargo, es muy bueno.","C'est cher ; cependant, c'est très bon."],
+    ["por eso","c'est pour ça que","Llovía, por eso me quedé en casa.","Il pleuvait, c'est pour ça que je suis restée à la maison."],
+    ["mientras","pendant que","Leo mientras él cocina.","Je lis pendant qu'il cuisine."],
+    ["después de","après","Después de comer, dormimos la siesta.","Après manger, nous faisons la sieste."],
+    ["antes de","avant de","Antes de salir, cierro la puerta.","Avant de sortir, je ferme la porte."],
+    ["todavía","encore / toujours","Todavía no he comido.","Je n'ai pas encore mangé."],
+    ["ya","déjà","Ya he terminado.","J'ai déjà fini."],
+    ["casi","presque","Son casi las diez.","Il est presque dix heures."],
+    ["de repente","tout à coup","De repente, empezó a llover.","Tout à coup, il s'est mis à pleuvoir."],
+    ["por fin","enfin","¡Por fin estamos de vacaciones!","Enfin nous sommes en vacances !"],
+    ["también","aussi","A mí también me gusta.","Moi aussi ça me plaît."],
+    ["tampoco","non plus","Yo tampoco lo sé.","Moi non plus je ne sais pas."],
+    ["si","si","Si hace sol, vamos a la playa.","S'il fait soleil, on va à la plage."],
+    ["cuando","quand","Cuando llego a casa, descanso.","Quand j'arrive à la maison, je me repose."],
+    ["luego","ensuite / plus tard","Primero comemos y luego paseamos.","D'abord on mange et ensuite on se promène."],
+    ["al principio","au début","Al principio no entendía nada.","Au début je ne comprenais rien."],
+    ["al final","à la fin","Al final, todo salió bien.","À la fin, tout s'est bien passé."],
+    ["por ejemplo","par exemple","Me gustan las frutas, por ejemplo las fresas.","J'aime les fruits, par exemple les fraises."],
+    ["sobre todo","surtout","Me gusta España, sobre todo el sur.","J'aime l'Espagne, surtout le sud."],
+    ["así que","donc","Estaba cansada, así que me acosté.","J'étais fatiguée, donc je me suis couchée."],
+    ["de todas formas","de toute façon","De todas formas, te llamo mañana.","De toute façon, je t'appelle demain."]]},
+
   expresiones:{t:"Expressions du quotidien",lvl:3,w:[
-    ["¡Qué bien!","Super ! / Comme c'est bien !",""],["¡Vale!","D'accord !",""],["No pasa nada.","Ce n'est pas grave.",""],["Me da igual.","Ça m'est égal.",""],
-    ["¡Qué rico!","Que c'est bon !",""],["¡Ojalá!","Pourvu que ! / Si seulement !",""],["Estar hecha polvo","être épuisée","Hoy estoy hecha polvo."],["Tomar algo","prendre un verre","¿Tomamos algo?"],
-    ["Dar un paseo","faire une balade",""],["¡Buen provecho!","Bon appétit !",""],["¡Que aproveche!","Bon appétit ! (en entrant)",""],["Ir de tapas","aller manger des tapas",""],
-    ["¡Menos mal!","Heureusement !",""],["¿Qué tal te va?","Comment ça va pour toi ?",""],["Cuídate.","Prends soin de toi.",""]]}
+    ["¡Qué bien!","Super ! / Comme c'est bien !","¿Mañana a la playa? ¡Qué bien!","Demain à la plage ? Super !"],
+    ["¡Vale!","D'accord !","¿A las ocho? ¡Vale!","À huit heures ? D'accord !"],
+    ["No pasa nada.","Ce n'est pas grave.","Tranquila, no pasa nada.","Ne t'inquiète pas, ce n'est pas grave."],
+    ["Me da igual.","Ça m'est égal.","¿Playa o piscina? Me da igual.","Plage ou piscine ? Ça m'est égal."],
+    ["¡Qué rico!","Que c'est bon !","¡Qué rico está este jamón!","Qu'il est bon ce jambon !"],
+    ["¡Ojalá!","Pourvu que ! / Si seulement !","¡Ojalá haga sol mañana!","Pourvu qu'il fasse beau demain !"],
+    ["estar hecha polvo","être épuisée","Después del viaje voy a estar hecha polvo.","Après le voyage je vais être épuisée."],
+    ["tomar algo","prendre un verre","¿Vamos a tomar algo?","On va prendre un verre ?"],
+    ["dar un paseo","faire une balade","Vamos a dar un paseo por el puerto.","Allons faire une balade au port."],
+    ["¡Buen provecho!","Bon appétit !","¡Buen provecho a todos!","Bon appétit à tous !"],
+    ["¡Que aproveche!","Bon appétit ! (en passant)","Al entrar: «¡Que aproveche!»","En entrant : « Bon appétit ! »"],
+    ["ir de tapas","aller manger des tapas","Esta noche vamos a ir de tapas.","Ce soir nous allons manger des tapas."],
+    ["¡Menos mal!","Heureusement !","¡Menos mal que tienes paraguas!","Heureusement que tu as un parapluie !"],
+    ["¿Qué tal te va?","Comment ça va pour toi ?","Hola, Carmen, ¿qué tal te va?","Salut Carmen, comment ça va pour toi ?"],
+    ["Cuídate.","Prends soin de toi.","Adiós, cuídate mucho.","Au revoir, prends bien soin de toi."],
+    ["¡Qué pena!","Quel dommage !","¿No puedes venir? ¡Qué pena!","Tu ne peux pas venir ? Quel dommage !"],
+    ["¡Venga!","Allez !","¡Venga, vamos!","Allez, on y va !"],
+    ["¡Ni idea!","Aucune idée !","¿Pepe? ¡Ni idea!","Pepe ? Aucune idée !"],
+    ["¡Qué va!","Pas du tout !","¿Cansada yo? ¡Qué va!","Moi, fatiguée ? Pas du tout !"],
+    ["¡Qué bonito!","Que c'est beau !","¡Qué bonito es este pueblo!","Qu'il est beau ce village !"],
+    ["¡Feliz cumpleaños!","Joyeux anniversaire !","¡Feliz cumpleaños, Lucía!","Joyeux anniversaire, Lucía !"],
+    ["¡Enhorabuena!","Félicitations !","¡Enhorabuena por tu nuevo trabajo!","Félicitations pour ton nouveau travail !"],
+    ["hasta pronto","à bientôt","Un abrazo y hasta pronto.","Je t'embrasse et à bientôt."],
+    ["un abrazo","je t'embrasse (fin de message)","Un abrazo muy fuerte, Snoop.","Je t'embrasse très fort, Snoop."],
+    ["tener prisa","être pressée","Lo siento, voy a tener prisa.","Désolée, je vais être pressée."],
+    ["¡Qué susto!","Quelle peur !","¡Ay, qué susto!","Oh, quelle peur !"]]}
 };
+
+/* ================= CONTENU — Sol y Palabras ================= */
+/* Niveaux : 1 = A1 (bases), 2 = A2 (intermédiaire), 3 = B1 (avancé) */
 
 const LESSONS = [
  {id:"articles",lvl:1,t:"Le, la, les : el, la, los, las",sub:"Genre et articles",html:`
@@ -596,22 +1075,126 @@ const PLACEMENT = [
 
 const TIPS = [["¡Qué calor!","Quelle chaleur !"],["Poco a poco se va lejos.","Petit à petit, on va loin."],["¡Buen provecho!","Bon appétit !"],["Más vale tarde que nunca.","Mieux vaut tard que jamais."],["¡Que te vaya bien!","Bonne continuation !"],["No pasa nada.","Ce n'est pas grave."],["¡Vamos!","Allons-y !"],["A mal tiempo, buena cara.","Faire contre mauvaise fortune bon cœur."],["Quien madruga, Dios le ayuda.","L'avenir appartient à ceux qui se lèvent tôt."],["En boca cerrada no entran moscas.","Le silence est d'or."],["Más vale prevenir que curar.","Mieux vaut prévenir que guérir."]];
 
+/* ================= CONJUGAISON ================= */
+const PERSONS=["yo","tú","él / ella / usted","nosotros","vosotros","ellos / ustedes"];
+const TENSES={
+  pres:{t:"Présent",lvl:1,ex:"Hoy…"},
+  fut:{t:"Futur proche (ir a…)",lvl:2,ex:"Mañana…"},
+  perf:{t:"Passé composé",lvl:2,ex:"Hoy ya…"},
+  indef:{t:"Passé simple (indefinido)",lvl:3,ex:"Ayer…"},
+  imp:{t:"Imparfait",lvl:3,ex:"Antes…"}
+};
+/* [infinitif, français, présent, indefinido, imparfait, participe] — vide = régulier */
+const VERB_LIST=[
+ ["hablar","parler"],["trabajar","travailler"],["viajar","voyager"],["comprar","acheter"],["cocinar","cuisiner"],["bailar","danser"],["llamar","appeler"],["tomar","prendre"],
+ ["comer","manger"],["beber","boire"],["aprender","apprendre"],["vivir","vivre / habiter"],["escribir","écrire",null,null,null,"escrito"],["abrir","ouvrir",null,null,null,"abierto"],
+ ["llegar","arriver",null,"llegué llegaste llegó llegamos llegasteis llegaron"],
+ ["ser","être (identité)","soy eres es somos sois son","fui fuiste fue fuimos fuisteis fueron","era eras era éramos erais eran","sido"],
+ ["estar","être (état, lieu)","estoy estás está estamos estáis están","estuve estuviste estuvo estuvimos estuvisteis estuvieron"],
+ ["tener","avoir","tengo tienes tiene tenemos tenéis tienen","tuve tuviste tuvo tuvimos tuvisteis tuvieron"],
+ ["ir","aller","voy vas va vamos vais van","fui fuiste fue fuimos fuisteis fueron","iba ibas iba íbamos ibais iban","ido"],
+ ["hacer","faire","hago haces hace hacemos hacéis hacen","hice hiciste hizo hicimos hicisteis hicieron",null,"hecho"],
+ ["querer","vouloir","quiero quieres quiere queremos queréis quieren","quise quisiste quiso quisimos quisisteis quisieron"],
+ ["poder","pouvoir","puedo puedes puede podemos podéis pueden","pude pudiste pudo pudimos pudisteis pudieron"],
+ ["decir","dire","digo dices dice decimos decís dicen","dije dijiste dijo dijimos dijisteis dijeron",null,"dicho"],
+ ["ver","voir","veo ves ve vemos veis ven","vi viste vio vimos visteis vieron","veía veías veía veíamos veíais veían","visto"],
+ ["dar","donner","doy das da damos dais dan","di diste dio dimos disteis dieron"],
+ ["saber","savoir","sé sabes sabe sabemos sabéis saben","supe supiste supo supimos supisteis supieron"],
+ ["venir","venir","vengo vienes viene venimos venís vienen","vine viniste vino vinimos vinisteis vinieron"],
+ ["salir","sortir","salgo sales sale salimos salís salen"],
+ ["poner","mettre","pongo pones pone ponemos ponéis ponen","puse pusiste puso pusimos pusisteis pusieron",null,"puesto"],
+ ["volver","revenir","vuelvo vuelves vuelve volvemos volvéis vuelven",null,null,"vuelto"],
+ ["dormir","dormir","duermo duermes duerme dormimos dormís duermen","dormí dormiste durmió dormimos dormisteis durmieron"],
+ ["pedir","demander / commander","pido pides pide pedimos pedís piden","pedí pediste pidió pedimos pedisteis pidieron"],
+ ["conocer","connaître","conozco conoces conoce conocemos conocéis conocen"],
+ ["leer","lire",null,"leí leíste leyó leímos leísteis leyeron",null,"leído"],
+ ["empezar","commencer","empiezo empiezas empieza empezamos empezáis empiezan","empecé empezaste empezó empezamos empezasteis empezaron"],
+ ["jugar","jouer","juego juegas juega jugamos jugáis juegan","jugué jugaste jugó jugamos jugasteis jugaron"]
+];
+const REG={
+  ar:{pres:["o","as","a","amos","áis","an"],indef:["é","aste","ó","amos","asteis","aron"],imp:["aba","abas","aba","ábamos","abais","aban"],pp:"ado"},
+  er:{pres:["o","es","e","emos","éis","en"],indef:["í","iste","ió","imos","isteis","ieron"],imp:["ía","ías","ía","íamos","íais","ían"],pp:"ido"},
+  ir:{pres:["o","es","e","imos","ís","en"],indef:["í","iste","ió","imos","isteis","ieron"],imp:["ía","ías","ía","íamos","íais","ían"],pp:"ido"}
+};
+const HABER=["he","has","ha","hemos","habéis","han"];
+const IR_PRES=["voy","vas","va","vamos","vais","van"];
+const VERBS={};
+VERB_LIST.forEach(([inf,fr,pres,indef,imp,pp])=>{
+  const end=inf.slice(-2),stem=inf.slice(0,-2),R=REG[end];
+  const P=pres?pres.split(" "):R.pres.map(e=>stem+e);
+  const I=indef?indef.split(" "):R.indef.map(e=>stem+e);
+  const M=imp?imp.split(" "):R.imp.map(e=>stem+e);
+  const part=pp||stem+R.pp;
+  VERBS[inf]={inf,fr,pres:P,indef:I,imp:M,perf:HABER.map(h=>h+" "+part),fut:IR_PRES.map(v=>v+" a "+inf)};
+});
+
+/* Leçons supplémentaires */
+LESSONS.push(
+ {id:"gerundio",lvl:2,t:"Estoy comiendo",sub:"Ce qu'on est en train de faire",html:`
+ <p>Pour une action <b>en cours</b>, on utilise <b>estar</b> + gérondif : <i>estoy comiendo</i> = je suis en train de manger.</p>
+ <div class="tbl-wrap"><table><tr><th>infinitif</th><th>gérondif</th></tr>
+ <tr><td>-ar : hablar</td><td class="es">hablando</td></tr>
+ <tr><td>-er : comer</td><td class="es">comiendo</td></tr>
+ <tr><td>-ir : vivir</td><td class="es">viviendo</td></tr></table></div>
+ <div class="note"><b>Irréguliers :</b> leer → <i>leyendo</i>, dormir → <i>durmiendo</i>, pedir → <i>pidiendo</i>, decir → <i>diciendo</i>, ir → <i>yendo</i>.</div>`,
+ q:[["Ahora ___ comiendo. (yo)",["estoy","soy","tengo"],0,"Action en cours : estar + gérondif."],
+    ["Mi marido está ___ la tele. (ver)",["viendo","veiendo","visto"],0,"ver → viendo."],
+    ["Los niños están ___ en el jardín. (jugar)",["jugando","jugiendo","jugado"],0,"-ar → -ando."],
+    ["¿Qué estás ___? (hacer)",["haciendo","hacendo","hecho"],0,"-er → -iendo."],
+    ["Mi nieta está ___ un libro. (leer)",["leyendo","leiendo","leído"],0,"leer → leyendo."],
+    ["El bebé está ___. (dormir)",["durmiendo","dormiendo","dormido"],0,"dormir → durmiendo."]]},
+ {id:"pronombres",lvl:3,t:"Lo, la, los, las",sub:"Remplacer un nom pour ne pas le répéter",html:`
+ <p>Pour ne pas répéter un nom, on le remplace par <b>lo</b> (masculin), <b>la</b> (féminin), <b>los</b>, <b>las</b>. Le pronom se place <b>avant</b> le verbe conjugué.</p>
+ <div class="tbl-wrap"><table><tr><th>question</th><th>réponse</th></tr>
+ <tr><td>¿Compras el pan?</td><td class="es">Sí, lo compro.</td></tr>
+ <tr><td>¿Tienes la llave?</td><td class="es">Sí, la tengo.</td></tr>
+ <tr><td>¿Ves a los niños?</td><td class="es">No, no los veo.</td></tr>
+ <tr><td>¿Quieres las fotos?</td><td class="es">Sí, las quiero.</td></tr></table></div>
+ <div class="note">Avec un infinitif, le pronom peut aussi s'accrocher à la fin : <i>Voy a comprarlo</i> = <i>Lo voy a comprar</i>.</div>`,
+ q:[["¿El billete? ___ tengo aquí.",["Lo","La","Le"],0,"Billete est masculin : lo."],
+    ["¿La llave? No ___ encuentro.",["la","lo","las"],0,"Llave est féminin : la."],
+    ["¿Los tomates? ___ compro en el mercado.",["Los","Las","Les"],0,"Masculin pluriel : los."],
+    ["¿Las fotos? Voy a ___ mañana. (enseñar)",["enseñarlas","enseñarlos","enseñarla"],0,"Fotos est féminin pluriel."],
+    ["¿Conoces a Carmen? Sí, ___ conozco.",["la","lo","los"],0,"Carmen, une femme : la."],
+    ["¿El vino? Mi marido ___ ha comprado.",["lo","la","los"],0,"Vino est masculin : lo."]]},
+ {id:"imperativo",lvl:3,t:"Gire, siga, tome",sub:"Les consignes polies avec usted",html:`
+ <p>Pour donner une consigne polie (avec <b>usted</b>), on part du présent à la 1re personne et on change la voyelle : <b>-ar → -e</b>, <b>-er / -ir → -a</b>.</p>
+ <div class="tbl-wrap"><table><tr><th>infinitif</th><th>yo</th><th>usted</th></tr>
+ <tr><td>tomar</td><td>tomo</td><td class="es">tome</td></tr>
+ <tr><td>beber</td><td>bebo</td><td class="es">beba</td></tr>
+ <tr><td>abrir</td><td>abro</td><td class="es">abra</td></tr>
+ <tr><td>tener</td><td>tengo</td><td class="es">tenga</td></tr>
+ <tr><td>seguir</td><td>sigo</td><td class="es">siga</td></tr></table></div>
+ <div class="note">Vous l'entendrez partout : <i>Siga todo recto</i>, <i>Gire a la derecha</i>, <i>Pase, pase</i> (entrez), <i>Perdone</i>. Irréguliers : ir → <i>vaya</i>, ser → <i>sea</i>.</div>`,
+ q:[["___ a la derecha, por favor. (girar)",["Gire","Gira","Girar"],0,"-ar → -e avec usted."],
+    ["___ una pastilla cada ocho horas. (tomar)",["Tome","Toma","Tomo"],0,"tomar → tome."],
+    ["___ usted, la puerta está abierta. (pasar)",["Pase","Pasa","Paso"],0,"pasar → pase : « entrez »."],
+    ["___ todo recto. (seguir)",["Siga","Sigue","Sega"],0,"seguir → sigo → siga."],
+    ["___ la ventana, por favor. (abrir)",["Abra","Abre","Abro"],0,"-ir → -a."],
+    ["¡___ cuidado! (tener)",["Tenga","Tiene","Tena"],0,"tener → tengo → tenga."]]}
+);
+
 /* ================= ÉTAT ================= */
 const KEY="solypalabras-v1";
 const LVL={1:"A1",2:"A2",3:"B1"};
 const LVLNAME={1:"Bases",2:"Intermédiaire",3:"Avancé"};
-const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
-const addDays=(s,n)=>{const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
-const blank=()=>({cards:{},lessons:{},dialogues:{},days:[],session:null,level:null,placement:null,skipTest:false});
+const pad=n=>String(n).padStart(2,"0");
+const fmt=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const todayStr=()=>fmt(new Date());
+const addDays=(s,n)=>{const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return fmt(d)};
+const blank=()=>({cards:{},lessons:{},dialogues:{},mistakes:{},days:[],session:null,level:null,placement:null,skipTest:false,sessLen:"normal",voiceName:null,rate:0.9});
 let S=blank();
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
+if(!S.mistakes||typeof S.mistakes!=="object")S.mistakes={};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const myLevel=()=>S.level||1;
 
-const allCards=[];for(const k in DECKS)DECKS[k].w.forEach((w,i)=>allCards.push({id:k+":"+i,deck:k,lvl:DECKS[k].lvl,es:w[0],fr:w[1],ex:w[2]}));
-const cardById=id=>allCards.find(c=>c.id===id);
-const isDue=c=>{const s=S.cards[c.id];return s&&s.due<=todayStr()};
+const allCards=[];for(const k in DECKS)DECKS[k].w.forEach((w,i)=>allCards.push({id:k+":"+i,deck:k,lvl:DECKS[k].lvl,es:w[0],fr:w[1],ex:w[2]||"",exFr:w[3]||""}));
+const CARD={};allCards.forEach(c=>CARD[c.id]=c);
+const cardById=id=>CARD[id];
+const isDue=c=>{const s=S.cards[c.id];return !!s&&s.due<=todayStr()};
 const isNew=c=>!S.cards[c.id];
+const isLearned=c=>{const s=S.cards[c.id];return !!s&&s.reps>=2};
 
 function grade(id,g){ // 0 à revoir, 1 difficile, 2 bien, 3 facile
   const s=S.cards[id]||{iv:0,ease:2.5,reps:0};
@@ -626,45 +1209,161 @@ function grade(id,g){ // 0 à revoir, 1 difficile, 2 bien, 3 facile
 function markDay(){const t=todayStr();if(!S.days.includes(t)){S.days.push(t);S.days=S.days.slice(-120)}}
 function streak(){let n=0,d=todayStr();if(!S.days.includes(d))d=addDays(d,-1);while(S.days.includes(d)){n++;d=addDays(d,-1)}return n}
 
-/* Voix espagnole */
+/* ================= VOIX ESPAGNOLE ================= */
 const canSpeak=typeof speechSynthesis!=="undefined"&&typeof SpeechSynthesisUtterance!=="undefined";
-let esVoice=null;
-function pickVoice(){try{const v=speechSynthesis.getVoices();esVoice=v.find(x=>x.lang==="es-ES")||v.find(x=>x.lang&&x.lang.startsWith("es"))||null}catch(e){}}
-if(canSpeak){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}}
-function speak(t,queue){if(!canSpeak)return;try{const u=new SpeechSynthesisUtterance(t.replace(/…/g,""));u.lang="es-ES";if(esVoice)u.voice=esVoice;u.rate=.85;if(!queue)speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+let allVoices=[],esVoices=[],esVoice=null,voicesLoaded=false;
+function rankVoice(v){
+  let s=0;const n=(v.name||"").toLowerCase(),l=(v.lang||"").toLowerCase().replace("_","-");
+  if(l==="es-es")s+=4;else if(l.startsWith("es"))s+=1;
+  if(/natural|neural|online|premium|enhanced|mejorad/.test(n))s+=6;
+  if(/google/.test(n))s+=5;
+  if(/m[oó]nica|jorge|elvira|[aá]lvaro|paulina|lucía|lucia|marisol|helena|laura|pablo/.test(n))s+=2;
+  if(v.localService===false)s+=1;
+  return s;
+}
+function loadVoices(){
+  if(!canSpeak)return;
+  try{allVoices=speechSynthesis.getVoices()||[]}catch(e){allVoices=[]}
+  esVoices=allVoices.filter(v=>(v.lang||"").toLowerCase().replace("_","-").startsWith("es")).sort((a,b)=>rankVoice(b)-rankVoice(a));
+  if(allVoices.length)voicesLoaded=true;
+  esVoice=(S.voiceName&&esVoices.find(v=>v.name===S.voiceName))||esVoices[0]||null;
+}
+const noSpanishVoice=()=>canSpeak&&voicesLoaded&&esVoices.length===0;
+if(canSpeak){loadVoices();try{speechSynthesis.onvoiceschanged=()=>{const before=esVoices.length;loadVoices();if(before!==esVoices.length&&!view&&(tab==="today"||tab==="level"))render()}}catch(e){}}
+function speak(t,queue){
+  if(!canSpeak||!t)return;
+  try{
+    if(!esVoice)loadVoices();
+    const u=new SpeechSynthesisUtterance(String(t).replace(/…/g,"").replace(/—/g,", "));
+    u.lang=esVoice?esVoice.lang:"es-ES";if(esVoice)u.voice=esVoice;u.rate=S.rate||.9;
+    if(!queue)speechSynthesis.cancel();speechSynthesis.speak(u);
+  }catch(e){}
+}
 
-const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[¿?¡!.,;:'"«»]/g,"").replace(/\s+/g," ").trim();
+/* ================= OUTILS ================= */
+const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[¿?¡!.,;:'"«»—…()]/g,"").replace(/\s+/g," ").trim();
+const soft=s=>String(s).toLowerCase().replace(/[¿?¡!.,;:'"«»—…()]/g,"").replace(/\s+/g," ").trim(); // garde les accents
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const $=id=>document.getElementById(id);
 const badge=l=>`<span class="lvl-badge">${LVL[l]}</span>`;
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const stripEnd=s=>String(s).replace(/…/g,"").replace(/^[¿¡]+/,"").replace(/[?!.]+$/,"").trim();
+const ARTS=/^(el|la|los|las|un|una|unos|unas)\s+/i;
+const bareOf=s=>stripEnd(s).replace(ARTS,"");
+const sayBtn=(id,label)=>canSpeak?`<button class="mini" id="${id}" aria-label="Écouter">🔊${label?" "+label:""}</button>`:"";
+
+function findIn(text,term){
+  if(!term)return null;
+  const e=term.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  const m=new RegExp("(^|[^\\p{L}])("+e+")(?![\\p{L}])","iu").exec(text);
+  if(!m)return null;const start=m.index+m[1].length;return {start,end:start+m[2].length,text:m[2]};
+}
+function clozeOf(c){
+  if(!c||!c.ex)return null;const full=stripEnd(c.es);if(!full)return null;
+  let r=findIn(c.ex,full),bare=false;
+  if(!r){const b=bareOf(c.es);if(b&&b!==full){r=findIn(c.ex,b);bare=true}}
+  return r?Object.assign(r,{bare}):null;
+}
+const orderTokens=s=>String(s).replace(/[¿?¡!.,;:«»—]/g," ").split(/\s+/).filter(Boolean);
+const orderOk=s=>!!s&&!/[—«]/.test(s)&&orderTokens(s).length>=3&&orderTokens(s).length<=9;
+
+/* ================= ERREURS ================= */
+function logResult(key,ok){
+  if(key.startsWith("v:"))return;
+  if(!ok)S.mistakes[key]=(S.mistakes[key]||0)+1;
+  else if(S.mistakes[key]!==undefined)delete S.mistakes[key];
+  save();
+}
+const mistakeKeys=()=>Object.keys(S.mistakes).filter(validKey);
+function validKey(k){
+  const [t,...r]=k.split(":");const rest=r.join(":");
+  if(t==="g"){const[lid,qi]=rest.split(":");const L=LESSONS.find(l=>l.id===lid);return !!(L&&L.q[+qi])}
+  if(t==="j"){const[v,te,p]=rest.split("|");return !!(VERBS[v]&&VERBS[v][te]&&VERBS[v][te][+p])}
+  if(t==="t"){return rest.startsWith("e:")?!!CARD[rest.slice(2)]:!!PHRASES[+rest]}
+  if(t==="o"){return rest.startsWith("c:")?!!CARD[rest.slice(2)]:!!PHRASES[+rest.slice(2)]}
+  return !!CARD[rest];
+}
+
+/* ================= GÉNÉRATION D'EXERCICES ================= */
+function practicePool(L){
+  const seen=allCards.filter(c=>!isNew(c));
+  if(seen.length>=20)return seen;
+  const lv=allCards.filter(c=>c.lvl<=L);
+  const ids=new Set(seen.map(c=>c.id));
+  return [...seen,...shuffle(lv).filter(c=>!ids.has(c.id))].slice(0,Math.max(40,seen.length));
+}
+function makeItems(type,n,opt){
+  opt=opt||{};const L=myLevel();if(n<=0)return [];
+  const pool=practicePool(L);
+  switch(type){
+    case "listen":return shuffle(pool).slice(0,n).map(c=>"l:"+c.id);
+    case "cloze":return shuffle(pool.filter(c=>clozeOf(c))).slice(0,n).map(c=>"z:"+c.id);
+    case "write":{const p=allCards.filter(c=>!isNew(c));return shuffle(p.length>=n?p:pool).slice(0,n).map(c=>"w:"+c.id)}
+    case "dictee":return shuffle(pool).slice(0,n).map(c=>(L>=2&&orderOk(c.ex)&&Math.random()<.6?"dx:":"dw:")+c.id);
+    case "order":{
+      const a=pool.filter(c=>orderOk(c.ex)).map(c=>"o:c:"+c.id);
+      const b=PHRASES.map((p,i)=>[p,i]).filter(([p])=>p[4]<=L&&orderOk(p[2])).map(([p,i])=>"o:p:"+i);
+      return shuffle([...shuffle(a).slice(0,Math.ceil(n*.7)),...shuffle(b).slice(0,n)]).slice(0,n);
+    }
+    case "gram":{
+      let ls=LESSONS.filter(l=>S.lessons[l.id]||l.lvl===L);if(!ls.length)ls=LESSONS.filter(l=>l.lvl<=L);
+      return shuffle(ls.flatMap(l=>l.q.map((q,i)=>"g:"+l.id+":"+i))).slice(0,n);
+    }
+    case "conj":{
+      const tenses=opt.tenses&&opt.tenses.length?opt.tenses:Object.keys(TENSES).filter(t=>TENSES[t].lvl<=L);
+      const verbs=Object.keys(VERBS),out=new Set();let guard=0;
+      while(out.size<n&&guard++<500){
+        const t=tenses[Math.floor(Math.random()*tenses.length)],v=verbs[Math.floor(Math.random()*verbs.length)],p=Math.floor(Math.random()*6);
+        if(p===4&&Math.random()<.6)continue; // vosotros un peu moins souvent
+        out.add("j:"+v+"|"+t+"|"+p);
+      }
+      return [...out];
+    }
+    case "trad":{
+      const ph=PHRASES.map((p,i)=>[p,i]).filter(([p])=>p[4]<=L).map(([p,i])=>"t:"+i);
+      const seen=allCards.filter(c=>!isNew(c)&&c.ex&&c.exFr&&!/[—«]/.test(c.ex)).map(c=>"t:e:"+c.id);
+      const nEx=seen.length>=8?Math.floor(n/3):0;
+      return shuffle([...shuffle(ph).slice(0,n-nEx),...shuffle(seen).slice(0,nEx)]);
+    }
+    case "review":return shuffle(mistakeKeys()).slice(0,n);
+  }
+  return [];
+}
+const STEP_LABEL={vocab:"Vocabulaire",review:"Revoir mes erreurs",listen:"Écoute",cloze:"Phrases à trous",order:"Remettre dans l'ordre",gram:"Grammaire",conj:"Conjugaison",trad:"Traduction",write:"Écrire les mots",dictee:"Dictée"};
+const SIZES={
+  court:{t:"Courte",d:"≈ 10 min",steps:{vocab:8,review:2,listen:2,cloze:3,order:2,gram:3,conj:3,trad:2}},
+  normal:{t:"Normale",d:"≈ 20 min",steps:{vocab:12,review:4,listen:3,cloze:4,order:3,gram:4,conj:5,trad:3,write:3}},
+  long:{t:"Longue",d:"≈ 30 min",steps:{vocab:18,review:6,listen:4,cloze:6,order:4,gram:5,conj:8,trad:4,write:5,dictee:4}}
+};
 
 /* ================= SÉANCE DU JOUR ================= */
-function levelOrder(items,get){const L=myLevel();return items.slice().sort((a,b)=>{const da=Math.abs(get(a)-L)+(get(a)>L?.5:0),db=Math.abs(get(b)-L)+(get(b)>L?.5:0);return da-db})}
 function buildSession(){
-  const L=myLevel();
-  const due=shuffle(allCards.filter(isDue)).slice(0,10);
-  const freshPool=levelOrder(allCards.filter(c=>isNew(c)&&c.lvl<=Math.min(3,L+1)),c=>c.lvl);
-  const fresh=freshPool.slice(0,Math.max(4,10-due.length));
-  const vocab=[...due,...fresh].slice(0,12).map(c=>c.id);
-  const known=allCards.filter(c=>!isNew(c)&&c.lvl<=L);
-  const listenPool=(known.length>=6?known:allCards.filter(c=>c.lvl<=L));
-  const listen=shuffle(listenPool).slice(0,4).map(c=>c.id);
-  const lessonPool=LESSONS.filter(l=>S.lessons[l.id]||l.lvl===L);
-  const gram=shuffle(lessonPool.flatMap(l=>l.q.map((q,i)=>l.id+":"+i))).slice(0,4);
-  const tradPool=PHRASES.map((p,i)=>({p,i})).filter(o=>o.p[4]<=L);
-  const trad=shuffle(tradPool).slice(0,3).map(o=>o.i);
-  return {date:todayStr(),steps:[{k:"vocab",items:vocab},{k:"listen",items:listen},{k:"gram",items:gram},{k:"trad",items:trad}],step:0,idx:0,score:0,total:0,done:false};
+  const L=myLevel(),sz=SIZES[S.sessLen]||SIZES.normal,steps=[];
+  for(const k in sz.steps){
+    const n=sz.steps[k];let items;
+    if(k==="vocab"){
+      const due=shuffle(allCards.filter(isDue)).slice(0,Math.ceil(n*.7));
+      const order=c=>Math.abs(c.lvl-L)+(c.lvl>L?.5:0);
+      const fresh=allCards.filter(c=>isNew(c)&&c.lvl<=Math.min(3,L+1)).sort((a,b)=>order(a)-order(b));
+      items=[...due,...fresh.slice(0,Math.max(4,n-due.length))].slice(0,n).map(c=>"v:"+c.id);
+    } else items=makeItems(k,n);
+    if(items.length)steps.push({k,items});
+  }
+  return {date:todayStr(),len:S.sessLen,steps,step:0,idx:0,score:0,total:0,done:false,v:3};
 }
-function getSession(){if(!S.session||S.session.date!==todayStr()||!S.session.steps||S.session.steps.length!==4){S.session=buildSession();save()}return S.session}
+function getSession(){if(!S.session||S.session.date!==todayStr()||S.session.v!==3){S.session=buildSession();save()}return S.session}
 
 /* ================= RENDU ================= */
 const app=$("app");
 let tab="today",view=null;
-const TABS=["today","vocab","gram","trad","dial","level"];
-document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;view=null;render();try{history.replaceState(null,"","#"+tab)}catch(e){}});
+const TABS=["today","vocab","train","gram","trad","dial","level"];
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{try{speechSynthesis.cancel()}catch(e){}tab=b.dataset.tab;view=null;render();try{history.replaceState(null,"","#"+tab)}catch(e){}});
 const h0=(location.hash||"").slice(1);if(TABS.includes(h0))tab=h0;
-let keyHandler=null;document.addEventListener("keydown",e=>{if(keyHandler&&e.target.tagName!=="INPUT"&&e.target.tagName!=="TEXTAREA")keyHandler(e)});
+let keyHandler=null;document.addEventListener("keydown",e=>{if(keyHandler&&e.target.tagName!=="INPUT"&&e.target.tagName!=="TEXTAREA"&&e.target.tagName!=="SELECT")keyHandler(e)});
+let quitAction=null;
+function bindQuit(){const q=$("quit");if(q&&quitAction)q.onclick=quitAction}
+function paint(html){app.innerHTML=html;bindQuit()}
 
 function render(){
   keyHandler=null;
@@ -672,77 +1371,115 @@ function render(){
   $("streakN").textContent=streak();
   const h=new Date().getHours();$("greet").textContent=(h<13?"¡Buenos días!":h<20?"¡Buenas tardes!":"¡Buenas noches!")+" Un poco d'espagnol chaque jour.";
   if(view){view();return}
-  ({today:renderToday,vocab:renderVocab,gram:renderGram,trad:renderTrad,dial:renderDial,level:renderLevel})[tab]();
+  ({today:renderToday,vocab:renderVocab,train:renderTrain,gram:renderGram,trad:renderTrad,dial:renderDial,level:renderLevel})[tab]();
   window.scrollTo({top:0});
 }
-/* le bouton retour est reconstruit quand la carte se retourne : on mémorise son action */
-let quitAction=null;
-function bindQuit(){const q=$("quit");if(q&&quitAction)q.onclick=quitAction}
+const voiceWarn=()=>noSpanishVoice()?`<div class="note warn"><b>La voix espagnole n'est pas installée sur cet ordinateur.</b> La prononciation risque d'avoir un accent français. <button class="linkish" id="voiceHelp">Voir comment régler ça</button></div>`:"";
+function bindVoiceHelp(){const b=$("voiceHelp");if(b)b.onclick=()=>{tab="level";view=null;render();setTimeout(()=>{const v=$("voix");if(v)v.scrollIntoView({behavior:"smooth"})},50)}}
 
+/* --- Aujourd'hui --- */
 function renderToday(){
-  const s=getSession();const learned=Object.values(S.cards).filter(c=>c.reps>=2).length;
-  const names=["Vocabulaire","Écoute","Grammaire","Phrases à traduire"],sub=["flashcards","mots entendus","questions","phrases"];
-  const plan=s.steps.map((st,i)=>`<li class="${(s.done||i<s.step)?"done":""}"><span class="n">${st.items.length}</span>${names[i]} <span class="hint">· ${sub[i]}</span></li>`).join("");
+  const s=getSession();const learned=allCards.filter(isLearned).length;
+  const started=s.step>0||s.idx>0;
+  const plan=s.steps.map((st,i)=>`<li class="${(s.done||i<s.step)?"done":""}"><span class="n">${st.items.length}</span>${STEP_LABEL[st.k]}</li>`).join("");
   const days=[];for(let i=6;i>=0;i--){const d=addDays(todayStr(),-i);const lbl=new Date(d+"T12:00").toLocaleDateString("fr-FR",{weekday:"short"}).slice(0,3);days.push(`<div><i class="${S.days.includes(d)?"on":""}"></i>${lbl}</div>`)}
   const tip=TIPS[new Date().getDate()%TIPS.length];
-  const dueN=allCards.filter(isDue).length;
+  const dueN=allCards.filter(isDue).length,errN=mistakeKeys().length;
   const welcome=(!S.level&&!S.skipTest)?`<section class="welcome">
      <svg class="big-sun" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="22"/><path d="M50 8v12M50 80v12M8 50h12M80 50h12M20 20l9 9M71 71l9 9M80 20l-9 9M29 71l-9 9" stroke="#F2A81D" stroke-width="6" stroke-linecap="round"/></svg>
      <div><h2>¡Bienvenida!</h2><p>Pour commencer, un petit test de niveau : 24 questions, environ 5 minutes. Les séances seront ensuite adaptées à ce que tu sais déjà.</p>
      <div class="row"><button class="btn sun-btn" id="startTest">Faire le test de niveau</button><button class="btn ghost" id="skipTest">Plus tard</button></div></div></section>`:"";
-  app.innerHTML=welcome+`<div class="today">
+  const lenChips=!started&&!s.done?`<div class="filter" style="margin:14px 0 0">${Object.entries(SIZES).map(([k,v])=>`<button aria-pressed="${S.sessLen===k}" data-len="${k}">${v.t} · ${v.d}</button>`).join("")}</div>`:"";
+  paint(welcome+voiceWarn()+`<div class="today">
    <section class="panel hero-panel">
      <div class="eyebrow">${new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})}</div>
      <h2>${s.done?"¡Muy bien! Séance terminée":"Ta séance du jour"}</h2>
-     <p class="lead" style="margin:0">${s.done?`Score aux exercices : ${s.score} / ${s.total}. Reviens demain pour la suivante, ou continue librement dans les onglets.`:`Environ 15 minutes, au niveau ${badge(myLevel())}. On mélange révision et nouveautés.`}</p>
+     <p class="lead" style="margin:0">${s.done?`Score aux exercices : ${s.score} / ${s.total}. Tu peux en refaire une, ou t'entraîner librement dans « S'entraîner ».`:`Niveau ${badge(myLevel())} · révision, nouveaux mots et exercices variés.`}</p>
+     ${lenChips}
      <ul class="plan">${plan}</ul>
-     <div class="row">${s.done?`<button class="btn ghost" id="again">Refaire une séance</button>`:`<button class="btn sun-btn" id="go">${s.step||s.idx?"Reprendre":"¡Empezamos!"}</button>`}</div>
+     <div class="row">${s.done?`<button class="btn sun-btn" id="again">Refaire une séance</button>`:`<button class="btn sun-btn" id="go">${started?"Reprendre":"¡Empezamos!"}</button>`}</div>
    </section>
    <section class="panel">
      <div class="stats">
        <div class="stat"><b>${learned}</b><span>mots bien retenus</span></div>
        <div class="stat"><b>${dueN}</b><span>mots à revoir</span></div>
-       <div class="stat"><b>${Object.keys(S.lessons).length}/${LESSONS.length}</b><span>leçons suivies</span></div>
+       <div class="stat"><b>${errN}</b><span>erreurs à retravailler</span></div>
        <div class="stat"><b>${S.level?LVL[S.level]:"?"}</b><span>${S.level?"ton niveau de travail":"niveau pas encore testé"}</span></div>
      </div>
      <div class="week">${days.join("")}</div>
-     <div class="tip"><div class="eyebrow">L'expression du jour</div><div class="es">${tip[0]} <button class="mini" id="tipSay" aria-label="Écouter">🔊</button></div><div class="hint">${tip[1]}</div></div>
-   </section></div>`;
+     <div class="tip"><div class="eyebrow">L'expression du jour</div><div class="es">${tip[0]} ${sayBtn("tipSay")}</div><div class="hint">${tip[1]}</div></div>
+   </section></div>`);
   const go=$("go");if(go)go.onclick=()=>{view=sessionView;render()};
   const ag=$("again");if(ag)ag.onclick=()=>{S.session=buildSession();save();view=sessionView;render()};
+  document.querySelectorAll("[data-len]").forEach(b=>b.onclick=()=>{S.sessLen=b.dataset.len;S.session=buildSession();save();render()});
   const st=$("startTest");if(st)st.onclick=startPlacement;
   const sk=$("skipTest");if(sk)sk.onclick=()=>{S.skipTest=true;save();render()};
-  $("tipSay").onclick=()=>speak(tip[0]);
+  const ts=$("tipSay");if(ts)ts.onclick=()=>speak(tip[0]);
+  bindVoiceHelp();
 }
 
 function sessionView(){
   const s=getSession();
   if(s.step>=s.steps.length){s.done=true;markDay();save();
-    app.innerHTML=`<div class="stage"><div class="card done-box"><div class="big">¡Enhorabuena!</div><p>Séance terminée. Score aux exercices : <b>${s.score} / ${s.total}</b>.</p><p class="hint">À demain pour la suite. Hasta mañana.</p><div class="row" style="justify-content:center"><button class="btn" id="home">Retour à l'accueil</button></div></div></div>`;
+    paint(`<div class="stage"><div class="card done-box"><div class="big">¡Enhorabuena!</div><p>Séance terminée. Score aux exercices : <b>${s.score} / ${s.total}</b>.</p><p class="hint">${mistakeKeys().length?`Tes erreurs sont gardées : elles reviendront dans les prochaines séances.`:"Aucune erreur en attente. ¡Perfecto!"}</p><div class="row" style="justify-content:center"><button class="btn" id="home">Retour à l'accueil</button></div></div></div>`);
     $("home").onclick=()=>{view=null;tab="today";render()};return}
   const st=s.steps[s.step];
-  if(!st.items.length){s.step++;s.idx=0;save();render();return}
-  const next=(ok)=>{if(ok!==undefined&&st.k!=="vocab"){s.total++;if(ok)s.score++}s.idx++;if(s.idx>=st.items.length){s.step++;s.idx=0}save();render()};
-  const lbl=["Vocabulaire","Écoute","Grammaire","Traduction"][s.step];
-  const top=`<button class="back" id="quit">← Pause</button><div class="progress"><span>Étape ${s.step+1} sur 4 · ${lbl}</span><span>${s.idx+1} / ${st.items.length}</span></div>`;
-  const id=st.items[s.idx];
-  quitAction=()=>{view=null;render()};
-  if(st.k==="vocab")flashcard(cardById(id),top,()=>next());
-  else if(st.k==="listen")listenItem(cardById(id),top,next);
-  else if(st.k==="gram"){const[lid,qi]=id.split(":");const L=LESSONS.find(l=>l.id===lid);if(!L){next();return}quizItem(L.q[+qi],top,next)}
-  else transItem(PHRASES[id],top,next);
-  $("quit").onclick=()=>{view=null;render()};
+  const key=st.items[s.idx];
+  if(!key||!validKey(key)){s.idx++;if(s.idx>=st.items.length){s.step++;s.idx=0}save();render();return}
+  const next=ok=>{if(ok!==undefined&&st.k!=="vocab"){s.total++;if(ok)s.score++}s.idx++;if(s.idx>=st.items.length){s.step++;s.idx=0}save();render()};
+  const top=`<button class="back" id="quit">← Pause</button><div class="progress"><span>Étape ${s.step+1} sur ${s.steps.length} · ${STEP_LABEL[st.k]}</span><span>${s.idx+1} / ${st.items.length}</span></div>`;
+  quitAction=()=>{try{speechSynthesis.cancel()}catch(e){}view=null;render()};
+  runItem(key,top,next);
 }
+
+/* --- Lanceur générique --- */
+function runItem(key,top,done){
+  const fin=ok=>{logResult(key,ok);done(ok)};
+  const [t,...r]=key.split(":");const rest=r.join(":");
+  switch(t){
+    case "v":return flashcard(CARD[rest],top,()=>done());
+    case "l":return listenItem(CARD[rest],top,fin);
+    case "z":return clozeItem(CARD[rest],top,fin);
+    case "w":return writeItem(CARD[rest],top,fin);
+    case "dw":return dicteeItem(CARD[rest],false,top,fin);
+    case "dx":return dicteeItem(CARD[rest],true,top,fin);
+    case "o":{const src=rest.startsWith("c:")?{es:CARD[rest.slice(2)].ex,fr:CARD[rest.slice(2)].exFr}:{es:PHRASES[+rest.slice(2)][2],fr:PHRASES[+rest.slice(2)][0]};return orderItem(src,top,fin)}
+    case "g":{const[lid,qi]=rest.split(":");const L=LESSONS.find(l=>l.id===lid);return quizItem(L.q[+qi],top,fin,{shuffle:true,eyebrow:"Grammaire · "+L.t})}
+    case "j":{const[v,te,p]=rest.split("|");return conjItem(v,te,+p,top,fin)}
+    case "t":{if(rest.startsWith("e:")){const c=CARD[rest.slice(2)];return transItem([c.exFr,[c.ex],c.ex],top,fin)}return transItem(PHRASES[+rest],top,fin)}
+  }
+  done();
+}
+function runList(keys,o){
+  o=o||{};let i=0,sc=0,tot=0;
+  const step=()=>{
+    if(i>=keys.length){
+      if(o.onEnd)o.onEnd(sc,tot);
+      paint(`<div class="stage"><div class="card done-box"><div class="big">${tot?sc+" / "+tot:"¡Hecho!"}</div><p>${tot?(sc>=tot-1?"¡Excelente! Très bon travail.":sc>=tot/2?"¡Bien! Continue comme ça, ça rentre.":"Ce n'est pas grave : tes erreurs sont gardées et reviendront pour que tu les retravailles."):`${keys.length} cartes travaillées.`}</p><div class="row" style="justify-content:center">${o.again?`<button class="btn ghost" id="re">Encore une série</button>`:""}<button class="btn" id="bk">${esc(o.backLabel||"Retour")}</button></div></div></div>`);
+      $("bk").onclick=()=>{view=null;render()};const re=$("re");if(re)re.onclick=o.again;$("streakN").textContent=streak();return}
+    quitAction=()=>{try{speechSynthesis.cancel()}catch(e){}view=null;render()};
+    const top=`<button class="back" id="quit">← ${esc(o.backLabel||"Retour")}</button><div class="progress"><span>${esc(o.title||"")}</span><span>${i+1} / ${keys.length}</span></div>`;
+    if(!validKey(keys[i])){i++;step();return}
+    runItem(keys[i],top,ok=>{if(ok!==undefined){tot++;if(ok)sc++}i++;step()});
+  };
+  view=step;render();
+}
+const nextRow=extra=>`<div class="row" style="margin-top:14px"><button class="btn" id="nx">Continuer</button>${extra||""}</div>`;
+function armNext(cb){const nx=$("nx");nx.focus();nx.onclick=cb;keyHandler=e=>{if(e.key==="Enter"){e.preventDefault();cb()}}}
 
 /* --- Flashcard --- */
 function flashcard(c,top,onDone){
   if(!c){onDone();return}
   let shown=false;const fresh=isNew(c);
+  const reverse=!fresh&&S.cards[c.id].reps>=2&&Math.random()<.4;
   const draw=()=>{
-    app.innerHTML=`<div class="stage">${top}
-     <div class="card">${canSpeak?`<button class="say" id="say" aria-label="Écouter la prononciation">🔊 Écouter</button>`:""}
-       <div class="side">${fresh?"Nouveau mot · ":""}Espagnol</div><div class="word">${esc(c.es)}</div>
-       ${shown?`<div class="ans">${esc(c.fr)}</div>${c.ex?`<div class="ex">${esc(c.ex)}</div>`:""}`:""}
+    const front=reverse?`<div class="side">Comment dit-on en espagnol ?</div><div class="word">${esc(c.fr)}</div>`
+                       :`<div class="side">${fresh?"Nouveau mot · ":""}Espagnol</div><div class="word">${esc(c.es)}</div>`;
+    const back=reverse?`<div class="ans">${esc(c.es)}</div>`:`<div class="ans">${esc(c.fr)}</div>`;
+    paint(`<div class="stage">${top}
+     <div class="card">${(!reverse||shown)&&canSpeak?`<button class="say" id="say" aria-label="Écouter le mot">🔊 Mot</button>`:""}
+       ${front}
+       ${shown?back+(c.ex?`<div class="example"><div class="ex-es">${esc(c.ex)} ${sayBtn("sayEx")}</div><div class="ex-fr">${esc(c.exFr)}</div></div>`:""):""}
      </div>
      ${shown?`<div class="grades">
         <button class="g0" data-g="0">À revoir<small>demain</small></button>
@@ -751,14 +1488,15 @@ function flashcard(c,top,onDone){
         <button class="g3" data-g="3">Facile<small>beaucoup plus tard</small></button></div>
         <div class="keys">Raccourcis : <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd></div>`
       :`<div class="row" style="justify-content:center;margin-top:16px"><button class="btn" id="flip">Voir la réponse</button></div><div class="keys">ou appuie sur <kbd>Espace</kbd></div>`}
-    </div>`;
-    const sy=$("say");if(sy)sy.onclick=()=>speak(c.es+(shown&&c.ex?". "+c.ex:""));
-    const fl=$("flip");if(fl)fl.onclick=()=>{shown=true;draw();speak(c.es)};
+    </div>`);
+    const sy=$("say");if(sy)sy.onclick=()=>speak(c.es);
+    const se=$("sayEx");if(se)se.onclick=()=>speak(c.ex);
+    const fl=$("flip");if(fl)fl.onclick=flip;
     document.querySelectorAll(".grades button").forEach(b=>b.onclick=()=>{grade(c.id,+b.dataset.g);onDone()});
-    bindQuit();
   };
-  keyHandler=e=>{if(!shown&&(e.code==="Space"||e.key==="Enter")){e.preventDefault();shown=true;draw();speak(c.es)}else if(shown&&["1","2","3","4"].includes(e.key)){grade(c.id,+e.key-1);onDone()}};
-  draw();
+  const flip=()=>{shown=true;draw();speak(c.es)};
+  keyHandler=e=>{if(!shown&&(e.code==="Space"||e.key==="Enter")){e.preventDefault();flip()}else if(shown&&["1","2","3","4"].includes(e.key)){grade(c.id,+e.key-1);onDone()}};
+  draw();if(fresh)speak(c.es);
 }
 
 /* --- Écoute --- */
@@ -766,21 +1504,137 @@ function listenItem(c,top,onDone){
   if(!c){onDone();return}
   const pool=shuffle(allCards.filter(x=>x.id!==c.id&&x.fr!==c.fr&&Math.abs(x.lvl-c.lvl)<=1)).slice(0,3);
   const opts=shuffle([c,...pool]);
-  app.innerHTML=`<div class="stage">${top}<div class="panel listen-card">
+  paint(`<div class="stage">${top}<div class="panel listen-card">
     <div class="eyebrow">Écoute et choisis le sens</div>
     ${canSpeak?`<button class="listen-big" id="play" aria-label="Réécouter">🔊</button><div class="hint">Clique sur le soleil pour réécouter</div>`:`<p class="hint">La voix n'est pas disponible sur ce navigateur : lis le mot.</p>`}
     <div class="shown-word" id="sw">${canSpeak?"":esc(c.es)}</div>
     <div class="choices" style="text-align:left;margin-top:14px">${opts.map((o,i)=>`<button class="choice" data-i="${i}">${esc(o.fr)}</button>`).join("")}</div>
-    <div id="fb"></div></div></div>`;
+    <div id="fb"></div></div></div>`);
   if(canSpeak){$("play").onclick=()=>speak(c.es);speak(c.es)}
   let answered=false;
   const pick=i=>{if(answered)return;answered=true;const ok=opts[i].id===c.id;
     document.querySelectorAll(".choice").forEach((b,j)=>{b.disabled=true;if(opts[j].id===c.id)b.classList.add("right");else if(j===i)b.classList.add("wrong")});
     $("sw").textContent=c.es;
-    $("fb").innerHTML=`<div class="feedback ${ok?"ok":"ko"}" style="text-align:left"><b>${ok?"¡Muy bien!":"Pas tout à fait."}</b> « ${esc(c.es)} » veut dire « ${esc(c.fr)} ».</div><div class="row" style="margin-top:14px"><button class="btn" id="nx">Continuer</button></div>`;
-    markDay();save();const nx=$("nx");nx.focus();nx.onclick=()=>onDone(ok)};
+    $("fb").innerHTML=`<div class="feedback ${ok?"ok":"ko"}" style="text-align:left"><b>${ok?"¡Muy bien!":"Pas tout à fait."}</b> « ${esc(c.es)} » veut dire « ${esc(c.fr)} ».${c.ex?`<div class="ex-line">${esc(c.ex)} <span class="hint">· ${esc(c.exFr)}</span></div>`:""}</div>`+nextRow();
+    markDay();save();armNext(()=>onDone(ok))};
   document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>pick(+b.dataset.i));
   keyHandler=e=>{const n=+e.key;if(n>=1&&n<=opts.length)pick(n-1)};
+}
+
+/* --- Phrase à trous --- */
+function clozeItem(c,top,onDone){
+  const cz=clozeOf(c);if(!cz){onDone();return}
+  const formOf=x=>cz.bare?bareOf(x.es):stripEnd(x.es);
+  const answer=cz.text;
+  const seenF=new Set([norm(answer)]);
+  const cands=shuffle(allCards.filter(x=>x.deck===c.deck&&x.id!==c.id)).concat(shuffle(allCards.filter(x=>x.lvl===c.lvl&&x.deck!==c.deck)));
+  const dis=[];for(const x of cands){const f=formOf(x);if(!f||seenF.has(norm(f))||/[¿?¡!]/.test(f))continue;seenF.add(norm(f));dis.push(f);if(dis.length===3)break}
+  const fix=s=>cz.start===0?cap(s):s.toLowerCase()===s?s:s;
+  const opts=shuffle([answer,...dis.map(fix)]);
+  const before=c.ex.slice(0,cz.start),after=c.ex.slice(cz.end);
+  paint(`<div class="stage">${top}<div class="panel">
+    <div class="eyebrow">Complète la phrase</div>
+    <p class="q cloze">${esc(before)}<span class="gap" id="gap">______</span>${esc(after)}</p>
+    <p class="hint" style="margin:-6px 0 16px">${esc(c.exFr)}</p>
+    <div class="choices">${opts.map((o,i)=>`<button class="choice" data-i="${i}">${esc(o)}</button>`).join("")}</div>
+    <div id="fb"></div></div></div>`);
+  let answered=false;
+  const pick=i=>{if(answered)return;answered=true;const ok=norm(opts[i])===norm(answer);
+    document.querySelectorAll(".choice").forEach((b,j)=>{b.disabled=true;if(norm(opts[j])===norm(answer))b.classList.add("right");else if(j===i)b.classList.add("wrong")});
+    const g=$("gap");g.textContent=answer;g.classList.add("filled");
+    $("fb").innerHTML=`<div class="feedback ${ok?"ok":"ko"}"><b>${ok?"¡Correcto!":"Pas tout à fait."}</b> « ${esc(c.es)} » = ${esc(c.fr)}. ${sayBtn("sp")}</div>`+nextRow();
+    const sp=$("sp");if(sp)sp.onclick=()=>speak(c.ex);speak(c.ex);
+    markDay();save();armNext(()=>onDone(ok))};
+  document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+  keyHandler=e=>{const n=+e.key;if(n>=1&&n<=opts.length)pick(n-1)};
+}
+
+/* --- Remettre dans l'ordre --- */
+function orderItem(src,top,onDone){
+  const toks=orderTokens(src.es);if(toks.length<2){onDone();return}
+  let bank=shuffle(toks.map((t,i)=>({t,i})));
+  if(bank.every((b,k)=>b.i===k))bank=bank.slice(1).concat(bank[0]);
+  let picked=[];let done=false;
+  const draw=()=>{
+    paint(`<div class="stage">${top}<div class="panel">
+      <div class="eyebrow">Remets les mots dans l'ordre</div>
+      <div class="fr" style="font-size:1.4rem">${esc(src.fr)}</div>
+      <div class="order-ans" id="ans">${picked.length?picked.map((b,k)=>`<button class="tok on" data-k="${k}" ${done?"disabled":""}>${esc(b.t)}</button>`).join(""):`<span class="hint">Clique sur les mots ci-dessous dans le bon ordre</span>`}</div>
+      <div class="order-bank">${bank.map((b,k)=>`<button class="tok" data-b="${k}" ${done?"disabled":""}>${esc(b.t)}</button>`).join("")}</div>
+      ${done?"":`<div class="row" style="margin-top:16px"><button class="btn" id="chk" ${bank.length?"disabled":""}>Vérifier</button><button class="btn ghost" id="clr">Recommencer</button><button class="btn ghost" id="giveup">Voir la réponse</button></div>`}
+      <div id="fb"></div></div></div>`);
+    document.querySelectorAll("[data-b]").forEach(el=>el.onclick=()=>{picked.push(bank.splice(+el.dataset.b,1)[0]);draw()});
+    document.querySelectorAll("[data-k]").forEach(el=>el.onclick=()=>{bank.push(picked.splice(+el.dataset.k,1)[0]);draw()});
+    if(!done){
+      $("clr").onclick=()=>{bank=bank.concat(picked);picked=[];draw()};
+      $("chk").onclick=()=>check(false);
+      $("giveup").onclick=()=>check(true);
+    }
+  };
+  const check=give=>{
+    const ok=!give&&picked.map(b=>norm(b.t)).join(" ")===toks.map(norm).join(" ");
+    done=true;draw();
+    $("fb").innerHTML=`<div class="feedback ${ok?"ok":"ko"}"><b>${ok?"¡Perfecto!":"La bonne phrase :"}</b><br><span style="font-size:1.15rem">${esc(src.es)}</span> ${sayBtn("sp")}</div>`+nextRow();
+    const sp=$("sp");if(sp)sp.onclick=()=>speak(src.es);speak(src.es);
+    markDay();save();armNext(()=>onDone(ok));
+  };
+  draw();
+}
+
+/* --- Saisie (dictée, écrire, conjugaison) --- */
+const ACCENTS=["á","é","í","ó","ú","ñ","ü","¿","¡"];
+function inputBlock(){return `<input type="text" id="tin" autocomplete="off" spellcheck="false" lang="es" autocapitalize="off">
+   <div class="accents">${ACCENTS.map(a=>`<button data-a="${a}" type="button" aria-label="Insérer ${a}">${a}</button>`).join("")}</div>`}
+function bindAccents(){const inp=$("tin");document.querySelectorAll(".accents button").forEach(b=>b.onclick=()=>{const st=inp.selectionStart,en=inp.selectionEnd;inp.value=inp.value.slice(0,st)+b.dataset.a+inp.value.slice(en);inp.focus();inp.selectionStart=inp.selectionEnd=st+1})}
+/* compare : renvoie "exact" | "accent" | "" */
+function compare(given,targets){
+  for(const t of targets){if(soft(given)===soft(t))return "exact"}
+  for(const t of targets){if(norm(given)===norm(t))return "accent"}
+  return "";
+}
+function typedItem(o,onDone){
+  // o: {top, eyebrow, prompt(html), targets[], show(texte correct), speakText, extraHtml(fn ok)->html, label}
+  paint(`<div class="stage">${o.top}<div class="panel">
+    <div class="eyebrow">${o.eyebrow}</div>${o.prompt}
+    ${inputBlock()}
+    <div class="row"><button class="btn" id="chk">Vérifier</button><button class="btn ghost" id="skip">Voir la réponse</button></div>
+    <div id="fb"></div></div></div>`);
+  const inp=$("tin");inp.focus();bindAccents();if(o.after)o.after();
+  let done=false;
+  const show=(given)=>{if(done)return;done=true;inp.disabled=true;$("chk").disabled=true;$("skip").disabled=true;
+    const res=given?compare(inp.value,o.targets):"";const ok=!!res;
+    $("fb").innerHTML=`<div class="feedback ${ok?"ok":"ko"}"><b>${res==="exact"?"¡Perfecto!":res==="accent"?"Juste ! Attention aux accents :":given?"Pas tout à fait. La réponse :":"La réponse :"}</b><br><span style="font-size:1.2rem">${esc(o.show)}</span> ${o.speakText?sayBtn("sp"):""}${o.note?`<div class="hint" style="margin-top:6px">${o.note}</div>`:""}</div>${o.extra?o.extra():""}`+nextRow(!ok&&given&&o.allowOverride?`<button class="btn ghost" id="mine">J'avais bon (autre formulation)</button>`:"");
+    let final=ok;const sp=$("sp");if(sp)sp.onclick=()=>speak(o.speakText);if(o.speakText)speak(o.speakText);
+    const m=$("mine");if(m)m.onclick=()=>{final=true;m.textContent="Compté comme juste ✓";m.disabled=true};
+    markDay();save();armNext(()=>onDone(final))};
+  $("chk").onclick=()=>{if(!norm(inp.value)){inp.focus();return}show(true)};
+  $("skip").onclick=()=>show(false);
+  inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();if(!done)$("chk").click();else $("nx").click()}};
+}
+function writeItem(c,top,onDone){
+  if(!c){onDone();return}
+  const full=stripEnd(c.es),bare=bareOf(c.es);
+  typedItem({top,eyebrow:"Écris le mot en espagnol",prompt:`<div class="fr">${esc(c.fr)}</div><label for="tin" class="hint">${full!==bare?"Avec l'article (el, la…) si possible":"Ta réponse"}</label>`,
+    targets:[full,bare],show:c.es,speakText:c.es,note:c.ex?`${esc(c.ex)} · ${esc(c.exFr)}`:""},onDone);
+}
+function dicteeItem(c,sentence,top,onDone){
+  if(!c){onDone();return}
+  const text=sentence?c.ex:c.es;const target=sentence?c.ex:stripEnd(c.es);
+  typedItem({top,eyebrow:sentence?"Dictée · écris la phrase entendue":"Dictée · écris le mot entendu",
+    prompt:`${canSpeak?`<button class="listen-big" id="play" aria-label="Réécouter">🔊</button>`:`<p class="hint">La voix n'est pas disponible : voici le texte à recopier.</p><div class="fr">${esc(text)}</div>`}<label for="tin" class="hint">Ce que tu entends (la ponctuation ne compte pas)</label>`,
+    targets:[target],show:text,speakText:null,note:esc(sentence?c.exFr:c.fr),
+    after:()=>{const p=$("play");if(p){p.onclick=()=>speak(text);speak(text)}}},onDone);
+}
+function conjTable(v,te,hi){
+  const V=VERBS[v];
+  return `<div class="tbl-wrap"><table class="conj"><tr><th colspan="2">${esc(v)} · ${TENSES[te].t}</th></tr>${PERSONS.map((p,i)=>`<tr class="${i===hi?"hl":""}"><td>${p}</td><td class="es">${esc(V[te][i])}</td></tr>`).join("")}</table></div>`;
+}
+function conjItem(v,te,p,top,onDone){
+  const V=VERBS[v];if(!V){onDone();return}
+  const ans=V[te][p];
+  typedItem({top,eyebrow:"Conjugaison · "+TENSES[te].t,
+    prompt:`<div class="conj-q"><span class="pron">${PERSONS[p]}</span><span class="verb">${esc(v)}</span><span class="hint">(${esc(V.fr)})</span></div><label for="tin" class="hint">${TENSES[te].ex} ${PERSONS[p].split(" / ")[0]} …</label>`,
+    targets:[ans],show:PERSONS[p].split(" / ")[0]+" "+ans,speakText:ans,extra:()=>conjTable(v,te,p)},onDone);
 }
 
 /* --- Quiz --- */
@@ -788,13 +1642,15 @@ function quizItem(q,top,onDone,opt){
   opt=opt||{};
   const[text,opts,ans,why]=q;
   const order=opt.shuffle?shuffle(opts.map((o,i)=>i)):opts.map((o,i)=>i);
-  app.innerHTML=`<div class="stage">${top}<div class="panel">${opt.eyebrow?`<div class="eyebrow">${opt.eyebrow}</div>`:""}<p class="q">${esc(text)}</p><div class="choices">${order.map(i=>`<button class="choice" data-i="${i}">${esc(opts[i])}</button>`).join("")}</div>${opt.idk?`<button class="idk" id="idk">Je ne sais pas</button>`:""}<div id="fb"></div></div></div>`;
+  paint(`<div class="stage">${top}<div class="panel">${opt.eyebrow?`<div class="eyebrow">${esc(opt.eyebrow)}</div>`:""}<p class="q">${esc(text)}</p><div class="choices">${order.map(i=>`<button class="choice" data-i="${i}">${esc(opts[i])}</button>`).join("")}</div>${opt.idk?`<button class="idk" id="idk">Je ne sais pas</button>`:""}<div id="fb"></div></div></div>`);
   let answered=false;
   const pick=i=>{if(answered)return;answered=true;const ok=i===ans;
     if(opt.silent){onDone(ok);return}
     document.querySelectorAll(".choice").forEach(b=>{const j=+b.dataset.i;b.disabled=true;if(j===ans)b.classList.add("right");else if(j===i)b.classList.add("wrong")});
-    $("fb").innerHTML=`<div class="feedback ${ok?"ok":"ko"}"><b>${ok?"¡Correcto!":"Pas tout à fait."}</b> ${esc(why||"")}</div><div class="row" style="margin-top:14px"><button class="btn" id="nx">Continuer</button></div>`;
-    markDay();save();const nx=$("nx");nx.focus();nx.onclick=()=>onDone(ok)};
+    const full=text.includes("___")?text.replace("___",opts[ans]).replace(/\s*\([^)]*\)\s*$/,""):"";
+    $("fb").innerHTML=`<div class="feedback ${ok?"ok":"ko"}"><b>${ok?"¡Correcto!":"Pas tout à fait."}</b> ${esc(why||"")}${full?`<div class="ex-line">${esc(full)} ${sayBtn("sp")}</div>`:""}</div>`+nextRow();
+    const sp=$("sp");if(sp)sp.onclick=()=>speak(full);
+    markDay();save();armNext(()=>onDone(ok))};
   document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>pick(+b.dataset.i));
   const ik=$("idk");if(ik)ik.onclick=()=>pick(-1);
   keyHandler=e=>{const n=+e.key;if(n>=1&&n<=opts.length)pick(order[n-1])};
@@ -803,26 +1659,8 @@ function quizItem(q,top,onDone,opt){
 /* --- Traduction --- */
 function transItem(p,top,onDone){
   const[fr,acc,model]=p;
-  app.innerHTML=`<div class="stage">${top}<div class="panel">
-   <div class="eyebrow">Traduis en espagnol</div><div class="fr">${esc(fr)}</div>
-   <label for="tin" class="hint">Ta réponse (les accents ne sont pas obligatoires)</label>
-   <input type="text" id="tin" autocomplete="off" spellcheck="false" lang="es">
-   <div class="accents">${["á","é","í","ó","ú","ñ","ü","¿","¡"].map(a=>`<button data-a="${a}" type="button">${a}</button>`).join("")}</div>
-   <div class="row"><button class="btn" id="chk">Vérifier</button><button class="btn ghost" id="skip">Voir la réponse</button></div>
-   <div id="fb"></div></div></div>`;
-  const inp=$("tin");inp.focus();
-  document.querySelectorAll(".accents button").forEach(b=>b.onclick=()=>{const st=inp.selectionStart,en=inp.selectionEnd;inp.value=inp.value.slice(0,st)+b.dataset.a+inp.value.slice(en);inp.focus();inp.selectionStart=inp.selectionEnd=st+1});
-  let done=false;
-  const show=(ok,given)=>{if(done)return;done=true;inp.disabled=true;
-    $("chk").disabled=true;$("skip").disabled=true;
-    $("fb").innerHTML=`<div class="feedback ${ok?"ok":"ko"}"><b>${ok?"¡Perfecto!":given?"Presque ! La réponse attendue :":"La réponse :"}</b><br><span style="font-size:1.15rem">${esc(model)}</span> ${canSpeak?`<button class="mini" style="margin-left:8px" id="sp" aria-label="Écouter">🔊</button>`:""}</div>
-      <div class="row" style="margin-top:14px"><button class="btn" id="nx">Continuer</button>${!ok&&given?`<button class="btn ghost" id="mine">J'avais bon (autre formulation)</button>`:""}</div>`;
-    let res=ok;const sp=$("sp");if(sp)sp.onclick=()=>speak(model);speak(model);
-    const m=$("mine");if(m)m.onclick=()=>{res=true;m.textContent="Compté comme juste ✓";m.disabled=true};
-    const nx=$("nx");nx.focus();nx.onclick=()=>onDone(res);markDay();save()};
-  $("chk").onclick=()=>{const v=norm(inp.value);if(!v){inp.focus();return}show(acc.some(a=>norm(a)===v),true)};
-  $("skip").onclick=()=>show(false,false);
-  inp.onkeydown=e=>{if(e.key==="Enter")$("chk").click()};
+  typedItem({top,eyebrow:"Traduis en espagnol",prompt:`<div class="fr">${esc(fr)}</div><label for="tin" class="hint">Ta réponse (accents conseillés, mais pas obligatoires)</label>`,
+    targets:[model,...acc],show:model,speakText:model,allowOverride:true},onDone);
 }
 
 /* ================= TEST DE NIVEAU ================= */
@@ -831,9 +1669,9 @@ function startPlacement(){
   const step=()=>{
     if(i>=PLACEMENT.length){finishPlacement(answers);return}
     const[q,opts,lv,skill]=PLACEMENT[i];
+    quitAction=()=>{view=null;render()};
     const top=`<button class="back" id="quit">← Arrêter le test</button><div class="progress"><span>Test de niveau · ${skill}</span><span>${i+1} / ${PLACEMENT.length}</span></div><div class="bar" style="margin:-4px 0 14px"><i style="width:${Math.round(i/PLACEMENT.length*100)}%"></i></div>`;
     quizItem([q,opts,0,""],top,ok=>{answers.push({lv,skill,ok});i++;step()},{shuffle:true,idk:true,silent:true,eyebrow:"Choisis la bonne réponse"});
-    $("quit").onclick=()=>{view=null;render()};
   };
   view=step;render();
 }
@@ -847,101 +1685,169 @@ function finishPlacement(ans){
   view=null;tab="level";render();
 }
 
-/* ================= ONGLETS ================= */
+/* ================= VOCABULAIRE ================= */
 function renderVocab(){
   const dueAll=allCards.filter(isDue).length;const L=myLevel();
-  let html=`<h2>Vocabulaire</h2><p class="lead">Des cartes à retourner, comme Anki. Tu dis si c'était facile ou pas, et l'appli te repropose chaque mot au bon moment : les mots difficiles reviennent vite, les faciles s'espacent.</p>
+  let html=`<h2>Vocabulaire</h2><p class="lead">${allCards.length} mots, chacun avec un exemple. Les cartes se retournent comme dans Anki : tu dis si c'était facile ou pas, et l'appli te repropose chaque mot au bon moment. Les mots bien connus reviennent aussi dans l'autre sens (du français vers l'espagnol).</p>
    ${dueAll?`<div class="row" style="margin-bottom:6px"><button class="btn sun-btn" id="revAll">Réviser les ${dueAll} mots du jour</button></div>`:""}`;
   [1,2,3].forEach(l=>{
     const decks=Object.entries(DECKS).filter(([k,d])=>d.lvl===l);
     html+=`<div class="lvl-head"><h3>${LVL[l]} · ${LVLNAME[l]}</h3>${l===L&&S.level?`<span class="rec">Ton niveau</span>`:""}</div><div class="decks">`+decks.map(([k,d])=>{const cs=allCards.filter(c=>c.deck===k);const seen=cs.filter(c=>!isNew(c)).length;const du=cs.filter(isDue).length;
-      return `<button class="deck" data-k="${k}"><div class="t">${d.t}</div><div class="m">${seen} / ${cs.length} mots vus</div>${du?`<span class="due">${du} à revoir</span>`:""}<div class="bar"><i style="width:${Math.round(seen/cs.length*100)}%"></i></div></button>`}).join("")+`</div>`;
+      return `<div class="deck"><div class="t">${d.t}</div><div class="m">${seen} / ${cs.length} mots vus${du?` · <span class="due">${du} à revoir</span>`:""}</div><div class="bar"><i style="width:${Math.round(seen/cs.length*100)}%"></i></div>
+        <div class="deck-actions"><button class="btn small" data-study="${k}">Étudier</button><button class="btn small ghost" data-list="${k}">Liste</button></div></div>`}).join("")+`</div>`;
   });
-  app.innerHTML=html;
-  document.querySelectorAll(".deck").forEach(b=>b.onclick=()=>{const k=b.dataset.k;const cs=allCards.filter(c=>c.deck===k);
-    const q=[...shuffle(cs.filter(isDue)),...cs.filter(isNew).slice(0,8)];runDeck(q.length?q:shuffle(cs).slice(0,8),DECKS[k].t)});
-  const ra=$("revAll");if(ra)ra.onclick=()=>runDeck(shuffle(allCards.filter(isDue)),"Révision du jour");
+  paint(html);
+  document.querySelectorAll("[data-study]").forEach(b=>b.onclick=()=>{const k=b.dataset.study;const cs=allCards.filter(c=>c.deck===k);
+    const q=[...shuffle(cs.filter(isDue)),...cs.filter(isNew).slice(0,8)];const list=(q.length?q:shuffle(cs).slice(0,10)).map(c=>"v:"+c.id);
+    runList(list,{title:DECKS[k].t,backLabel:"Paquets"})});
+  document.querySelectorAll("[data-list]").forEach(b=>b.onclick=()=>openDeckList(b.dataset.list));
+  const ra=$("revAll");if(ra)ra.onclick=()=>runList(shuffle(allCards.filter(isDue)).map(c=>"v:"+c.id),{title:"Révision du jour",backLabel:"Paquets"});
 }
-function runDeck(list,title){
-  let i=0;const step=()=>{if(i>=list.length){app.innerHTML=`<div class="stage"><div class="card done-box"><div class="big">¡Hecho!</div><p>${list.length} cartes de « ${esc(title)} » travaillées.</p><div class="row" style="justify-content:center"><button class="btn" id="bk">Retour aux paquets</button></div></div></div>`;$("bk").onclick=()=>{view=null;render()};$("streakN").textContent=streak();return}
-    quitAction=()=>{view=null;render()};
-    flashcard(list[i],`<button class="back" id="quit">← Paquets</button><div class="progress"><span>${esc(title)}</span><span>${i+1} / ${list.length}</span></div>`,()=>{i++;step()});bindQuit()};
-  view=step;render();
-}
-
-function renderGram(){
-  const L=myLevel();
-  let html=`<h2>Grammaire</h2><p class="lead">Une leçon courte, puis cinq questions pour vérifier. Les leçons suivies alimentent ta séance du jour.</p>`;
-  [1,2,3].forEach(l=>{
-    html+=`<div class="lvl-head"><h3>${LVL[l]} · ${LVLNAME[l]}</h3>${l===L&&S.level?`<span class="rec">Ton niveau</span>`:""}</div><div class="lessons">`+
-    LESSONS.map((x,i)=>[x,i]).filter(([x])=>x.lvl===l).map(([x,i])=>{const r=S.lessons[x.id];return `<button class="lesson-btn" data-i="${i}"><span><b>${x.t}</b><br><span class="lvl">${x.sub}</span></span>${r?`<span class="chip ok">${r.best}/5</span>`:`<span class="chip todo">À découvrir</span>`}</button>`}).join("")+`</div>`;
-  });
-  app.innerHTML=html;
-  document.querySelectorAll(".lesson-btn").forEach(b=>b.onclick=()=>openLesson(LESSONS[+b.dataset.i]));
-}
-function openLesson(L){
-  view=()=>{app.innerHTML=`<button class="back" id="bk">← Toutes les leçons</button><div class="eyebrow">${LVL[L.lvl]} · ${L.sub}</div><h2>${L.t}</h2><div class="lesson-body">${L.html}<div class="row" style="margin-top:18px"><button class="btn sun-btn" id="qz">Faire les 5 exercices</button></div></div>`;
+function openDeckList(k){
+  view=()=>{
+    const cs=allCards.filter(c=>c.deck===k);
+    paint(`<button class="back" id="bk">← Paquets</button><div class="eyebrow">${LVL[DECKS[k].lvl]} · ${cs.length} mots</div><h2>${DECKS[k].t}</h2>
+      <p class="lead">Clique sur 🔊 pour entendre le mot ou l'exemple.</p>
+      <div class="wordlist">${cs.map((c,i)=>{const st=isNew(c)?"":isDue(c)?`<span class="chip todo">à revoir</span>`:isLearned(c)?`<span class="chip ok">retenu</span>`:`<span class="chip seen">vu</span>`;
+        return `<div class="wl-row"><div class="wl-word"><b>${esc(c.es)}</b> ${canSpeak?`<button class="mini" data-sw="${i}" aria-label="Écouter le mot">🔊</button>`:""}<div class="hint">${esc(c.fr)}</div></div>
+          <div class="wl-ex">${esc(c.ex)} ${canSpeak&&c.ex?`<button class="mini" data-se="${i}" aria-label="Écouter l'exemple">🔊</button>`:""}<div class="hint">${esc(c.exFr)}</div></div><div class="wl-st">${st}</div></div>`}).join("")}</div>
+      <div class="row" style="margin-top:18px"><button class="btn sun-btn" id="studyAll">Étudier ce paquet</button></div>`);
     $("bk").onclick=()=>{view=null;render()};
-    document.querySelectorAll(".lesson-body td.es").forEach(td=>{if(canSpeak){td.style.cursor="pointer";td.title="Cliquer pour écouter";td.onclick=()=>speak(td.textContent)}});
-    $("qz").onclick=()=>{let i=0,sc=0;const step=()=>{if(i>=L.q.length){const prev=S.lessons[L.id];S.lessons[L.id]={best:Math.max(sc,prev?prev.best:0)};save();
-        app.innerHTML=`<div class="stage"><div class="card done-box"><div class="big">${sc} / ${L.q.length}</div><p>${sc>=4?"¡Excelente! Tu maîtrises bien.":sc>=3?"¡Bien! Encore un peu de pratique.":"Relis la leçon et réessaie, ça viendra."}</p><div class="row" style="justify-content:center"><button class="btn ghost" id="re">Relire la leçon</button><button class="btn" id="bk2">Toutes les leçons</button></div></div></div>`;
-        $("re").onclick=()=>render();$("bk2").onclick=()=>{view=null;render()};return}
-      quizItem(L.q[i],`<button class="back" id="quit">← Leçon</button><div class="progress"><span>${esc(L.t)}</span><span>${i+1} / ${L.q.length}</span></div>`,ok=>{if(ok)sc++;i++;step()},{shuffle:true});
-      $("quit").onclick=()=>render()};step()}};
+    document.querySelectorAll("[data-sw]").forEach(b=>b.onclick=()=>speak(cs[+b.dataset.sw].es));
+    document.querySelectorAll("[data-se]").forEach(b=>b.onclick=()=>speak(cs[+b.dataset.se].ex));
+    $("studyAll").onclick=()=>{const q=[...shuffle(cs.filter(isDue)),...cs.filter(isNew).slice(0,8)];runList((q.length?q:shuffle(cs).slice(0,10)).map(c=>"v:"+c.id),{title:DECKS[k].t,backLabel:"Paquets"})};
+  };
   render();
 }
 
-let tradFilter="Tous";
-function renderTrad(){
-  const cats=["Tous",...new Set(PHRASES.map(p=>p[3]))];
-  const pool=()=>PHRASES.filter(p=>tradFilter==="Tous"||p[3]===tradFilter);
-  app.innerHTML=`<h2>Phrases à traduire</h2><p class="lead">Du français vers l'espagnol. Tape ta traduction ; les accents et la ponctuation sont tolérés. Si tu as trouvé une autre bonne formulation, tu peux la compter comme juste.</p>
-   <div class="filter">${cats.map(c=>`<button aria-pressed="${c===tradFilter}" data-c="${c}">${c}${c==="Récit"?" (B1)":""}</button>`).join("")}</div>
-   <div class="row"><button class="btn sun-btn" id="st">Commencer 8 phrases</button><span class="hint">${pool().length} phrases dans cette catégorie</span></div>`;
-  document.querySelectorAll(".filter button").forEach(b=>b.onclick=()=>{tradFilter=b.dataset.c;render()});
-  $("st").onclick=()=>{const L=myLevel();let p=pool();if(tradFilter==="Tous"){const f=p.filter(x=>x[4]<=L+1);if(f.length>=8)p=f}
-    const list=shuffle(p).slice(0,8);let i=0,sc=0;
-    const step=()=>{if(i>=list.length){app.innerHTML=`<div class="stage"><div class="card done-box"><div class="big">${sc} / ${list.length}</div><p>${sc>=list.length-1?"¡Fantástico!":"¡Sigue así! Continue comme ça."}</p><div class="row" style="justify-content:center"><button class="btn" id="bk">Retour</button></div></div></div>`;$("bk").onclick=()=>{view=null;render()};return}
-      transItem(list[i],`<button class="back" id="quit">← Arrêter</button><div class="progress"><span>Traduction</span><span>${i+1} / ${list.length}</span></div>`,ok=>{if(ok)sc++;i++;step()});
-      $("quit").onclick=()=>{view=null;render()}};
-    view=step;render()};
+/* ================= S'ENTRAÎNER ================= */
+let conjTenses=null;
+function renderTrain(){
+  const L=myLevel();if(!conjTenses)conjTenses=Object.keys(TENSES).filter(t=>TENSES[t].lvl<=L);
+  const errN=mistakeKeys().length;
+  const tiles=[
+    ["cloze","Phrases à trous","Choisis le mot qui manque dans une vraie phrase. Idéal pour voir les mots en situation.",10],
+    ["order","Remettre dans l'ordre","Reconstruis une phrase espagnole à partir de sa traduction. Ça fait travailler la construction des phrases.",8],
+    ["write","Écrire les mots","Le mot en français, tu l'écris en espagnol. Le meilleur exercice pour vraiment retenir.",10],
+    ["dictee","Dictée","Tu entends un mot ou une phrase, tu l'écris. Oreille et orthographe en même temps.",8],
+    ["listen","Écoute","Tu entends un mot, tu choisis son sens.",10]
+  ];
+  paint(`<h2>S'entraîner</h2><p class="lead">Des exercices en plus de la séance du jour, à faire autant que tu veux. Les mots que tu as déjà vus sont utilisés en priorité.</p>
+   ${errN?`<section class="panel err-panel"><div><h3>Mes erreurs <span class="chip todo">${errN}</span></h3><p class="hint" style="margin:0">Les exercices ratés reviennent ici jusqu'à ce que tu les réussisses.</p></div><button class="btn sun-btn" id="errs">Retravailler mes erreurs</button></section>`:""}
+   <div class="train-grid">
+    ${tiles.map(([k,t,d,n])=>`<section class="panel train"><h3>${t}</h3><p class="hint">${d}</p><button class="btn" data-train="${k}" data-n="${n}">Commencer · ${n}</button></section>`).join("")}
+    <section class="panel train wide"><h3>Conjugaison</h3><p class="hint">Un pronom, un verbe, un temps : tu écris la forme. Après chaque réponse, le tableau complet s'affiche.</p>
+      <div class="filter">${Object.entries(TENSES).map(([k,v])=>`<button aria-pressed="${conjTenses.includes(k)}" data-tense="${k}">${v.t} <span class="hint">${LVL[v.lvl]}</span></button>`).join("")}</div>
+      <div class="row"><button class="btn" id="conjGo" ${conjTenses.length?"":"disabled"}>Commencer · 10</button><button class="btn ghost" id="conjRef">Voir les tableaux</button></div></section>
+   </div>`);
+  document.querySelectorAll("[data-train]").forEach(b=>b.onclick=()=>{const k=b.dataset.train,n=+b.dataset.n;const go=()=>runList(makeItems(k,n),{title:STEP_LABEL[k],backLabel:"S'entraîner",again:go});go()});
+  document.querySelectorAll("[data-tense]").forEach(b=>b.onclick=()=>{const k=b.dataset.tense;conjTenses=conjTenses.includes(k)?conjTenses.filter(x=>x!==k):[...conjTenses,k];const y=window.scrollY;render();window.scrollTo({top:y})});
+  $("conjGo").onclick=()=>{const go=()=>runList(makeItems("conj",10,{tenses:conjTenses}),{title:"Conjugaison",backLabel:"S'entraîner",again:go});go()};
+  $("conjRef").onclick=openConjRef;
+  const e=$("errs");if(e)e.onclick=()=>runList(makeItems("review",15),{title:"Mes erreurs",backLabel:"S'entraîner"});
+}
+let refVerb="tener";
+function openConjRef(){
+  view=()=>{
+    paint(`<button class="back" id="bk">← S'entraîner</button><h2>Tableaux de conjugaison</h2>
+      <p class="lead">Choisis un verbe pour voir tous ses temps. Clique sur une forme pour l'entendre.</p>
+      <label for="vsel" class="hint">Verbe</label>
+      <select id="vsel" class="sel">${Object.keys(VERBS).map(v=>`<option value="${v}" ${v===refVerb?"selected":""}>${v} · ${esc(VERBS[v].fr)}</option>`).join("")}</select>
+      <div class="conj-grid">${Object.keys(TENSES).map(te=>conjTable(refVerb,te,-1)).join("")}</div>`);
+    $("bk").onclick=()=>{view=null;render()};
+    $("vsel").onchange=e=>{refVerb=e.target.value;render()};
+    if(canSpeak)document.querySelectorAll(".conj td.es").forEach(td=>{td.style.cursor="pointer";td.onclick=()=>speak(td.textContent)});
+  };
+  render();
 }
 
+/* ================= GRAMMAIRE ================= */
+function renderGram(){
+  const L=myLevel();
+  let html=`<h2>Grammaire</h2><p class="lead">Une leçon courte, puis des exercices pour vérifier. Les leçons suivies alimentent ta séance du jour.</p>`;
+  [1,2,3].forEach(l=>{
+    html+=`<div class="lvl-head"><h3>${LVL[l]} · ${LVLNAME[l]}</h3>${l===L&&S.level?`<span class="rec">Ton niveau</span>`:""}</div><div class="lessons">`+
+    LESSONS.map((x,i)=>[x,i]).filter(([x])=>x.lvl===l).map(([x,i])=>{const r=S.lessons[x.id];return `<button class="lesson-btn" data-i="${i}"><span><b>${x.t}</b><br><span class="lvl">${x.sub}</span></span>${r?`<span class="chip ok">${r.best}/${x.q.length}</span>`:`<span class="chip todo">À découvrir</span>`}</button>`}).join("")+`</div>`;
+  });
+  paint(html);
+  document.querySelectorAll(".lesson-btn").forEach(b=>b.onclick=()=>openLesson(LESSONS[+b.dataset.i]));
+}
+function openLesson(L){
+  const lessonView=()=>{paint(`<button class="back" id="bk">← Toutes les leçons</button><div class="eyebrow">${LVL[L.lvl]} · ${L.sub}</div><h2>${L.t}</h2><div class="lesson-body">${L.html}<div class="row" style="margin-top:18px"><button class="btn sun-btn" id="qz">Faire les ${L.q.length} exercices</button></div></div>`);
+    $("bk").onclick=()=>{view=null;render()};
+    document.querySelectorAll(".lesson-body td.es").forEach(td=>{if(canSpeak){td.style.cursor="pointer";td.title="Cliquer pour écouter";td.onclick=()=>speak(td.textContent)}});
+    $("qz").onclick=()=>runList(shuffle(L.q.map((q,i)=>"g:"+L.id+":"+i)),{title:L.t,backLabel:"Toutes les leçons",onEnd:(sc)=>{const prev=S.lessons[L.id];S.lessons[L.id]={best:Math.max(sc,prev?prev.best:0)};save()},again:()=>{view=lessonView;render()}});
+  };
+  view=lessonView;render();
+}
+
+/* ================= TRADUCTION ================= */
+let tradFilter="Tous";
+function renderTrad(){
+  const seenEx=allCards.filter(c=>!isNew(c)&&c.ex&&c.exFr&&!/[—«]/.test(c.ex));
+  const cats=["Tous",...new Set(PHRASES.map(p=>p[3]))];if(seenEx.length>=5)cats.push("Mes mots");
+  const pool=()=>tradFilter==="Mes mots"?seenEx.map(c=>"t:e:"+c.id):PHRASES.map((p,i)=>[p,i]).filter(([p])=>tradFilter==="Tous"||p[3]===tradFilter).map(([p,i])=>"t:"+i);
+  paint(`<h2>Phrases à traduire</h2><p class="lead">Du français vers l'espagnol. Tape ta traduction : les accents sont conseillés mais pas obligatoires. Si tu as trouvé une autre bonne formulation, tu peux la compter comme juste. « Mes mots » reprend les exemples des mots que tu as déjà vus.</p>
+   <div class="filter">${cats.map(c=>`<button aria-pressed="${c===tradFilter}" data-c="${c}">${c}${c==="Récit"?" (B1)":""}</button>`).join("")}</div>
+   <div class="row"><button class="btn sun-btn" id="st">Commencer 8 phrases</button><span class="hint">${pool().length} phrases dans cette catégorie</span></div>`);
+  document.querySelectorAll(".filter button").forEach(b=>b.onclick=()=>{tradFilter=b.dataset.c;render()});
+  $("st").onclick=()=>{const L=myLevel();let p=pool();if(tradFilter==="Tous"){const f=p.filter(k=>PHRASES[+k.slice(2)][4]<=L+1);if(f.length>=8)p=f}
+    const go=()=>runList(shuffle(p).slice(0,8),{title:"Traduction",backLabel:"Traduction",again:go});go()};
+}
+
+/* ================= DIALOGUES ================= */
 function renderDial(){
-  app.innerHTML=`<h2>Dialogues</h2><p class="lead">De petites scènes de la vie en Espagne. Écoute, lis, affiche la traduction si besoin, puis réponds à trois questions de compréhension.</p>
-   <div class="lessons">${DIALOGUES.map((d,i)=>{const r=S.dialogues[d.id];return `<button class="lesson-btn" data-i="${i}"><span><b>${d.t}</b> ${badge(d.lvl)}<br><span class="lvl">${d.sub}</span></span>${r!==undefined?`<span class="chip ok">${r}/3</span>`:`<span class="chip todo">À découvrir</span>`}</button>`}).join("")}</div>`;
+  paint(`<h2>Dialogues</h2><p class="lead">De petites scènes de la vie en Espagne. Écoute, lis, affiche la traduction si besoin, puis réponds à trois questions de compréhension.</p>
+   <div class="lessons">${DIALOGUES.map((d,i)=>{const r=S.dialogues[d.id];return `<button class="lesson-btn" data-i="${i}"><span><b>${d.t}</b> ${badge(d.lvl)}<br><span class="lvl">${d.sub}</span></span>${r!==undefined?`<span class="chip ok">${r}/3</span>`:`<span class="chip todo">À découvrir</span>`}</button>`}).join("")}</div>`);
   document.querySelectorAll(".lesson-btn").forEach(b=>b.onclick=()=>openDialogue(DIALOGUES[+b.dataset.i]));
 }
 function openDialogue(D){
   let showTr=false;
-  view=()=>{
-    app.innerHTML=`<button class="back" id="bk">← Tous les dialogues</button><div class="eyebrow">${LVL[D.lvl]} · ${D.sub}</div><h2>${D.t}</h2>
+  const dv=()=>{
+    paint(`<button class="back" id="bk">← Tous les dialogues</button><div class="eyebrow">${LVL[D.lvl]} · ${D.sub}</div><h2>${D.t}</h2>
     <div class="row" style="margin-top:12px">${canSpeak?`<button class="btn" id="all">🔊 Écouter tout le dialogue</button>`:""}<button class="btn ghost" id="tr">${showTr?"Masquer":"Afficher"} la traduction</button></div>
     <div class="bubbles">${D.lines.map((l,i)=>`<div class="bubble ${l[0]==="Snoop"?"me":""}"><div class="who"><span>${esc(l[0])}</span>${canSpeak?`<button class="mini" data-l="${i}" aria-label="Écouter cette réplique">🔊</button>`:""}</div><div class="es">${esc(l[1])}</div>${showTr?`<div class="tr">${esc(l[2])}</div>`:""}</div>`).join("")}</div>
-    <button class="btn sun-btn" id="qz">Répondre aux 3 questions</button>`;
+    <button class="btn sun-btn" id="qz">Répondre aux 3 questions</button>`);
     $("bk").onclick=()=>{try{speechSynthesis.cancel()}catch(e){}view=null;render()};
     $("tr").onclick=()=>{showTr=!showTr;const y=window.scrollY;render();window.scrollTo({top:y})};
     const all=$("all");if(all)all.onclick=()=>{try{speechSynthesis.cancel()}catch(e){}D.lines.forEach(l=>speak(l[1],true))};
     document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>speak(D.lines[+b.dataset.l][1]));
     $("qz").onclick=()=>{let i=0,sc=0;const step=()=>{if(i>=D.q.length){S.dialogues[D.id]=Math.max(sc,S.dialogues[D.id]||0);markDay();save();
-        app.innerHTML=`<div class="stage"><div class="card done-box"><div class="big">${sc} / 3</div><p>${sc===3?"¡Lo has entendido todo! Tu as tout compris.":"Réécoute le dialogue avec la traduction, puis réessaie."}</p><div class="row" style="justify-content:center"><button class="btn ghost" id="re">Revoir le dialogue</button><button class="btn" id="bk2">Tous les dialogues</button></div></div></div>`;
-        $("re").onclick=()=>render();$("bk2").onclick=()=>{view=null;render()};return}
-      const[q,o,a]=D.q[i];
-      quizItem([q,o,a,""],`<button class="back" id="quit">← Dialogue</button><div class="progress"><span>${esc(D.t)}</span><span>${i+1} / 3</span></div>`,ok=>{if(ok)sc++;i++;step()},{shuffle:true});
-      $("quit").onclick=()=>render()};step()};
+        paint(`<div class="stage"><div class="card done-box"><div class="big">${sc} / 3</div><p>${sc===3?"¡Lo has entendido todo! Tu as tout compris.":"Réécoute le dialogue avec la traduction, puis réessaie."}</p><div class="row" style="justify-content:center"><button class="btn ghost" id="re">Revoir le dialogue</button><button class="btn" id="bk2">Tous les dialogues</button></div></div></div>`);
+        $("re").onclick=()=>{view=dv;render()};$("bk2").onclick=()=>{view=null;render()};return}
+      const[q,o,a]=D.q[i];quitAction=()=>{view=dv;render()};
+      quizItem([q,o,a,""],`<button class="back" id="quit">← Dialogue</button><div class="progress"><span>${esc(D.t)}</span><span>${i+1} / 3</span></div>`,ok=>{if(ok)sc++;i++;step()},{shuffle:true})};
+      view=step;render()};
   };
-  render();
+  view=dv;render();
 }
 
+/* ================= MON NIVEAU & RÉGLAGES ================= */
 function renderLevel(){
   const P=S.placement;const L=myLevel();
   const ladder=[1,2,3].map(l=>{const sc=P?P.scores[l]:null;return `<div class="${S.level===l?"here":""} ${sc!==null&&sc>=6?"ok":""}"><b>${LVL[l]}</b>${LVLNAME[l]}${sc!==null?`<br>${sc}/8`:""}</div>`}).join("");
   const skills=P?Object.entries(P.skills).map(([k,v])=>`<div class="skill"><span>${k}</span><div class="track"><i style="width:${Math.round(v.ok/v.n*100)}%"></i></div><b>${v.ok}/${v.n}</b></div>`).join(""):"";
-  const learnedBy=l=>{const cs=allCards.filter(c=>c.lvl===l);return `${cs.filter(c=>S.cards[c.id]&&S.cards[c.id].reps>=2).length}/${cs.length}`};
+  const learnedBy=l=>{const cs=allCards.filter(c=>c.lvl===l);return `${cs.filter(isLearned).length}/${cs.length}`};
   const advice={1:"On consolide les bases : salutations, nombres, articles, présent et ser/estar. Les séances piochent surtout dans le niveau A1.",
                 2:"Les bases sont là. On travaille le passé composé, gustar, les verbes irréguliers et le vocabulaire du voyage et des courses.",
                 3:"Bon niveau ! On s'attaque aux temps du passé (indefinido, imparfait), à por/para et aux expressions pour raconter."}[L];
-  app.innerHTML=`<h2>Mon niveau</h2><p class="lead">${P?`Test passé le ${new Date(P.date+"T12:00").toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})}. C'est une estimation indicative, pas un diplôme : elle sert à choisir les bons exercices.`:"Le test de niveau dure environ 5 minutes. Il sert à adapter les séances à ce que tu sais déjà."}</p>
+  const voiceOpts=esVoices.map(v=>`<option value="${esc(v.name)}" ${esVoice&&v.name===esVoice.name?"selected":""}>${esc(v.name)} (${esc(v.lang)})</option>`).join("");
+  paint(`<h2>Mon niveau et réglages</h2><p class="lead">${P?`Test passé le ${new Date(P.date+"T12:00").toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})}. C'est une estimation indicative, pas un diplôme : elle sert à choisir les bons exercices.`:"Le test de niveau dure environ 5 minutes. Il sert à adapter les séances à ce que tu sais déjà."}</p>
+   <section class="panel" id="voix" style="margin-bottom:20px">
+     <div class="eyebrow">Voix espagnole</div>
+     ${!canSpeak?`<p>Ce navigateur ne sait pas lire le texte à voix haute. Essaie Google Chrome ou Microsoft Edge.</p>`
+      :esVoices.length?`<div class="voice-row"><div><label for="voiceSel" class="hint">Voix utilisée</label><select id="voiceSel" class="sel">${voiceOpts}</select></div>
+        <div><label for="rate" class="hint">Vitesse : <b id="rateV">${Math.round((S.rate||.9)*100)} %</b></label><input type="range" id="rate" min="0.6" max="1.1" step="0.05" value="${S.rate||.9}"></div>
+        <button class="btn" id="vtest">🔊 Tester</button></div>
+        <p class="hint" style="margin:10px 0 0">Les voix marquées « Natural », « Online » ou « Google » sont les plus naturelles. Choisis de préférence une voix « es-ES » (espagnol d'Espagne).</p>`
+      :`<p><b>Aucune voix espagnole n'est installée sur cet ordinateur.</b> Le navigateur lit alors l'espagnol avec une voix française, d'où l'accent.</p>`}
+     ${canSpeak?`<details ${esVoices.length?"":"open"}><summary>Comment avoir une meilleure voix espagnole</summary>
+       <ul class="help">
+        <li><b>Le plus simple :</b> ouvrir l'appli dans <b>Microsoft Edge</b> (voix « Elvira Online (Natural) ») ou <b>Google Chrome</b> (voix « Google español »). Elles sont déjà incluses et très naturelles.</li>
+        <li><b>Windows :</b> Paramètres → Heure et langue → Voix → Ajouter des voix → choisir « Español (España) ». Fermer puis rouvrir le navigateur.</li>
+        <li><b>Mac :</b> Réglages Système → Accessibilité → Contenu énoncé → Voix du système → Gérer les voix → Espagnol (Espagne), par exemple « Mónica ». Puis rouvrir le navigateur.</li>
+       </ul></details>`:""}
+   </section>
    <div class="two">
     <section class="panel">
       ${P?`<div class="eyebrow">Résultat estimé</div><div class="result-level">${P.label}</div><p class="hint" style="margin:6px 0 0">${P.total} bonnes réponses sur ${PLACEMENT.length}</p>
@@ -966,10 +1872,13 @@ function renderLevel(){
       <textarea id="imp" placeholder="Colle ici un code de sauvegarde"></textarea>
       <div class="row" style="margin-top:8px"><button class="btn ghost" id="restore">Restaurer</button></div><div class="msg" id="impMsg"></div>
     </section>
-   </div>`;
+   </div>`);
   $("retest").onclick=startPlacement;
   document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;S.session=null;save();render()});
-  const exp={...S,session:null};
+  const vs=$("voiceSel");if(vs)vs.onchange=()=>{S.voiceName=vs.value;save();loadVoices();speak("Hola, ¿qué tal?")};
+  const rt=$("rate");if(rt)rt.oninput=()=>{S.rate=+rt.value;$("rateV").textContent=Math.round(S.rate*100)+" %";save()};
+  const vt=$("vtest");if(vt)vt.onclick=()=>speak("Hola, me llamo Snoop y estoy aprendiendo español. ¡Qué bonito día hace hoy!");
+  const exp=Object.assign({},S,{session:null});
   let code="";try{code=btoa(unescape(encodeURIComponent(JSON.stringify(exp))))}catch(e){}
   $("code").value=code;
   $("copy").onclick=()=>{const t=$("code");const ok=()=>{$("copyMsg").className="msg ok";$("copyMsg").textContent="Code copié."};
@@ -979,7 +1888,7 @@ function renderLevel(){
   $("restore").onclick=()=>{const m=$("impMsg");let data;
     try{data=JSON.parse(decodeURIComponent(escape(atob($("imp").value.trim()))));if(!data||typeof data!=="object"||!data.cards)throw 0}catch(e){m.className="msg ko";m.textContent="Ce code n'est pas reconnu. Vérifie qu'il a été copié en entier.";return}
     if(!armed){armed=true;m.className="msg";m.textContent="La progression actuelle sera remplacée. Clique encore sur « Restaurer » pour confirmer.";$("restore").textContent="Confirmer la restauration";return}
-    S=Object.assign(blank(),data);S.session=null;save();m.className="msg ok";m.textContent="Progression restaurée.";setTimeout(render,700)};
+    S=Object.assign(blank(),data);S.session=null;save();loadVoices();m.className="msg ok";m.textContent="Progression restaurée.";setTimeout(render,700)};
 }
 
 render();
