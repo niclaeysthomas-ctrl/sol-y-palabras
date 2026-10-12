@@ -265,6 +265,47 @@ summary{cursor:pointer;font-weight:700;color:var(--cobalt)}
 .err-panel{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;background:var(--saffron-soft);border-color:transparent}
 .err-panel h3{display:flex;align-items:center;gap:10px}
 .filter button[aria-pressed="true"] .hint{color:inherit;opacity:.8}
+.read-card{margin-top:20px;background:var(--surface)}
+.read-card-in{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.read-card-in>div:first-child{min-width:0;flex:1 1 320px}
+.read-preview{margin:0;color:var(--muted);font-style:italic;max-width:62ch}
+.read-card-act{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.reader-tools{margin:12px 0 4px}
+.reader{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px 28px;font-size:1.3rem;line-height:1.9;max-width:70ch;margin-top:10px}
+.reader.with-tr .sent{display:block;margin-top:14px}
+.reader.with-tr .sent:first-child{margin-top:0}
+.sent{cursor:pointer;border-radius:6px;transition:background .2s}
+.sent:hover{background:var(--cobalt-soft)}
+.sent.speaking{background:var(--saffron-soft);box-shadow:0 0 0 4px var(--saffron-soft)}
+.sent-tr{display:block;font-size:1rem;line-height:1.5;color:var(--muted);font-style:italic}
+.gw{font:inherit;color:inherit;background:none;border:0;padding:0;border-bottom:2px dotted var(--cobalt);cursor:help}
+.gw:hover{color:var(--cobalt)}
+.word-pop{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:5;display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--ink);color:var(--bg);border-radius:14px;padding:14px 18px;margin-top:14px;max-width:70ch;box-shadow:0 14px 30px -12px rgba(0,0,0,.45)}
+.word-pop>div{flex:1;min-width:0}
+.word-pop .pw{font-size:1.2rem}
+.word-pop .mini{background:transparent;color:var(--bg);border-color:rgba(255,255,255,.35)}
+.word-pop .btn{background:var(--saffron);color:#1B2440}
+.x{background:none;border:0;color:inherit;font-size:1.4rem;line-height:1;padding:2px 6px;cursor:pointer;opacity:.75}
+.x:hover{opacity:1}
+.gloss{margin-top:20px;max-width:70ch}
+.gloss-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.gloss-item{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:.95rem}
+.mini.add{color:var(--cobalt);font-weight:700}
+.mine-panel{margin:18px 0 8px}
+.mine-form{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+.mine-form .wide{grid-column:1/3}
+.mine-form>div{display:flex;flex-direction:column;min-width:0}
+.mine-form input[type=text]{font-size:1rem;padding:10px 12px}
+.mine-form .btn{grid-column:3;grid-row:1/3;align-self:end}
+@media (max-width:620px){.mine-form{grid-template-columns:1fr}.mine-form .wide{grid-column:auto}.mine-form .btn{grid-column:auto;grid-row:auto;justify-self:start}}
+.mine-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.mine-chip{display:inline-flex;align-items:center;gap:6px;background:var(--cobalt-soft);border-radius:999px;padding:4px 6px 4px 8px;font-size:.92rem}
+.mine-chip .x{font-size:1.1rem;color:var(--muted)}
+.mine-chip .x.armed{font-size:.8rem;font-weight:700;color:var(--bad);opacity:1}
+nav{gap:2px}
+nav button{padding:11px 11px;font-size:.95rem}
+@media (max-width:640px){nav button{padding:9px 9px;font-size:.88rem}.reader{padding:18px 18px;font-size:1.2rem}}
+.lessons{grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr))}
 </style>
 </head>
 <body>
@@ -277,11 +318,11 @@ summary{cursor:pointer;font-weight:700;color:var(--cobalt)}
   </div>
   <nav role="tablist">
     <button role="tab" data-tab="today" aria-selected="true">Aujourd'hui</button>
+    <button role="tab" data-tab="read" aria-selected="false">Lire &amp; écouter</button>
     <button role="tab" data-tab="vocab" aria-selected="false">Vocabulaire</button>
     <button role="tab" data-tab="train" aria-selected="false">S'entraîner</button>
     <button role="tab" data-tab="gram" aria-selected="false">Grammaire</button>
     <button role="tab" data-tab="trad" aria-selected="false">Traduction</button>
-    <button role="tab" data-tab="dial" aria-selected="false">Dialogues</button>
     <button role="tab" data-tab="level" aria-selected="false">Mon niveau</button>
   </nav>
 </header>
@@ -1174,6 +1215,295 @@ LESSONS.push(
     ["¡___ cuidado! (tener)",["Tenga","Tiene","Tena"],0,"tener → tengo → tenga."]]}
 );
 
+/* ================= LECTURES — s: [espagnol, français] par phrase ; g: [mot tel qu'il apparaît, traduction] ; q: [question, options (1re = bonne)] ================= */
+const READINGS = [
+ {id:"presento",lvl:1,t:"Me presento",s:[
+   ["Me llamo Snoop.","Je m'appelle Snoop."],
+   ["Soy francesa y vivo en el norte de Francia.","Je suis française et j'habite dans le nord de la France."],
+   ["Tengo una hija, un hijo y tres nietos.","J'ai une fille, un fils et trois petits-enfants."],
+   ["Me gusta mucho España: el sol, la comida y la gente.","J'aime beaucoup l'Espagne : le soleil, la nourriture et les gens."],
+   ["Estudio español todos los días con mi ordenador.","J'étudie l'espagnol tous les jours avec mon ordinateur."],
+   ["Todavía hablo poco, pero aprendo rápido.","Je parle encore peu, mais j'apprends vite."],
+   ["¡Este verano quiero hablar con los españoles!","Cet été je veux parler avec les Espagnols !"]],
+  g:[["el norte","le nord"],["la gente","les gens"],["todos los días","tous les jours"],["ordenador","ordinateur"],["Todavía","encore"],["rápido","vite"],["Este verano","cet été"]],
+  q:[["Où habite Snoop ?",["Dans le nord de la France","À Madrid","Dans le sud de la France"]],
+     ["Combien a-t-elle de petits-enfants ?",["Trois","Deux","Un"]],
+     ["Avec quoi étudie-t-elle ?",["Avec son ordinateur","Avec un professeur","Avec un livre"]]]},
+
+ {id:"casa",lvl:1,t:"Mi casa",s:[
+   ["Mi casa no es muy grande, pero es muy bonita.","Ma maison n'est pas très grande, mais elle est très jolie."],
+   ["Tiene dos dormitorios, una cocina, un salón y un baño.","Elle a deux chambres, une cuisine, un salon et une salle de bains."],
+   ["En el salón hay un sofá azul y muchas plantas.","Dans le salon il y a un canapé bleu et beaucoup de plantes."],
+   ["Mi lugar favorito es el jardín.","Mon endroit préféré, c'est le jardin."],
+   ["Allí tengo flores, un árbol y una mesa pequeña.","Là, j'ai des fleurs, un arbre et une petite table."],
+   ["Por la mañana, tomo el café en el jardín cuando hace sol.","Le matin, je prends le café dans le jardin quand il fait soleil."]],
+  g:[["hay","il y a"],["muchas","beaucoup de"],["Mi lugar favorito","mon endroit préféré"],["Allí","là-bas"],["árbol","arbre"],["cuando","quand"]],
+  q:[["Combien de chambres a la maison ?",["Deux","Trois","Une"]],
+     ["De quelle couleur est le canapé ?",["Bleu","Vert","Rouge"]],
+     ["Où prend-elle le café quand il fait beau ?",["Dans le jardin","Dans la cuisine","Au café du coin"]]]},
+
+ {id:"dia",lvl:1,t:"Un día normal",s:[
+   ["Me levanto a las ocho.","Je me lève à huit heures."],
+   ["Desayuno pan con tomate y un café con leche.","Au petit-déjeuner, je prends du pain à la tomate et un café au lait."],
+   ["Después, doy un paseo con mi perro, Toby.","Ensuite, je fais une balade avec mon chien, Toby."],
+   ["A la una como en casa con mi marido.","À une heure, je mange à la maison avec mon mari."],
+   ["Por la tarde leo un libro o veo a mis amigas.","L'après-midi, je lis un livre ou je vois mes amies."],
+   ["Ceno a las ocho y media y me acuesto a las once.","Je dîne à huit heures et demie et je me couche à onze heures."]],
+  g:[["Desayuno","je prends mon petit-déjeuner"],["Después","ensuite"],["doy un paseo","je fais une balade"],["veo","je vois"],["Ceno","je dîne"],["me acuesto","je me couche"]],
+  q:[["À quelle heure se lève-t-elle ?",["8 h","7 h","9 h"]],
+     ["Que mange-t-elle au petit-déjeuner ?",["Du pain à la tomate","Des croissants","Des céréales"]],
+     ["À quelle heure se couche-t-elle ?",["23 h","22 h","Minuit"]]]},
+
+ {id:"cafe",lvl:1,t:"En el café",s:[
+   ["Es domingo.","C'est dimanche."],
+   ["Snoop y su amiga Carmen están en un café de la plaza.","Snoop et son amie Carmen sont dans un café de la place."],
+   ["Carmen pide un té y Snoop pide un café con leche.","Carmen commande un thé et Snoop commande un café au lait."],
+   ["También piden dos raciones de churros con chocolate.","Elles commandent aussi deux portions de churros au chocolat."],
+   ["Los churros están calientes y deliciosos.","Les churros sont chauds et délicieux."],
+   ["Hablan de la familia, del tiempo y de las vacaciones.","Elles parlent de la famille, du temps et des vacances."],
+   ["Al final, Carmen paga la cuenta.","À la fin, Carmen paie l'addition."],
+   ["«¡La próxima vez pago yo!», dice Snoop.","« La prochaine fois, c'est moi qui paie ! », dit Snoop."]],
+  g:[["pide","commande"],["También","aussi"],["raciones","portions"],["Al final","à la fin"],["paga","paie"],["La próxima vez","la prochaine fois"],["dice","dit"]],
+  q:[["Que boit Carmen ?",["Du thé","Du café","Du chocolat"]],
+     ["Qu'est-ce qu'elles mangent ?",["Des churros","Des tapas","Une glace"]],
+     ["Qui paie aujourd'hui ?",["Carmen","Snoop","Personne"]]]},
+
+ {id:"clima",lvl:1,t:"El tiempo en España",s:[
+   ["En España hace sol casi todo el año.","En Espagne, il fait soleil presque toute l'année."],
+   ["En el sur, en verano, hace mucho calor: a veces cuarenta grados.","Dans le sud, en été, il fait très chaud : parfois quarante degrés."],
+   ["En el norte llueve más y todo está verde.","Dans le nord, il pleut plus et tout est vert."],
+   ["En invierno hace frío en Madrid, pero en Málaga es suave.","En hiver, il fait froid à Madrid, mais à Malaga il fait doux."],
+   ["Muchos franceses van a la costa en invierno porque allí el clima es agradable.","Beaucoup de Français vont sur la côte en hiver parce que le climat y est agréable."]],
+  g:[["casi todo el año","presque toute l'année"],["el sur","le sud"],["grados","degrés"],["más","plus"],["suave","doux"],["la costa","la côte"],["agradable","agréable"]],
+  q:[["Où pleut-il le plus ?",["Dans le nord","Dans le sud","À Malaga"]],
+     ["Combien de degrés peut-il faire dans le sud en été ?",["40","25","50"]],
+     ["Pourquoi des Français vont-ils sur la côte en hiver ?",["Le climat est agréable","C'est moins cher","Pour skier"]]]},
+
+ {id:"familia",lvl:1,t:"La familia de Snoop",s:[
+   ["Mi hija se llama Claire y vive en Lille con su marido y sus dos niños.","Ma fille s'appelle Claire et habite à Lille avec son mari et ses deux enfants."],
+   ["Mi nieto mayor tiene diez años y le gusta el fútbol.","Mon petit-fils aîné a dix ans et il aime le football."],
+   ["Mi nieta Lucía tiene seis años; es un poco tímida, pero muy cariñosa.","Ma petite-fille Lucía a six ans ; elle est un peu timide, mais très affectueuse."],
+   ["Mi hijo vive en Madrid con su mujer, Elena, y su bebé.","Mon fils habite à Madrid avec sa femme, Elena, et leur bébé."],
+   ["Por eso estudio español: ¡quiero hablar con Elena en su idioma!","C'est pour ça que j'étudie l'espagnol : je veux parler avec Elena dans sa langue !"]],
+  g:[["se llama","s'appelle"],["mayor","aîné"],["tímida","timide"],["cariñosa","affectueuse"],["Por eso","c'est pour ça que"],["idioma","langue"]],
+  q:[["Où habite le fils de Snoop ?",["À Madrid","À Lille","À Séville"]],
+     ["Qu'aime le petit-fils aîné ?",["Le football","La musique","Le dessin"]],
+     ["Pourquoi Snoop étudie-t-elle l'espagnol ?",["Pour parler avec Elena","Pour son travail","Pour un examen"]]]},
+
+ {id:"mercado",lvl:1,t:"Los sábados en el mercado",s:[
+   ["Los sábados voy al mercado.","Le samedi, je vais au marché."],
+   ["Hay fruta, verdura, pescado, queso y flores.","Il y a des fruits, des légumes, du poisson, du fromage et des fleurs."],
+   ["Siempre compro naranjas, tomates y pan.","J'achète toujours des oranges, des tomates et du pain."],
+   ["La vendedora de fruta es muy simpática.","La vendeuse de fruits est très sympathique."],
+   ["Se llama Pilar y siempre me dice: «¡Buenos días, guapa!».","Elle s'appelle Pilar et elle me dit toujours : « Bonjour, ma belle ! »."],
+   ["Todo es fresco y no es caro.","Tout est frais et ce n'est pas cher."]],
+  g:[["Hay","il y a"],["Siempre","toujours"],["La vendedora","la vendeuse"],["me dice","me dit"],["guapa","ma belle"],["fresco","frais"]],
+  q:[["Quel jour va-t-elle au marché ?",["Le samedi","Le dimanche","Le lundi"]],
+     ["Comment s'appelle la vendeuse ?",["Pilar","Carmen","Lucía"]],
+     ["Comment sont les produits ?",["Frais et pas chers","Chers","Pas très frais"]]]},
+
+ {id:"gustos",lvl:1,t:"Lo que me gusta",s:[
+   ["Me gusta mucho cocinar, sobre todo platos españoles como la tortilla o el gazpacho.","J'aime beaucoup cuisiner, surtout des plats espagnols comme la tortilla ou le gazpacho."],
+   ["También me gusta leer y escuchar música.","J'aime aussi lire et écouter de la musique."],
+   ["No me gusta el frío ni la lluvia.","Je n'aime ni le froid ni la pluie."],
+   ["Me encantan los animales: tengo un perro y un gato.","J'adore les animaux : j'ai un chien et un chat."],
+   ["¿Y a ti? ¿Qué te gusta hacer?","Et toi ? Qu'est-ce que tu aimes faire ?"]],
+  g:[["sobre todo","surtout"],["como","comme"],["escuchar","écouter"],["ni","ni"],["la lluvia","la pluie"],["Me encantan","j'adore"]],
+  q:[["Quels plats aime-t-elle cuisiner ?",["La tortilla et le gazpacho","La pizza et les pâtes","Le couscous"]],
+     ["Qu'est-ce qu'elle n'aime pas ?",["Le froid et la pluie","Les animaux","La musique"]],
+     ["Quels animaux a-t-elle ?",["Un chien et un chat","Deux chiens","Un oiseau"]]]},
+
+ {id:"sevilla",lvl:2,t:"El viaje a Sevilla",s:[
+   ["El mes pasado fui a Sevilla con mi marido.","Le mois dernier, je suis allée à Séville avec mon mari."],
+   ["Viajamos en avión desde París y llegamos por la tarde.","Nous avons voyagé en avion depuis Paris et nous sommes arrivés l'après-midi."],
+   ["El hotel estaba en el barrio de Santa Cruz, cerca de la catedral.","L'hôtel était dans le quartier de Santa Cruz, près de la cathédrale."],
+   ["El primer día visitamos el Alcázar: sus jardines son preciosos.","Le premier jour, nous avons visité l'Alcazar : ses jardins sont magnifiques."],
+   ["Por la noche fuimos de tapas y vimos un espectáculo de flamenco.","Le soir, nous sommes allés manger des tapas et nous avons vu un spectacle de flamenco."],
+   ["¡Fue un viaje inolvidable!","Ce fut un voyage inoubliable !"]],
+  g:[["El mes pasado","le mois dernier"],["fui","je suis allée"],["desde","depuis"],["estaba","était"],["El primer día","le premier jour"],["preciosos","magnifiques"],["vimos","nous avons vu"],["espectáculo","spectacle"],["inolvidable","inoubliable"]],
+  q:[["Avec qui est-elle partie ?",["Avec son mari","Avec sa fille","Avec une amie"]],
+     ["Où était l'hôtel ?",["Près de la cathédrale","Près de l'aéroport","Au bord de la mer"]],
+     ["Qu'ont-ils vu le soir ?",["Un spectacle de flamenco","Un match de football","Un film"]]]},
+
+ {id:"siesta",lvl:2,t:"¿Todos duermen la siesta?",s:[
+   ["Mucha gente piensa que todos los españoles duermen la siesta.","Beaucoup de gens pensent que tous les Espagnols font la sieste."],
+   ["No es verdad: hoy, muchas personas trabajan por la tarde y no tienen tiempo.","Ce n'est pas vrai : aujourd'hui, beaucoup de personnes travaillent l'après-midi et n'ont pas le temps."],
+   ["Pero en verano, cuando hace mucho calor, las calles están vacías después de comer.","Mais en été, quand il fait très chaud, les rues sont vides après le repas."],
+   ["Muchas tiendas pequeñas cierran de dos a cinco.","Beaucoup de petits magasins ferment de deux à cinq heures."],
+   ["Es mejor descansar en casa y salir cuando hace más fresco.","Il vaut mieux se reposer à la maison et sortir quand il fait plus frais."]],
+  g:[["Mucha gente","beaucoup de gens"],["piensa","pense"],["No es verdad","ce n'est pas vrai"],["vacías","vides"],["cierran","ferment"],["Es mejor","il vaut mieux"],["descansar","se reposer"],["más fresco","plus frais"]],
+  q:[["Tous les Espagnols font-ils la sieste ?",["Non","Oui","Seulement le dimanche"]],
+     ["Quand beaucoup de petits magasins ferment-ils ?",["De 14 h à 17 h","De 12 h à 14 h","Le soir"]],
+     ["Pourquoi les rues sont-elles vides en été après le repas ?",["Il fait très chaud","Il pleut","C'est la fête"]]]},
+
+ {id:"llamada",lvl:2,t:"Una llamada a mi hijo",s:[
+   ["Ayer llamé a mi hijo por teléfono.","Hier, j'ai appelé mon fils au téléphone."],
+   ["Me contó que está muy contento en Madrid.","Il m'a raconté qu'il est très content à Madrid."],
+   ["Su trabajo es interesante, pero trabaja mucho.","Son travail est intéressant, mais il travaille beaucoup."],
+   ["El fin de semana pasado fue con Elena y el bebé al parque del Retiro.","Le week-end dernier, il est allé au parc du Retiro avec Elena et le bébé."],
+   ["Hizo muy buen tiempo y comieron en una terraza.","Il a fait très beau et ils ont mangé en terrasse."],
+   ["Me dijo: «Mamá, tienes que venir en primavera».","Il m'a dit : « Maman, tu dois venir au printemps »."]],
+  g:[["llamé","j'ai appelé"],["Me contó","il m'a raconté"],["El fin de semana pasado","le week-end dernier"],["fue","il est allé"],["Hizo muy buen tiempo","il a fait très beau"],["comieron","ils ont mangé"],["Me dijo","il m'a dit"],["tienes que","tu dois"]],
+  q:[["Comment va son fils ?",["Il est content","Il est malade","Il veut rentrer en France"]],
+     ["Où sont-ils allés le week-end dernier ?",["Au parc du Retiro","À la plage","Au musée"]],
+     ["Quand Snoop doit-elle venir ?",["Au printemps","À Noël","Cet été"]]]},
+
+ {id:"farmacia",lvl:2,t:"Un día en el sofá",s:[
+   ["Esta mañana me he levantado con dolor de garganta.","Ce matin, je me suis levée avec mal à la gorge."],
+   ["He ido a la farmacia de la esquina.","Je suis allée à la pharmacie du coin."],
+   ["El farmacéutico me ha preguntado si tenía fiebre.","Le pharmacien m'a demandé si j'avais de la fièvre."],
+   ["Le he dicho que no, pero que estaba un poco cansada.","Je lui ai dit que non, mais que j'étais un peu fatiguée."],
+   ["Me ha dado unas pastillas y un jarabe.","Il m'a donné des comprimés et un sirop."],
+   ["Ahora estoy en el sofá con un té caliente y un buen libro.","Maintenant je suis sur le canapé avec un thé chaud et un bon livre."]],
+  g:[["me he levantado","je me suis levée"],["He ido","je suis allée"],["me ha preguntado","m'a demandé"],["si tenía","si j'avais"],["Le he dicho","je lui ai dit"],["jarabe","sirop"],["Ahora","maintenant"]],
+  q:[["Où a-t-elle mal ?",["À la gorge","Au dos","Aux pieds"]],
+     ["Qu'a-t-elle reçu à la pharmacie ?",["Des comprimés et un sirop","Une ordonnance","Rien du tout"]],
+     ["Que fait-elle maintenant ?",["Elle se repose avec un thé","Elle va travailler","Elle va chez le médecin"]]]},
+
+ {id:"fiestas",lvl:2,t:"Las fiestas de España",s:[
+   ["En España hay fiestas todo el año.","En Espagne, il y a des fêtes toute l'année."],
+   ["En marzo, Valencia celebra las Fallas: grandes figuras de cartón que se queman por la noche.","En mars, Valence fête les Fallas : de grandes figures en carton qu'on brûle la nuit."],
+   ["En abril, Sevilla tiene su Feria, con trajes de flamenca, música y baile.","En avril, Séville a sa Feria, avec des robes de flamenca, de la musique et de la danse."],
+   ["En julio, en Pamplona, son los Sanfermines.","En juillet, à Pampelune, ce sont les fêtes de la San Fermín."],
+   ["Y en agosto, casi todos los pueblos tienen su fiesta, con orquesta en la plaza.","Et en août, presque tous les villages ont leur fête, avec un orchestre sur la place."]],
+  g:[["celebra","fête"],["de cartón","en carton"],["se queman","on brûle"],["trajes","costumes, robes"],["casi todos","presque tous"],["orquesta","orchestre"]],
+  q:[["Quelle ville fête les Fallas ?",["Valence","Séville","Pampelune"]],
+     ["En quel mois est la Feria de Séville ?",["Avril","Juillet","Août"]],
+     ["Que se passe-t-il en août ?",["Les villages font leur fête","Il ne se passe rien","C'est la fête de Noël"]]]},
+
+ {id:"prado",lvl:2,t:"Buscando el museo",s:[
+   ["Ayer, en Madrid, busqué el Museo del Prado.","Hier, à Madrid, j'ai cherché le musée du Prado."],
+   ["Pregunté a un señor: «Perdone, ¿dónde está el Prado?».","J'ai demandé à un monsieur : « Pardon, où est le Prado ? »."],
+   ["Me dijo: «Siga todo recto, gire a la derecha en el semáforo y después cruce la plaza».","Il m'a dit : « Continuez tout droit, tournez à droite au feu et ensuite traversez la place »."],
+   ["Caminé diez minutos y ¡allí estaba!","J'ai marché dix minutes et il était là !"],
+   ["Entré y vi los cuadros de Velázquez y Goya.","Je suis entrée et j'ai vu les tableaux de Velázquez et de Goya."],
+   ["Me encantaron.","Je les ai adorés."]],
+  g:[["busqué","j'ai cherché"],["Pregunté","j'ai demandé"],["Siga","continuez"],["gire","tournez"],["cruce","traversez"],["Caminé","j'ai marché"],["vi","j'ai vu"],["los cuadros","les tableaux"],["Me encantaron","je les ai adorés"]],
+  q:[["Quel musée cherchait-elle ?",["Le Prado","Le Louvre","Le Reina Sofía"]],
+     ["Où fallait-il tourner à droite ?",["Au feu","À l'église","Au pont"]],
+     ["Quels peintres a-t-elle vus ?",["Velázquez et Goya","Picasso et Dalí","Monet et Manet"]]]},
+
+ {id:"paella",lvl:2,t:"La verdadera paella",s:[
+   ["La paella es el plato más famoso de España, pero es de Valencia.","La paella est le plat le plus célèbre d'Espagne, mais elle vient de Valence."],
+   ["La paella valenciana auténtica lleva arroz, pollo, conejo, judías verdes y azafrán.","La vraie paella valencienne contient du riz, du poulet, du lapin, des haricots verts et du safran."],
+   ["¡No lleva chorizo!","Elle ne contient pas de chorizo !"],
+   ["Se cocina en una sartén grande y plana que también se llama «paella».","On la cuisine dans une grande poêle plate qui s'appelle aussi « paella »."],
+   ["Tradicionalmente, se come el domingo, en familia, a la hora de la comida.","Traditionnellement, on la mange le dimanche, en famille, à l'heure du déjeuner."]],
+  g:[["más famoso","le plus célèbre"],["lleva","contient"],["arroz","riz"],["conejo","lapin"],["judías verdes","haricots verts"],["azafrán","safran"],["sartén","poêle"],["plana","plate"]],
+  q:[["D'où vient la paella ?",["De Valence","De Madrid","De Barcelone"]],
+     ["Qu'est-ce qu'il n'y a pas dans la vraie paella valencienne ?",["Du chorizo","Du riz","Du safran"]],
+     ["Quand la mange-t-on traditionnellement ?",["Le dimanche midi","Le lundi soir","Au petit-déjeuner"]]]},
+
+ {id:"vecina",lvl:2,t:"Mi vecina Carmen",s:[
+   ["Mi vecina Carmen tiene setenta y dos años y es de Granada.","Ma voisine Carmen a soixante-douze ans et elle est de Grenade."],
+   ["Vive sola desde hace cinco años, pero nunca está aburrida.","Elle vit seule depuis cinq ans, mais elle ne s'ennuie jamais."],
+   ["Por la mañana hace gimnasia en el parque y por la tarde va a clases de pintura.","Le matin, elle fait de la gymnastique au parc et l'après-midi, elle va à des cours de peinture."],
+   ["Los jueves juega a las cartas con sus amigas.","Le jeudi, elle joue aux cartes avec ses amies."],
+   ["Siempre me dice: «Lo importante es estar activa y reír mucho».","Elle me dit toujours : « L'important, c'est de rester active et de beaucoup rire »."]],
+  g:[["sola","seule"],["desde hace","depuis"],["nunca","jamais"],["hace gimnasia","fait de la gymnastique"],["clases de pintura","cours de peinture"],["Lo importante","l'important"],["reír","rire"]],
+  q:[["D'où vient Carmen ?",["De Grenade","De Madrid","De Valence"]],
+     ["Que fait-elle le jeudi ?",["Elle joue aux cartes","Elle peint","Elle fait du sport"]],
+     ["Quel est son conseil ?",["Rester active et rire beaucoup","Dormir beaucoup","Manger léger"]]]},
+
+ {id:"hotel",lvl:2,t:"Un problema en el hotel",s:[
+   ["Cuando llegamos a la habitación, el aire acondicionado no funcionaba.","Quand nous sommes arrivés dans la chambre, la climatisation ne marchait pas."],
+   ["Hacía mucho calor.","Il faisait très chaud."],
+   ["Bajé a la recepción y expliqué el problema.","Je suis descendue à la réception et j'ai expliqué le problème."],
+   ["La recepcionista fue muy amable: «Lo siento mucho, señora. Le cambio de habitación ahora mismo».","La réceptionniste a été très aimable : « Je suis vraiment désolée, madame. Je vous change de chambre tout de suite »."],
+   ["La nueva habitación era más grande y tenía vistas al mar.","La nouvelle chambre était plus grande et avait vue sur la mer."],
+   ["¡Al final, el problema fue una suerte!","Finalement, le problème a été une chance !"]],
+  g:[["el aire acondicionado","la climatisation"],["no funcionaba","ne marchait pas"],["Hacía mucho calor","il faisait très chaud"],["Bajé","je suis descendue"],["expliqué","j'ai expliqué"],["ahora mismo","tout de suite"],["vistas al mar","vue sur la mer"],["una suerte","une chance"]],
+  q:[["Quel était le problème ?",["La climatisation ne marchait pas","Il n'y avait pas d'eau chaude","La clé était perdue"]],
+     ["Comment était la réceptionniste ?",["Très aimable","Désagréable","Absente"]],
+     ["Comment était la nouvelle chambre ?",["Plus grande, avec vue sur la mer","Plus petite","Identique"]]]},
+
+ {id:"infancia",lvl:3,t:"Recuerdos de infancia",s:[
+   ["Cuando era pequeña, pasaba todos los veranos en casa de mis abuelos, en el campo.","Quand j'étais petite, je passais tous les étés chez mes grands-parents, à la campagne."],
+   ["No había televisión, pero nunca nos aburríamos.","Il n'y avait pas de télévision, mais nous ne nous ennuyions jamais."],
+   ["Por la mañana ayudábamos a mi abuelo en el huerto y por la tarde nos bañábamos en el río.","Le matin, nous aidions mon grand-père au potager et l'après-midi, nous nous baignions dans la rivière."],
+   ["Mi abuela hacía unas tartas de manzana buenísimas.","Ma grand-mère faisait des tartes aux pommes délicieuses."],
+   ["Un verano, mi primo y yo nos perdimos en el bosque.","Un été, mon cousin et moi, nous nous sommes perdus dans la forêt."],
+   ["¡Qué susto se llevaron todos!","Tout le monde a eu tellement peur !"],
+   ["Al final, un vecino nos encontró antes de la noche.","Finalement, un voisin nous a retrouvés avant la nuit."]],
+  g:[["pasaba","je passais"],["No había","il n'y avait pas"],["nos aburríamos","nous nous ennuyions"],["el huerto","le potager"],["nos bañábamos","nous nous baignions"],["buenísimas","délicieuses"],["nos perdimos","nous nous sommes perdus"],["el bosque","la forêt"],["nos encontró","nous a retrouvés"]],
+  q:[["Où passait-elle ses étés ?",["Chez ses grands-parents, à la campagne","Au bord de la mer","En ville"]],
+     ["Que faisait sa grand-mère ?",["Des tartes aux pommes","Du pain","Des confitures"]],
+     ["Que s'est-il passé un été ?",["Elle s'est perdue dans la forêt avec son cousin","Elle est tombée malade","Il a plu tout l'été"]]]},
+
+ {id:"camino",lvl:3,t:"El Camino de Santiago",s:[
+   ["Cada año, miles de personas hacen el Camino de Santiago.","Chaque année, des milliers de personnes font le chemin de Saint-Jacques."],
+   ["Caminan durante días o semanas hasta la catedral de Santiago de Compostela, en Galicia.","Elles marchent pendant des jours ou des semaines jusqu'à la cathédrale de Saint-Jacques-de-Compostelle, en Galice."],
+   ["Algunos lo hacen por motivos religiosos; otros, por deporte o para pensar.","Certains le font pour des raisons religieuses ; d'autres, par sport ou pour réfléchir."],
+   ["Por el camino hay albergues baratos donde se puede dormir.","Sur le chemin, il y a des auberges bon marché où l'on peut dormir."],
+   ["Mi amiga Anne lo hizo el año pasado: caminó ciento veinte kilómetros en una semana.","Mon amie Anne l'a fait l'année dernière : elle a marché cent vingt kilomètres en une semaine."],
+   ["Dice que fue difícil, pero que conoció a gente maravillosa.","Elle dit que c'était difficile, mais qu'elle a rencontré des gens merveilleux."]],
+  g:[["miles de","des milliers de"],["durante","pendant"],["hasta","jusqu'à"],["Algunos","certains"],["otros","d'autres"],["albergues","auberges"],["se puede","on peut"],["conoció","elle a rencontré"],["maravillosa","merveilleuse"]],
+  q:[["Où se termine le chemin ?",["À la cathédrale de Saint-Jacques","À Madrid","À Rome"]],
+     ["Combien de kilomètres Anne a-t-elle marché ?",["120","20","1 200"]],
+     ["Comment Anne a-t-elle vécu l'expérience ?",["Difficile, mais avec des gens merveilleux","Facile et ennuyeuse","Beaucoup trop chère"]]]},
+
+ {id:"edad",lvl:3,t:"Aprender a cualquier edad",s:[
+   ["Muchas personas creen que, después de los sesenta años, es demasiado tarde para aprender un idioma.","Beaucoup de gens croient qu'après soixante ans, il est trop tard pour apprendre une langue."],
+   ["Sin embargo, los científicos dicen lo contrario: estudiar una lengua extranjera es uno de los mejores ejercicios para el cerebro.","Pourtant, les scientifiques disent le contraire : étudier une langue étrangère est l'un des meilleurs exercices pour le cerveau."],
+   ["Lo importante no es la edad, sino la regularidad.","L'important, ce n'est pas l'âge, mais la régularité."],
+   ["Es mejor estudiar quince minutos cada día que dos horas una vez por semana.","Il vaut mieux étudier quinze minutes chaque jour que deux heures une fois par semaine."],
+   ["Además, no hay que tener miedo de equivocarse: los errores forman parte del aprendizaje.","De plus, il ne faut pas avoir peur de se tromper : les erreurs font partie de l'apprentissage."]],
+  g:[["demasiado tarde","trop tard"],["idioma","langue"],["Sin embargo","pourtant"],["lo contrario","le contraire"],["extranjera","étrangère"],["el cerebro","le cerveau"],["sino","mais (plutôt)"],["equivocarse","se tromper"],["aprendizaje","apprentissage"]],
+  q:[["Selon les scientifiques, apprendre une langue est…",["un excellent exercice pour le cerveau","inutile après 60 ans","trop fatigant"]],
+     ["Qu'est-ce qui compte le plus ?",["La régularité","L'âge","Le prix des cours"]],
+     ["Que dit le texte sur les erreurs ?",["Elles font partie de l'apprentissage","Il faut les éviter à tout prix","Elles montrent qu'on est trop âgé"]]]},
+
+ {id:"boda",lvl:3,t:"Una boda en el pueblo",s:[
+   ["El sábado pasado fuimos a la boda de Javier, el sobrino de Carmen.","Samedi dernier, nous sommes allés au mariage de Javier, le neveu de Carmen."],
+   ["La ceremonia fue en la pequeña iglesia del pueblo, a las doce.","La cérémonie a eu lieu dans la petite église du village, à midi."],
+   ["Después, todos los invitados fuimos a comer a una finca en el campo.","Ensuite, tous les invités, nous sommes allés manger dans une propriété à la campagne."],
+   ["La comida duró más de cuatro horas: primero jamón, queso y gambas; luego, cordero asado; y al final, la tarta.","Le repas a duré plus de quatre heures : d'abord jambon, fromage et crevettes ; ensuite, agneau rôti ; et à la fin, le gâteau."],
+   ["Por la noche hubo baile hasta las tres de la mañana.","Le soir, on a dansé jusqu'à trois heures du matin."],
+   ["Yo estaba hecha polvo, pero fue un día precioso.","J'étais épuisée, mais ce fut une journée magnifique."]],
+  g:[["la boda","le mariage"],["el sobrino","le neveu"],["los invitados","les invités"],["una finca","une propriété"],["duró","a duré"],["gambas","crevettes"],["cordero asado","agneau rôti"],["hubo","il y a eu"],["hecha polvo","épuisée"]],
+  q:[["Qui se mariait ?",["Le neveu de Carmen","La fille de Snoop","Carmen"]],
+     ["Combien de temps a duré le repas ?",["Plus de quatre heures","Une heure","Toute la nuit"]],
+     ["Jusqu'à quelle heure a-t-on dansé ?",["Trois heures du matin","Minuit","Six heures du matin"]]]},
+
+ {id:"horarios",lvl:3,t:"Los horarios españoles",s:[
+   ["Lo que más sorprende a los franceses en España son los horarios.","Ce qui surprend le plus les Français en Espagne, ce sont les horaires."],
+   ["Los españoles comen entre las dos y las tres, y cenan a partir de las nueve o las diez.","Les Espagnols déjeunent entre deux et trois heures, et dînent à partir de neuf ou dix heures."],
+   ["Los niños se acuestan tarde y, en verano, es normal ver familias paseando a medianoche.","Les enfants se couchent tard et, en été, il est normal de voir des familles se promener à minuit."],
+   ["¿Por qué?","Pourquoi ?"],
+   ["Algunos dicen que es por el calor; otros, porque España usa la hora de Europa central aunque está al oeste.","Certains disent que c'est à cause de la chaleur ; d'autres, parce que l'Espagne utilise l'heure d'Europe centrale bien qu'elle soit à l'ouest."],
+   ["Sea como sea, ¡hay que adaptarse!","Quoi qu'il en soit, il faut s'adapter !"]],
+  g:[["Lo que más sorprende","ce qui surprend le plus"],["los horarios","les horaires"],["a partir de","à partir de"],["paseando","en train de se promener"],["a medianoche","à minuit"],["aunque","bien que"],["oeste","ouest"],["Sea como sea","quoi qu'il en soit"],["adaptarse","s'adapter"]],
+  q:[["À quelle heure dînent les Espagnols ?",["À partir de 21 h ou 22 h","Vers 19 h","Vers 18 h"]],
+     ["Que voit-on en été à minuit ?",["Des familles qui se promènent","Des rues vides","Des magasins ouverts"]],
+     ["Quelles explications donne le texte ?",["La chaleur ou le fuseau horaire","Le travail","La télévision"]]]},
+
+ {id:"carta",lvl:3,t:"Una carta a Elena",s:[
+   ["Querida Elena:","Chère Elena,"],
+   ["¡Muchas gracias por las fotos del bebé!","Merci beaucoup pour les photos du bébé !"],
+   ["Está guapísimo y ha crecido mucho.","Il est magnifique et il a beaucoup grandi."],
+   ["Te escribo en español porque llevo varios meses estudiando y quiero practicar.","Je t'écris en espagnol parce que j'étudie depuis plusieurs mois et je veux pratiquer."],
+   ["Perdona mis errores.","Pardonne mes erreurs."],
+   ["Tengo muchas ganas de veros en primavera.","J'ai très envie de vous voir au printemps."],
+   ["Ya he mirado los billetes de tren: si todo va bien, llegaré a Madrid el 15 de abril.","J'ai déjà regardé les billets de train : si tout va bien, j'arriverai à Madrid le 15 avril."],
+   ["Me gustaría llevaros a comer a un buen restaurante.","J'aimerais vous emmener manger dans un bon restaurant."],
+   ["Un abrazo muy fuerte, Snoop.","Je t'embrasse très fort, Snoop."]],
+  g:[["Querida","chère"],["guapísimo","magnifique"],["ha crecido","a grandi"],["llevo varios meses estudiando","j'étudie depuis plusieurs mois"],["Perdona","pardonne"],["veros","vous voir"],["he mirado","j'ai regardé"],["llegaré","j'arriverai"],["Me gustaría","j'aimerais"],["llevaros","vous emmener"]],
+  q:[["Pourquoi Snoop écrit-elle en espagnol ?",["Pour pratiquer","Parce qu'Elena ne parle pas français","Par erreur"]],
+     ["Quand arrivera-t-elle à Madrid ?",["Le 15 avril","Le 15 août","À Noël"]],
+     ["Que propose-t-elle ?",["De les emmener au restaurant","De garder le bébé","D'aller à la plage"]]]},
+
+ {id:"aceite",lvl:3,t:"El oro líquido",s:[
+   ["España es el primer productor de aceite de oliva del mundo, y la mayor parte se produce en Andalucía, sobre todo en Jaén.","L'Espagne est le premier producteur d'huile d'olive au monde, et la plus grande partie est produite en Andalousie, surtout à Jaén."],
+   ["Allí, los olivos cubren las colinas hasta donde alcanza la vista.","Là-bas, les oliviers couvrent les collines à perte de vue."],
+   ["La cosecha se hace en invierno, entre noviembre y enero.","La récolte se fait en hiver, entre novembre et janvier."],
+   ["Para los españoles, el aceite es mucho más que un ingrediente.","Pour les Espagnols, l'huile est bien plus qu'un ingrédient."],
+   ["Se toma en el desayuno con pan y tomate, se usa para cocinar casi todo e incluso se pone en algunos postres.","On la prend au petit-déjeuner avec du pain et de la tomate, on l'utilise pour cuisiner presque tout et on en met même dans certains desserts."]],
+  g:[["el primer productor","le premier producteur"],["la mayor parte","la plus grande partie"],["los olivos","les oliviers"],["cubren","couvrent"],["las colinas","les collines"],["hasta donde alcanza la vista","à perte de vue"],["La cosecha","la récolte"],["incluso","même"]],
+  q:[["Quelle région produit le plus d'huile d'olive ?",["L'Andalousie","La Galice","Madrid"]],
+     ["Quand se fait la récolte ?",["En hiver","En été","Au printemps"]],
+     ["Comment prend-on l'huile au petit-déjeuner ?",["Avec du pain et de la tomate","Dans le café","Pure, à la cuillère"]]]}
+];
+
 /* ================= ÉTAT ================= */
 const KEY="solypalabras-v1";
 const LVL={1:"A1",2:"A2",3:"B1"};
@@ -1182,15 +1512,27 @@ const pad=n=>String(n).padStart(2,"0");
 const fmt=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
 const todayStr=()=>fmt(new Date());
 const addDays=(s,n)=>{const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return fmt(d)};
-const blank=()=>({cards:{},lessons:{},dialogues:{},mistakes:{},days:[],session:null,level:null,placement:null,skipTest:false,sessLen:"normal",voiceName:null,rate:0.9});
+const blank=()=>({cards:{},lessons:{},dialogues:{},mistakes:{},days:[],session:null,level:null,placement:null,skipTest:false,sessLen:"normal",voiceName:null,rate:0.9,custom:[],customSeq:1,reads:{},dailyText:null});
 let S=blank();
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
 if(!S.mistakes||typeof S.mistakes!=="object")S.mistakes={};
+if(!Array.isArray(S.custom))S.custom=[];if(!S.reads||typeof S.reads!=="object")S.reads={};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const myLevel=()=>S.level||1;
 
-const allCards=[];for(const k in DECKS)DECKS[k].w.forEach((w,i)=>allCards.push({id:k+":"+i,deck:k,lvl:DECKS[k].lvl,es:w[0],fr:w[1],ex:w[2]||"",exFr:w[3]||""}));
-const CARD={};allCards.forEach(c=>CARD[c.id]=c);
+let allCards=[],CARD={};
+function buildCards(){
+  allCards=[];for(const k in DECKS)DECKS[k].w.forEach((w,i)=>allCards.push({id:k+":"+i,deck:k,lvl:DECKS[k].lvl,es:w[0],fr:w[1],ex:w[2]||"",exFr:w[3]||""}));
+  S.custom.forEach(c=>allCards.push({id:"mine:"+c.id,deck:"mine",lvl:myLevel(),es:c.es,fr:c.fr,ex:c.ex||"",exFr:c.exFr||"",mine:true}));
+  CARD={};allCards.forEach(c=>CARD[c.id]=c);
+}
+buildCards();
+function addMine(es,fr,ex,exFr){
+  es=String(es||"").trim();fr=String(fr||"").trim();if(!es||!fr)return "empty";
+  if(allCards.some(c=>norm(stripEnd(c.es))===norm(stripEnd(es))))return "exists";
+  S.custom.push({id:S.customSeq++,es,fr,ex:ex||"",exFr:exFr||""});buildCards();save();return "ok";
+}
+const hasWord=es=>allCards.some(c=>norm(stripEnd(c.es))===norm(stripEnd(es)));
 const cardById=id=>CARD[id];
 const isDue=c=>{const s=S.cards[c.id];return !!s&&s.due<=todayStr()};
 const isNew=c=>!S.cards[c.id];
@@ -1230,15 +1572,20 @@ function loadVoices(){
 }
 const noSpanishVoice=()=>canSpeak&&voicesLoaded&&esVoices.length===0;
 if(canSpeak){loadVoices();try{speechSynthesis.onvoiceschanged=()=>{const before=esVoices.length;loadVoices();if(before!==esVoices.length&&!view&&(tab==="today"||tab==="level"))render()}}catch(e){}}
+function mkUtter(t){
+  if(!esVoice)loadVoices();
+  const u=new SpeechSynthesisUtterance(String(t).replace(/…/g,"").replace(/—/g,", ").replace(/[«»]/g,""));
+  u.lang=esVoice?esVoice.lang:"es-ES";if(esVoice)u.voice=esVoice;u.rate=S.rate||.9;return u;
+}
 function speak(t,queue){
   if(!canSpeak||!t)return;
-  try{
-    if(!esVoice)loadVoices();
-    const u=new SpeechSynthesisUtterance(String(t).replace(/…/g,"").replace(/—/g,", "));
-    u.lang=esVoice?esVoice.lang:"es-ES";if(esVoice)u.voice=esVoice;u.rate=S.rate||.9;
-    if(!queue)speechSynthesis.cancel();speechSynthesis.speak(u);
-  }catch(e){}
+  try{const u=mkUtter(t);if(!queue)speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}
 }
+function speakSeq(list,onIdx,onEnd){
+  if(!canSpeak)return;
+  try{speechSynthesis.cancel();list.forEach((t,i)=>{const u=mkUtter(t);u.onstart=()=>onIdx&&onIdx(i);if(i===list.length-1)u.onend=()=>onEnd&&onEnd();speechSynthesis.speak(u)})}catch(e){}
+}
+const stopSpeech=()=>{try{speechSynthesis.cancel()}catch(e){}};
 
 /* ================= OUTILS ================= */
 const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[¿?¡!.,;:'"«»—…()]/g,"").replace(/\s+/g," ").trim();
@@ -1357,9 +1704,9 @@ function getSession(){if(!S.session||S.session.date!==todayStr()||S.session.v!==
 /* ================= RENDU ================= */
 const app=$("app");
 let tab="today",view=null;
-const TABS=["today","vocab","train","gram","trad","dial","level"];
+const TABS=["today","read","vocab","train","gram","trad","level"];
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{try{speechSynthesis.cancel()}catch(e){}tab=b.dataset.tab;view=null;render();try{history.replaceState(null,"","#"+tab)}catch(e){}});
-const h0=(location.hash||"").slice(1);if(TABS.includes(h0))tab=h0;
+const h0=(location.hash||"").slice(1);if(h0==="dial")tab="read";else if(TABS.includes(h0))tab=h0;
 let keyHandler=null;document.addEventListener("keydown",e=>{if(keyHandler&&e.target.tagName!=="INPUT"&&e.target.tagName!=="TEXTAREA"&&e.target.tagName!=="SELECT")keyHandler(e)});
 let quitAction=null;
 function bindQuit(){const q=$("quit");if(q&&quitAction)q.onclick=quitAction}
@@ -1371,7 +1718,7 @@ function render(){
   $("streakN").textContent=streak();
   const h=new Date().getHours();$("greet").textContent=(h<13?"¡Buenos días!":h<20?"¡Buenas tardes!":"¡Buenas noches!")+" Un poco d'espagnol chaque jour.";
   if(view){view();return}
-  ({today:renderToday,vocab:renderVocab,train:renderTrain,gram:renderGram,trad:renderTrad,dial:renderDial,level:renderLevel})[tab]();
+  ({today:renderToday,read:renderRead,vocab:renderVocab,train:renderTrain,gram:renderGram,trad:renderTrad,level:renderLevel})[tab]();
   window.scrollTo({top:0});
 }
 const voiceWarn=()=>noSpanishVoice()?`<div class="note warn"><b>La voix espagnole n'est pas installée sur cet ordinateur.</b> La prononciation risque d'avoir un accent français. <button class="linkish" id="voiceHelp">Voir comment régler ça</button></div>`:"";
@@ -1408,21 +1755,22 @@ function renderToday(){
      </div>
      <div class="week">${days.join("")}</div>
      <div class="tip"><div class="eyebrow">L'expression du jour</div><div class="es">${tip[0]} ${sayBtn("tipSay")}</div><div class="hint">${tip[1]}</div></div>
-   </section></div>`);
+   </section></div>${readingCard()}`);
   const go=$("go");if(go)go.onclick=()=>{view=sessionView;render()};
   const ag=$("again");if(ag)ag.onclick=()=>{S.session=buildSession();save();view=sessionView;render()};
   document.querySelectorAll("[data-len]").forEach(b=>b.onclick=()=>{S.sessLen=b.dataset.len;S.session=buildSession();save();render()});
   const st=$("startTest");if(st)st.onclick=startPlacement;
   const sk=$("skipTest");if(sk)sk.onclick=()=>{S.skipTest=true;save();render()};
   const ts=$("tipSay");if(ts)ts.onclick=()=>speak(tip[0]);
+  const rd=$("readToday");if(rd)rd.onclick=()=>openReading(textOfDay());
   bindVoiceHelp();
 }
 
 function sessionView(){
   const s=getSession();
   if(s.step>=s.steps.length){s.done=true;markDay();save();
-    paint(`<div class="stage"><div class="card done-box"><div class="big">¡Enhorabuena!</div><p>Séance terminée. Score aux exercices : <b>${s.score} / ${s.total}</b>.</p><p class="hint">${mistakeKeys().length?`Tes erreurs sont gardées : elles reviendront dans les prochaines séances.`:"Aucune erreur en attente. ¡Perfecto!"}</p><div class="row" style="justify-content:center"><button class="btn" id="home">Retour à l'accueil</button></div></div></div>`);
-    $("home").onclick=()=>{view=null;tab="today";render()};return}
+    paint(`<div class="stage"><div class="card done-box"><div class="big">¡Enhorabuena!</div><p>Séance terminée. Score aux exercices : <b>${s.score} / ${s.total}</b>.</p><p class="hint">${mistakeKeys().length?`Tes erreurs sont gardées : elles reviendront dans les prochaines séances.`:"Aucune erreur en attente. ¡Perfecto!"}</p><div class="row" style="justify-content:center">${S.reads[textOfDay().id]?"":`<button class="btn sun-btn" id="toRead">Lire le texte du jour</button>`}<button class="btn" id="home">Retour à l'accueil</button></div></div></div>`);
+    $("home").onclick=()=>{view=null;tab="today";render()};const tr=$("toRead");if(tr)tr.onclick=()=>openReading(textOfDay());return}
   const st=s.steps[s.step];
   const key=st.items[s.idx];
   if(!key||!validKey(key)){s.idx++;if(s.idx>=st.items.length){s.step++;s.idx=0}save();render();return}
@@ -1681,7 +2029,7 @@ function finishPlacement(ans){
   const work=a1<6?1:a2<6?2:3;
   const skills={};ans.forEach(a=>{skills[a.skill]=skills[a.skill]||{ok:0,n:0};skills[a.skill].n++;if(a.ok)skills[a.skill].ok++});
   const label=a1<6?"A1":a2<6?"A1 → A2":b1<6?"A2 → B1":"B1";
-  S.level=work;S.placement={date:todayStr(),label,scores:{1:a1,2:a2,3:b1},skills,total:a1+a2+b1};S.session=null;markDay();save();
+  S.level=work;S.dailyText=null;S.placement={date:todayStr(),label,scores:{1:a1,2:a2,3:b1},skills,total:a1+a2+b1};S.session=null;markDay();save();
   view=null;tab="level";render();
 }
 
@@ -1689,7 +2037,7 @@ function finishPlacement(ans){
 function renderVocab(){
   const dueAll=allCards.filter(isDue).length;const L=myLevel();
   let html=`<h2>Vocabulaire</h2><p class="lead">${allCards.length} mots, chacun avec un exemple. Les cartes se retournent comme dans Anki : tu dis si c'était facile ou pas, et l'appli te repropose chaque mot au bon moment. Les mots bien connus reviennent aussi dans l'autre sens (du français vers l'espagnol).</p>
-   ${dueAll?`<div class="row" style="margin-bottom:6px"><button class="btn sun-btn" id="revAll">Réviser les ${dueAll} mots du jour</button></div>`:""}`;
+   ${dueAll?`<div class="row" style="margin-bottom:6px"><button class="btn sun-btn" id="revAll">Réviser ${dueAll>1?`les ${dueAll} mots`:"le mot"} du jour</button></div>`:""}`+mineSection();
   [1,2,3].forEach(l=>{
     const decks=Object.entries(DECKS).filter(([k,d])=>d.lvl===l);
     html+=`<div class="lvl-head"><h3>${LVL[l]} · ${LVLNAME[l]}</h3>${l===L&&S.level?`<span class="rec">Ton niveau</span>`:""}</div><div class="decks">`+decks.map(([k,d])=>{const cs=allCards.filter(c=>c.deck===k);const seen=cs.filter(c=>!isNew(c)).length;const du=cs.filter(isDue).length;
@@ -1702,6 +2050,7 @@ function renderVocab(){
     runList(list,{title:DECKS[k].t,backLabel:"Paquets"})});
   document.querySelectorAll("[data-list]").forEach(b=>b.onclick=()=>openDeckList(b.dataset.list));
   const ra=$("revAll");if(ra)ra.onclick=()=>runList(shuffle(allCards.filter(isDue)).map(c=>"v:"+c.id),{title:"Révision du jour",backLabel:"Paquets"});
+  bindMine();
 }
 function openDeckList(k){
   view=()=>{
@@ -1796,15 +2145,13 @@ function renderTrad(){
 }
 
 /* ================= DIALOGUES ================= */
-function renderDial(){
-  paint(`<h2>Dialogues</h2><p class="lead">De petites scènes de la vie en Espagne. Écoute, lis, affiche la traduction si besoin, puis réponds à trois questions de compréhension.</p>
-   <div class="lessons">${DIALOGUES.map((d,i)=>{const r=S.dialogues[d.id];return `<button class="lesson-btn" data-i="${i}"><span><b>${d.t}</b> ${badge(d.lvl)}<br><span class="lvl">${d.sub}</span></span>${r!==undefined?`<span class="chip ok">${r}/3</span>`:`<span class="chip todo">À découvrir</span>`}</button>`}).join("")}</div>`);
-  document.querySelectorAll(".lesson-btn").forEach(b=>b.onclick=()=>openDialogue(DIALOGUES[+b.dataset.i]));
+function renderDialList(){
+  return `<div class="lessons">${DIALOGUES.map((d,i)=>{const r=S.dialogues[d.id];return `<button class="lesson-btn" data-dlg="${i}"><span><b>${d.t}</b> ${badge(d.lvl)}<br><span class="lvl">${d.sub}</span></span>${r!==undefined?`<span class="chip ok">${r}/3</span>`:`<span class="chip todo">À découvrir</span>`}</button>`}).join("")}</div>`;
 }
 function openDialogue(D){
   let showTr=false;
   const dv=()=>{
-    paint(`<button class="back" id="bk">← Tous les dialogues</button><div class="eyebrow">${LVL[D.lvl]} · ${D.sub}</div><h2>${D.t}</h2>
+    paint(`<button class="back" id="bk">← Lire & écouter</button><div class="eyebrow">${LVL[D.lvl]} · ${D.sub}</div><h2>${D.t}</h2>
     <div class="row" style="margin-top:12px">${canSpeak?`<button class="btn" id="all">🔊 Écouter tout le dialogue</button>`:""}<button class="btn ghost" id="tr">${showTr?"Masquer":"Afficher"} la traduction</button></div>
     <div class="bubbles">${D.lines.map((l,i)=>`<div class="bubble ${l[0]==="Snoop"?"me":""}"><div class="who"><span>${esc(l[0])}</span>${canSpeak?`<button class="mini" data-l="${i}" aria-label="Écouter cette réplique">🔊</button>`:""}</div><div class="es">${esc(l[1])}</div>${showTr?`<div class="tr">${esc(l[2])}</div>`:""}</div>`).join("")}</div>
     <button class="btn sun-btn" id="qz">Répondre aux 3 questions</button>`);
@@ -1813,7 +2160,7 @@ function openDialogue(D){
     const all=$("all");if(all)all.onclick=()=>{try{speechSynthesis.cancel()}catch(e){}D.lines.forEach(l=>speak(l[1],true))};
     document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>speak(D.lines[+b.dataset.l][1]));
     $("qz").onclick=()=>{let i=0,sc=0;const step=()=>{if(i>=D.q.length){S.dialogues[D.id]=Math.max(sc,S.dialogues[D.id]||0);markDay();save();
-        paint(`<div class="stage"><div class="card done-box"><div class="big">${sc} / 3</div><p>${sc===3?"¡Lo has entendido todo! Tu as tout compris.":"Réécoute le dialogue avec la traduction, puis réessaie."}</p><div class="row" style="justify-content:center"><button class="btn ghost" id="re">Revoir le dialogue</button><button class="btn" id="bk2">Tous les dialogues</button></div></div></div>`);
+        paint(`<div class="stage"><div class="card done-box"><div class="big">${sc} / 3</div><p>${sc===3?"¡Lo has entendido todo! Tu as tout compris.":"Réécoute le dialogue avec la traduction, puis réessaie."}</p><div class="row" style="justify-content:center"><button class="btn ghost" id="re">Revoir le dialogue</button><button class="btn" id="bk2">Lire & écouter</button></div></div></div>`);
         $("re").onclick=()=>{view=dv;render()};$("bk2").onclick=()=>{view=null;render()};return}
       const[q,o,a]=D.q[i];quitAction=()=>{view=dv;render()};
       quizItem([q,o,a,""],`<button class="back" id="quit">← Dialogue</button><div class="progress"><span>${esc(D.t)}</span><span>${i+1} / 3</span></div>`,ok=>{if(ok)sc++;i++;step()},{shuffle:true})};
@@ -1862,7 +2209,7 @@ function renderLevel(){
       <div class="eyebrow">Ma progression</div>
       <div class="stats" style="margin:12px 0 18px">
         ${[1,2,3].map(l=>`<div class="stat"><b>${learnedBy(l)}</b><span>mots ${LVL[l]} retenus</span></div>`).join("")}
-        <div class="stat"><b>${Object.keys(S.dialogues).length}/${DIALOGUES.length}</b><span>dialogues compris</span></div>
+        <div class="stat"><b>${Object.keys(S.reads).length}/${READINGS.length}</b><span>textes lus</span></div>
       </div>
       <h3>Sauvegarder ma progression</h3>
       <p class="hint" style="margin:0 0 10px">La progression reste dans ce navigateur. Pour la garder en sécurité ou la passer sur un autre ordinateur, copie ce code et garde-le (dans un mail à toi-même par exemple).</p>
@@ -1874,7 +2221,7 @@ function renderLevel(){
     </section>
    </div>`);
   $("retest").onclick=startPlacement;
-  document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;S.session=null;save();render()});
+  document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;S.session=null;buildCards();save();render()});
   const vs=$("voiceSel");if(vs)vs.onchange=()=>{S.voiceName=vs.value;save();loadVoices();speak("Hola, ¿qué tal?")};
   const rt=$("rate");if(rt)rt.oninput=()=>{S.rate=+rt.value;$("rateV").textContent=Math.round(S.rate*100)+" %";save()};
   const vt=$("vtest");if(vt)vt.onclick=()=>speak("Hola, me llamo Snoop y estoy aprendiendo español. ¡Qué bonito día hace hoy!");
@@ -1888,7 +2235,128 @@ function renderLevel(){
   $("restore").onclick=()=>{const m=$("impMsg");let data;
     try{data=JSON.parse(decodeURIComponent(escape(atob($("imp").value.trim()))));if(!data||typeof data!=="object"||!data.cards)throw 0}catch(e){m.className="msg ko";m.textContent="Ce code n'est pas reconnu. Vérifie qu'il a été copié en entier.";return}
     if(!armed){armed=true;m.className="msg";m.textContent="La progression actuelle sera remplacée. Clique encore sur « Restaurer » pour confirmer.";$("restore").textContent="Confirmer la restauration";return}
-    S=Object.assign(blank(),data);S.session=null;save();loadVoices();m.className="msg ok";m.textContent="Progression restaurée.";setTimeout(render,700)};
+    S=Object.assign(blank(),data);if(!Array.isArray(S.custom))S.custom=[];if(!S.reads)S.reads={};S.session=null;buildCards();save();loadVoices();m.className="msg ok";m.textContent="Progression restaurée.";setTimeout(render,700)};
+}
+
+
+/* ================= MES MOTS ================= */
+function mineSection(){
+  const mine=allCards.filter(c=>c.mine);
+  return `<section class="panel mine-panel"><div class="lvl-head" style="margin:0 0 6px"><h3>Mes mots</h3><span class="hint">${mine.length} mot${mine.length>1?"s":""}</span></div>
+    <p class="hint" style="margin:0 0 12px">Tes propres mots : ajoute-les ici, ou d'un clic depuis les textes de lecture. Ils reviennent dans les flashcards comme les autres.</p>
+    <form id="mineForm" class="mine-form" autocomplete="off">
+      <div><label for="mEs" class="hint">Espagnol</label><input type="text" id="mEs" lang="es" placeholder="la sandía"></div>
+      <div><label for="mFr" class="hint">Français</label><input type="text" id="mFr" placeholder="la pastèque"></div>
+      <div class="wide"><label for="mEx" class="hint">Exemple (facultatif)</label><input type="text" id="mEx" lang="es" placeholder="Me encanta la sandía en verano."></div>
+      <button class="btn" type="submit">Ajouter</button>
+    </form><div class="msg" id="mineMsg"></div>
+    ${mine.length?`<div class="mine-list">${mine.slice().reverse().slice(0,30).map(c=>`<span class="mine-chip">${canSpeak?`<button class="mini" data-msay="${c.id}" aria-label="Écouter">🔊</button>`:""}<b>${esc(c.es)}</b> · ${esc(c.fr)}<button class="x" data-mdel="${c.id}" aria-label="Supprimer ${esc(c.es)}">×</button></span>`).join("")}${mine.length>30?`<span class="hint">+ ${mine.length-30} autres</span>`:""}</div>
+      <div class="row" style="margin-top:12px"><button class="btn small sun-btn" id="mineStudy">Étudier mes mots</button></div>`:""}
+  </section>`;
+}
+function bindMine(){
+  const f=$("mineForm");if(!f)return;
+  f.onsubmit=e=>{e.preventDefault();const r=addMine($("mEs").value,$("mFr").value,$("mEx").value,"");const m=$("mineMsg");
+    if(r==="empty"){m.className="msg ko";m.textContent="Écris le mot en espagnol et sa traduction.";return}
+    if(r==="exists"){m.className="msg ko";m.textContent="Ce mot est déjà dans tes cartes.";return}
+    const y=window.scrollY;render();window.scrollTo({top:y});const m2=$("mineMsg");m2.className="msg ok";m2.textContent="Mot ajouté à tes cartes.";};
+  document.querySelectorAll("[data-msay]").forEach(b=>b.onclick=()=>speak(CARD[b.dataset.msay].es));
+  let armed=null;
+  document.querySelectorAll("[data-mdel]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.mdel;
+    if(armed!==id){armed=id;b.textContent="Supprimer ?";b.classList.add("armed");return}
+    const n=+id.split(":")[1];S.custom=S.custom.filter(c=>c.id!==n);delete S.cards[id];delete S.mistakes["w:"+id];buildCards();save();const y=window.scrollY;render();window.scrollTo({top:y})});
+  const st=$("mineStudy");if(st)st.onclick=()=>{const cs=allCards.filter(c=>c.mine);const q=[...shuffle(cs.filter(isDue)),...cs.filter(isNew)];runList((q.length?q:shuffle(cs)).slice(0,20).map(c=>"v:"+c.id),{title:"Mes mots",backLabel:"Paquets"})};
+}
+
+/* ================= LECTURE ================= */
+function textOfDay(){
+  if(S.dailyText&&S.dailyText.date===todayStr()){const r=READINGS.find(x=>x.id===S.dailyText.id);if(r)return r}
+  const L=myLevel();
+  let c=READINGS.filter(r=>r.lvl===L&&!S.reads[r.id]);
+  if(!c.length)c=READINGS.filter(r=>r.lvl<=L+1&&!S.reads[r.id]);
+  if(!c.length)c=READINGS.filter(r=>r.lvl<=L);
+  const dayN=Math.floor(new Date(todayStr()+"T12:00").getTime()/864e5);
+  const pick=S.reads&&c.every(r=>S.reads[r.id])?c[dayN%c.length]:c[0];
+  S.dailyText={date:todayStr(),id:pick.id};save();return pick;
+}
+const readMinutes=r=>Math.max(1,Math.round(r.s.map(x=>x[0]).join(" ").split(/\s+/).length/40));
+function readingCard(){
+  const r=textOfDay(),done=S.reads[r.id];
+  return `<section class="panel read-card">
+    <div class="read-card-in"><div><div class="eyebrow">Lecture du jour · ${LVL[r.lvl]} · ${readMinutes(r)} min</div>
+      <h2 style="margin:4px 0 6px">${esc(r.t)}</h2>
+      <p class="read-preview">${esc(r.s[0][0])} ${esc(r.s[1]?r.s[1][0]:"")}</p></div>
+      <div class="read-card-act">${done?`<span class="chip ok">Lu · ${done.best}/${r.q.length}</span>`:""}<button class="btn ${done?"ghost":"sun-btn"}" id="readToday">${done?"Relire":"Lire le texte"}</button></div></div>
+  </section>`;
+}
+function renderRead(){
+  const r0=textOfDay();
+  let html=`<h2>Lire & écouter</h2><p class="lead">Un petit texte par jour, à lire et à écouter phrase par phrase. Clique sur les mots soulignés pour leur traduction et ajoute-les à tes cartes. Les dialogues sont en bas de la page.</p>${readingCard()}`;
+  [1,2,3].forEach(l=>{
+    const rs=READINGS.filter(r=>r.lvl===l);
+    html+=`<div class="lvl-head"><h3>Textes ${LVL[l]} · ${LVLNAME[l]}</h3>${l===myLevel()&&S.level?`<span class="rec">Ton niveau</span>`:""}</div><div class="lessons">`+
+      rs.map(r=>{const d=S.reads[r.id];return `<button class="lesson-btn" data-read="${r.id}"><span><b>${esc(r.t)}</b>${r.id===r0.id?` <span class="rec">Aujourd'hui</span>`:""}<br><span class="lvl">${readMinutes(r)} min · ${r.s.length} phrases</span></span>${d?`<span class="chip ok">Lu · ${d.best}/${r.q.length}</span>`:`<span class="chip todo">À lire</span>`}</button>`}).join("")+`</div>`;
+  });
+  html+=`<div class="lvl-head"><h3>Dialogues</h3><span class="hint">De petites scènes à écouter, avec 3 questions</span></div>`+renderDialList();
+  paint(html);
+  const rd=$("readToday");if(rd)rd.onclick=()=>openReading(r0);
+  document.querySelectorAll("[data-read]").forEach(b=>b.onclick=()=>openReading(READINGS.find(r=>r.id===b.dataset.read)));
+  document.querySelectorAll("[data-dlg]").forEach(b=>b.onclick=()=>openDialogue(DIALOGUES[+b.dataset.dlg]));
+}
+function glossHtml(R){
+  // marque la 1re occurrence de chaque mot du lexique dans le texte
+  const used=new Set();
+  return R.s.map((sen,si)=>{
+    const text=sen[0];const hits=[];
+    R.g.forEach(([w],gi)=>{if(used.has(gi))return;const m=findIn(text,w);if(m&&!hits.some(h=>m.start<h.end&&h.start<m.end)){hits.push({...m,gi});used.add(gi)}});
+    hits.sort((a,b)=>a.start-b.start);
+    let out="",pos=0;hits.forEach(h=>{out+=esc(text.slice(pos,h.start))+`<button class="gw" data-g="${h.gi}" data-s="${si}">${esc(h.text)}</button>`;pos=h.end});
+    return out+esc(text.slice(pos));
+  });
+}
+function openReading(R){
+  if(!R)return;let showTr=false,popG=null;
+  const rv=()=>{
+    const parts=glossHtml(R);
+    paint(`<button class="back" id="bk">← Lire & écouter</button>
+      <div class="eyebrow">${LVL[R.lvl]} · ${readMinutes(R)} min de lecture</div><h2>${esc(R.t)}</h2>
+      <div class="row reader-tools">${canSpeak?`<button class="btn" id="playAll">🔊 Écouter tout le texte</button><button class="btn ghost" id="stop">⏸ Arrêter</button>`:""}<button class="btn ghost" id="tr">${showTr?"Masquer":"Afficher"} la traduction</button></div>
+      <p class="hint">${canSpeak?"Clique sur une phrase pour l'écouter. ":""}Clique sur un mot souligné pour voir sa traduction.</p>
+      <article class="reader ${showTr?"with-tr":""}">${R.s.map((sen,i)=>`<span class="sent" data-sent="${i}">${parts[i]}</span>${showTr?`<span class="sent-tr">${esc(sen[1])}</span>`:" "}`).join("")}</article>
+      <div id="pop" class="word-pop" ${popG===null?"hidden":""}></div>
+      <section class="panel gloss"><div class="eyebrow">Mots du texte</div>
+        <div class="gloss-list">${R.g.map(([w,f],gi)=>`<span class="gloss-item"><b>${esc(w)}</b> · ${esc(f)} ${hasWord(w)?`<span class="chip ok">dans tes cartes</span>`:`<button class="mini add" data-add="${gi}">+ mes cartes</button>`}</span>`).join("")}</div>
+        <div class="row" style="margin-top:12px">${R.g.some(([w])=>!hasWord(w))?`<button class="btn small ghost" id="addAll">Ajouter tous les mots à mes cartes</button>`:""}</div>
+      </section>
+      <div class="row" style="margin-top:18px"><button class="btn sun-btn" id="qz">Répondre aux ${R.q.length} questions</button></div>`);
+    $("bk").onclick=()=>{stopSpeech();view=null;tab="read";render()};
+    $("tr").onclick=()=>{showTr=!showTr;const y=window.scrollY;render();window.scrollTo({top:y})};
+    const hl=i=>{document.querySelectorAll(".sent").forEach(el=>el.classList.toggle("speaking",+el.dataset.sent===i))};
+    const pa=$("playAll");if(pa)pa.onclick=()=>speakSeq(R.s.map(x=>x[0]),hl,()=>hl(-1));
+    const sp=$("stop");if(sp)sp.onclick=()=>{stopSpeech();hl(-1)};
+    document.querySelectorAll(".sent").forEach(el=>el.onclick=e=>{if(e.target.closest(".gw"))return;const i=+el.dataset.sent;speakSeq([R.s[i][0]],hl,()=>hl(-1))});
+    const showPop=gi=>{popG=gi;const [w,f]=R.g[gi];const p=$("pop");p.hidden=false;
+      p.innerHTML=`<div><b class="pw">${esc(w)}</b> ${sayBtn("popSay")}<div>${esc(f)}</div></div>${hasWord(w)?`<span class="chip ok">dans tes cartes</span>`:`<button class="btn small" id="popAdd">+ Ajouter à mes cartes</button>`}<button class="x" id="popX" aria-label="Fermer">×</button>`;
+      const ps=$("popSay");if(ps)ps.onclick=()=>speak(w);
+      const pd=$("popAdd");if(pd)pd.onclick=()=>{addG(gi);showPop(gi)};
+      $("popX").onclick=()=>{p.hidden=true;popG=null}};
+    const addG=gi=>{const [w,f]=R.g[gi];const sen=R.s.find(x=>findIn(x[0],w))||R.s[0];addMine(w.charAt(0).toLowerCase()+w.slice(1),f,sen[0],sen[1]);
+      document.querySelectorAll(`[data-add="${gi}"]`).forEach(b=>{b.outerHTML='<span class="chip ok">dans tes cartes</span>'})};
+    document.querySelectorAll(".gw").forEach(b=>b.onclick=e=>{e.stopPropagation();const gi=+b.dataset.g;speak(R.g[gi][0]);showPop(gi)});
+    document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>addG(+b.dataset.add));
+    const aa=$("addAll");if(aa)aa.onclick=()=>{R.g.forEach((g,gi)=>{if(!hasWord(g[0]))addG(gi)});aa.textContent="Tous les mots sont dans tes cartes ✓";aa.disabled=true};
+    if(popG!==null)showPop(popG);
+    $("qz").onclick=()=>{stopSpeech();let i=0,sc=0;const order=shuffle(R.q.map((q,k)=>k));
+      const step=()=>{
+        if(i>=R.q.length){const prev=S.reads[R.id];S.reads[R.id]={best:Math.max(sc,prev?prev.best:0),date:todayStr()};markDay();save();
+          paint(`<div class="stage"><div class="card done-box"><div class="big">${sc} / ${R.q.length}</div><p>${sc===R.q.length?"¡Perfecto! Tu as tout compris.":"Relis le texte avec la traduction, puis réessaie si tu veux."}</p><div class="row" style="justify-content:center"><button class="btn ghost" id="re">Revoir le texte</button><button class="btn" id="bk2">Lire & écouter</button></div></div></div>`);
+          $("re").onclick=()=>{view=rv;render()};$("bk2").onclick=()=>{view=null;tab="read";render()};return}
+        const [q,o]=R.q[order[i]];quitAction=()=>{view=rv;render()};
+        quizItem([q,o,0,""],`<button class="back" id="quit">← Texte</button><div class="progress"><span>${esc(R.t)}</span><span>${i+1} / ${R.q.length}</span></div>`,ok=>{if(ok)sc++;i++;step()},{shuffle:true,eyebrow:"Compréhension"});
+      };view=step;render()};
+  };
+  view=rv;render();
 }
 
 render();
